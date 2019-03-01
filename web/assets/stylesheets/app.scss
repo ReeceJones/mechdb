@@ -1,0 +1,41 @@
+body {
+  font-family: 'PT Sans Caption';
+}
+
+@import 'quill';
+
+// WIP page
+.notification.is-warning {
+  font-family: 'Karmatic Arcade';
+  margin-top: 3em;
+  padding-top: 2.2em;
+  padding-bottom: 2em;
+  text-align: center;
+  span {
+    opacity: .5;
+  }
+  span.is-size-2 {
+    letter-spacing: .1em;
+    position: relative;
+    top: -.2em;
+    left: .4em;
+  }
+}
+
+.bit {
+  font-family: '8bit';
+  letter-spacing: -0.15em;
+}
+
+.button.bit {
+  font-size: .7em;
+  &.is-large {
+    font-size: .9em;
+  }
+  &.mr {
+    margin-right: 1em;
+  }
+  .icon {
+    margin-right: .2em !important;
+  }
+}

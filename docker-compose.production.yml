@@ -1,0 +1,72 @@
+version: '3'
+
+services:
+  proxy:
+    container_name: mechdb-proxy
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./proxy/nginx.production.conf:/etc/nginx/conf.d/default.conf
+      - ./proxy/pma.htpasswd:/etc/nginx/pma.htpasswd
+      - ./proxy/html:/usr/share/nginx/html
+      - ./uploads:/usr/share/nginx/uploads
+    links:
+      - web
+      - api
+      - phpmyadmin
+
+  web:
+    container_name: mechdb-web
+    image: node:10
+    working_dir: /src
+    command: bash -c 'yarn && yarn start'
+    volumes:
+      - ./web:/src
+    environment:
+      - HOST=0.0.0.0
+      - API_URL=http://api:3000
+    expose:
+      - 3000
+
+  api:
+    container_name: mechdb-api
+    image: node:10
+    working_dir: /src
+    command: bash -c 'yarn && yarn start'
+    volumes:
+      - ./api:/src
+      - ./uploads:/uploads
+    environment:
+      - NODE_ENV=production
+      - NODE_PORT=3000
+    depends_on:
+      - db
+    links:
+      - db
+    expose:
+      - 3000
+
+  db:
+    container_name: mechdb-db
+    image: mariadb:10.3
+    restart: always
+    volumes:
+      - ./db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mechdb
+    expose:
+     - 3306
+
+  phpmyadmin:
+    container_name: mechdb-pma
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    environment:
+      PMA_USER: root
+      PMA_PASSWORD: root
+    expose:
+     - 80
+    links:
+      - db

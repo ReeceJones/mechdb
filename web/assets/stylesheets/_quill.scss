@@ -1,0 +1,33 @@
+.quill-editor.ql-container {
+  font-size: initial;
+}
+.quill-editor .ql-editor,
+.quill-content {
+  font-family: 'PT Sans Caption';
+  font-size: 1em;
+
+  h2, h3, h4 {
+    font-family: '8bit';
+    letter-spacing: -0.15em;
+    margin: 1.2em 0 .3em;
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+  h2 {
+    font-size: 1.35em;
+  }
+  h3 {
+    font-size: 1.15em;
+  }
+  h4 {
+    font-size: 1em;
+    opacity: .75;
+  }
+  p {
+    margin-bottom: 1em;
+  }
+  & > *:last-child {
+    margin-bottom: 0;
+  }
+}

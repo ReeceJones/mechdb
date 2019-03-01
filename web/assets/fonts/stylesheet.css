@@ -1,0 +1,32 @@
+@font-face {
+    font-family: 'Karmatic Arcade';
+    src: url('KarmaticArcade.woff2') format('woff2'),
+        url('KarmaticArcade.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+  font-family: '8bit';
+  src: url('PixelOperator8-Bold.woff2') format('woff2'),
+      url('PixelOperator8-Bold.woff') format('woff');
+  /* font-weight: bold; */
+  font-style: normal;
+  letter-spacing: -0.15em;
+}
+
+@font-face {
+  font-family: 'PT Sans Caption';
+  src: url('PTSans-Caption.woff2') format('woff2'),
+      url('PTSans-Caption.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PT Sans Caption';
+  src: url('PTSans-CaptionBold.woff2') format('woff2'),
+      url('PTSans-CaptionBold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
