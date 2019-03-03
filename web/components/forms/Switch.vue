@@ -44,26 +44,17 @@
       />
     </b-field>
 
-    <b-field label="Size"/>
+    <b-field label="Type"/>
     <b-field>
       <b-radio-button
-        v-for="(name, id) in sizes"
-        v-model="data.size"
-        :native-value="id"
-        :key="id"
+        v-for="type in types"
+        v-model="data.type"
+        :native-value="type"
+        :key="type"
       >
-        {{ name }}
+        {{ type }}
       </b-radio-button>
     </b-field>
-
-    <h2 class="bit">Text</h2>
-
-    <div
-      v-quill:myQuillEditor="quillOpts"
-      :content="data.text"
-      class="quill-editor"
-      @change="onEditorChange($event)"
-    />
 
     <h2 class="bit">Photos</h2>
 
@@ -93,16 +84,13 @@
 import _ from 'lodash'
 import async from 'async'
 
-import sizes from '@/assets/configuration/boardSizes'
-
 import ManufacturerPicker from '@/components/forms/ManufacturerPicker'
 import PhotosUpload from '@/components/forms/PhotosUpload'
 
 const defaultData = {
   name: '',
   description: '',
-  text: '',
-  size: null,
+  type: null,
   manufacturerId: null,
   photos: [],
 }
@@ -135,7 +123,7 @@ export default {
           ],
         },
       },
-      sizes,
+      types: ['Linear', 'Clicky', 'Tactile'],
     }
   },
   watch: {
@@ -157,9 +145,6 @@ export default {
           }
         })
       }
-    },
-    onEditorChange($event) {
-      this.data.text = $event.html
     },
     save () {
       const loadingComponent = this.$loading.open()

@@ -22,6 +22,7 @@ module.exports = {
 
   css: [
     '@/assets/fonts/stylesheet.css',
+    '@/assets/stylesheets/buefy.scss',
     '@/assets/stylesheets/app.scss',
     'quill/dist/quill.snow.css',
     // 'quill/dist/quill.bubble.css',

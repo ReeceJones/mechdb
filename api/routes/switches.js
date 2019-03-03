@@ -3,24 +3,19 @@ const router = express.Router()
 
 const auth = require('../middlewares/auth')
 
-const Brand = require('../models/Brand')
-const Keyboard = require('../models/Keyboard')
+const Switch = require('../models/Switch')
 const Manufacturer = require('../models/Manufacturer')
 
 router.get('/', async (req, res, done) => {
   try {
-    const data = await Keyboard.findAll({
+    const data = await Switch.findAll({
       attributes: [
         'name',
         'slug',
         'description',
-        'size',
+        'type',
       ],
       include: [
-        {
-          model: Brand,
-          attributes: ['name'],
-        },
         {
           model: Manufacturer,
           attributes: ['name'],
@@ -32,9 +27,6 @@ router.get('/', async (req, res, done) => {
       if (item.manufacturer !== null) {
         item.manufacturer = item.manufacturer.name
       }
-      if (item.brand !== null) {
-        item.brand = item.brand.name
-      }
       return item
     }))
   } catch (e) {
@@ -43,7 +35,7 @@ router.get('/', async (req, res, done) => {
 })
 
 router.get('/:slug', (req, res, done) => {
-  Keyboard.findOne({
+  Switch.findOne({
     where: {
       slug: req.params.slug,
     },
@@ -52,17 +44,11 @@ router.get('/:slug', (req, res, done) => {
       'name',
       'slug',
       'description',
-      'text',
       'photos',
-      'size',
+      'type',
       'manufacturerId', // only for edit
-      'brandId', // only for edit
     ],
     include: [
-      {
-        model: Brand,
-        attributes: ['name', 'slug'],
-      },
       {
         model: Manufacturer,
         attributes: ['name', 'slug'],
@@ -75,13 +61,13 @@ router.get('/:slug', (req, res, done) => {
 })
 
 router.post('/', auth.isLoggedIn, auth.isAdmin, (req, res, next) => {
-  Keyboard.create(req.body)
+  Switch.create(req.body)
     .then((doc) => res.json(doc))
     .catch(next)
 })
 
 router.post('/:id', auth.isLoggedIn, auth.isAdmin, (req, res, next) => {
-  Keyboard.findById(req.params.id).then((doc) => {
+  Switch.findById(req.params.id).then((doc) => {
     doc.update(req.body)
       .then(() => res.json(doc))
       .catch(next)
@@ -89,7 +75,7 @@ router.post('/:id', auth.isLoggedIn, auth.isAdmin, (req, res, next) => {
 })
 
 router.delete('/:id', auth.isLoggedIn, auth.isAdmin, (req, res, next) => {
-  Keyboard.destroy({
+  Switch.destroy({
     where: {
       id: req.params.id,
     },

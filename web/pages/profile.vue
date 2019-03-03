@@ -3,7 +3,7 @@
     Logged in as <strong>{{ userData.name }}</strong> (<em>{{ userData.email }}</em>)
     &nbsp;
     <button
-      class="button bit is-danger"
+      class="button bit is-danger is-pulled-right"
       @click="logout"
     >
       SIGN OUT

@@ -44,15 +44,15 @@
       />
     </b-field>
 
-    <b-field label="Size"/>
+    <b-field label="Profile"/>
     <b-field>
       <b-radio-button
-        v-for="(name, id) in sizes"
-        v-model="data.size"
-        :native-value="id"
-        :key="id"
+        v-for="profile in profiles"
+        v-model="data.profile"
+        :native-value="profile"
+        :key="profile"
       >
-        {{ name }}
+        {{ profile }}
       </b-radio-button>
     </b-field>
 
@@ -93,8 +93,6 @@
 import _ from 'lodash'
 import async from 'async'
 
-import sizes from '@/assets/configuration/boardSizes'
-
 import ManufacturerPicker from '@/components/forms/ManufacturerPicker'
 import PhotosUpload from '@/components/forms/PhotosUpload'
 
@@ -102,7 +100,7 @@ const defaultData = {
   name: '',
   description: '',
   text: '',
-  size: null,
+  profile: null,
   manufacturerId: null,
   photos: [],
 }
@@ -135,7 +133,7 @@ export default {
           ],
         },
       },
-      sizes,
+      profiles: ['Cherry', 'OEM', 'DSA', 'SA', 'XDA', 'KAT', 'MT3'],
     }
   },
   watch: {

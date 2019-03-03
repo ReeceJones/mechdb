@@ -1,7 +1,13 @@
+@import "~bulma/sass/utilities/initial-variables";
+
 body {
   font-family: 'PT Sans Caption';
 }
 
+@import "colors";
+@import "layout";
+@import "helpers";
+@import 'sidebar';
 @import 'quill';
 
 // WIP page
@@ -20,11 +26,22 @@ body {
     top: -.2em;
     left: .4em;
   }
+  @media only screen and (max-width: $desktop) {
+    span.is-size-2 {
+      font-size: 1.7em !important;
+    }
+    .mdi-48px.mdi:before {
+      font-size: 2.2em !important;
+    }
+  }
 }
 
 .bit {
   font-family: '8bit';
   letter-spacing: -0.15em;
+}
+h1.bit, h2.bit, h3.bit {
+  line-height: 1.2;
 }
 
 .button.bit {
@@ -32,10 +49,26 @@ body {
   &.is-large {
     font-size: .9em;
   }
-  &.mr {
-    margin-right: 1em;
-  }
   .icon {
     margin-right: .2em !important;
+  }
+}
+
+.topright {
+  float: right;
+  margin-bottom: 1em;
+
+  .button {
+    font-size: .9em;
+    & + & {
+      margin-right: 1em;
+    }
+  }
+  @media only screen and (max-width: $tablet) {
+    float: none;
+    text-align: right;
+    .button {
+      font-size: .75em;
+    }
   }
 }

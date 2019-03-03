@@ -8,7 +8,8 @@ require('../models/Switch')
 const User = require('../models/User')
 
 async function run () {
-  await db.sync({ force: true })
+  await db.sync()
+  // await db.sync({ force: true })
   await createUsers()
 }
 

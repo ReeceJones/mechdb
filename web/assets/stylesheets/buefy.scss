@@ -1,0 +1,28 @@
+@import "~bulma/sass/utilities/functions";
+
+@import "_colors";
+
+$family-sans-serif: 'PT Sans Caption', sans-serif;
+
+$colors: (
+  "light": ($light, findColorInvert($light)),
+  "dark": ($dark, findColorInvert($dark)),
+  "primary": ($primary, findColorInvert($primary)),
+  "info": ($info, findColorInvert($info)),
+  "success": ($success, findColorInvert($success)),
+  "warning": ($warning, findColorInvert($warning)),
+  "danger": ($danger, findColorInvert($danger)),
+);
+
+// links
+$link: $primary;
+$link-invert: findColorInvert($primary);
+$link-focus-border: $primary;
+
+
+// Import Bulma's core
+@import "~bulma/sass/utilities/_all";
+
+// Import Bulma and Buefy styles
+@import "~bulma";
+@import "~buefy/src/scss/buefy";

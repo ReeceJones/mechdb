@@ -1,7 +1,7 @@
 <template>
   <div>
     <nav
-      class="navbar"
+      class="navbar is-dark"
       role="navigation"
       aria-label="main navigation"
     >
@@ -32,7 +32,7 @@
         class="navbar-menu"
       >
         <div class="navbar-start">
-          <nuxt-link
+          <!-- <nuxt-link
             to="/search"
             class="navbar-item"
           >
@@ -40,7 +40,7 @@
               icon="magnify"
               size="is-small"
             />
-          </nuxt-link>
+          </nuxt-link> -->
           <nuxt-link
             to="/keyboards"
             class="navbar-item bit"
@@ -53,12 +53,12 @@
           >
             Keycaps
           </nuxt-link>
-          <nuxt-link
-            to="/switches"
+          <!-- <nuxt-link
+            to="/gallery"
             class="navbar-item bit"
           >
-            Switches
-          </nuxt-link>
+            Gallery
+          </nuxt-link> -->
 
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link bit">
@@ -67,17 +67,16 @@
 
             <div class="navbar-dropdown">
               <nuxt-link
-                to="/gallery"
+                to="/switches"
                 class="navbar-item bit"
               >
-                Gallery
+                Switches
               </nuxt-link>
-              <hr class="navbar-divider">
               <nuxt-link
-                to="/contribute"
+                to="/manufacturers"
                 class="navbar-item bit"
               >
-                Contribute
+                Manufacturers
               </nuxt-link>
             </div>
           </div>
@@ -160,5 +159,8 @@ export default {
   & .icon {
     font-size: 1.4em;
   }
+}
+div.section {
+  padding-top: 1em;
 }
 </style>

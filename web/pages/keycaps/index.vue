@@ -6,14 +6,14 @@
       class="topright"
     >
       <nuxt-link
-        to="/keyboards/new"
+        to="/keycaps/new"
         class="button bit is-primary"
       >
-        + NEW KEYBOARD
+        + NEW KEYCAPS
       </nuxt-link>
     </div>
 
-    <h1 class="is-size-4 bit">Keyboards</h1>
+    <h1 class="is-size-4 bit">Keycaps</h1>
 
     <b-table
       :data="data"
@@ -26,7 +26,7 @@
           sortable
         >
           <nuxt-link
-            :to="'/keyboards/' + props.row.slug"
+            :to="'/keycaps/' + props.row.slug"
           >
             {{ props.row.name }}
           </nuxt-link>
@@ -39,11 +39,11 @@
           {{ props.row.manufacturer }}
         </b-table-column>
         <b-table-column
-          field="size"
-          label="Size"
+          field="profile"
+          label="Profile"
           sortable
         >
-          {{ boardSizes[props.row.size] || null }}
+          {{ props.row.profile }}
         </b-table-column>
       </template>
 
@@ -55,12 +55,9 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import boardSizes from '@/assets/configuration/boardSizes'
-
 export default {
   data () {
     return {
-      boardSizes,
       data: [],
     }
   },
@@ -70,7 +67,7 @@ export default {
   methods: {
     async getItems () {
       try {
-        const { data } = await this.$api.get('/keyboards')
+        const { data } = await this.$api.get('/keycaps')
         this.data = data
       } catch (error) {
         if (error.response && error.response.status === 401) {

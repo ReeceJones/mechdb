@@ -6,7 +6,7 @@
       class="topright"
     >
       <nuxt-link
-        :to="'/keyboards/edit?slug=' + item.slug"
+        :to="'/keycaps/edit?slug=' + item.slug"
         class="button bit is-primary"
       >
         EDIT
@@ -45,14 +45,14 @@
         v-if="hasSpecs"
         class="sidebar-specs"
       >
-        <h3 class="bit">
+        <h4 class="bit">
           SPECS
-        </h3>
+        </h4>
         <table class="table specs is-narrow is-fullwidth">
           <tbody>
-            <tr v-if="boardSize">
-              <td>Size :</td>
-              <td>{{ boardSize }}</td>
+            <tr v-if="item.profile">
+              <td>Profile :</td>
+              <td>{{ item.profile }}</td>
             </tr>
             <tr v-if="item.manufacturer">
               <td>Manufacturer :</td>
@@ -90,8 +90,6 @@
 </template>
 
 <script>
-import boardSizes from '@/assets/configuration/boardSizes'
-
 export default {
   data () {
     return {
@@ -99,11 +97,8 @@ export default {
     }
   },
   computed: {
-    boardSize () {
-      return boardSizes[this.item.size] || null
-    },
     hasSpecs () {
-      return this.item.size || this.item.manufacturer || this.item.brand
+      return this.item.profile || this.item.manufacturer || this.item.brand
     },
   },
   watch: {
@@ -117,7 +112,7 @@ export default {
   methods: {
     async getData () {
       try {
-        const { data } = await this.$api.get('/keyboards/' + this.$route.params.slug)
+        const { data } = await this.$api.get('/keycaps/' + this.$route.params.slug)
         this.item = data
       } catch (error) {
         if (error.response && error.response.status === 401) {
@@ -129,9 +124,9 @@ export default {
     async deleteItem () {
       if (!confirm('Delete ?')) return
       try {
-        const { data } = await this.$api.delete('/keyboards/' + this.item.id)
+        const { data } = await this.$api.delete('/keycaps/' + this.item.id)
         if (data.deleted === 1) {
-          this.$toast.open('Keyboard deleted')
+          this.$toast.open('Keycaps deleted')
         }
         this.$router.go(-1)
       } catch (error) {
