@@ -1,19 +1,20 @@
 <template>
   <div>
 
-    <button
-      class="button bit is-light is-large is-pulled-right"
-      @click.prevent="$router.go(-1)"
-    >
-      CANCEL
-    </button>
-
-    <button
-      class="button bit is-primary is-large is-pulled-right mr"
-      @click.prevent="save"
-    >
-      SAVE
-    </button>
+    <div class="topright">
+      <button
+        class="button bit is-primary"
+        @click.prevent="save"
+      >
+        SAVE
+      </button>
+      <button
+        class="button bit is-light"
+        @click.prevent="$router.go(-1)"
+      >
+        CANCEL
+      </button>
+    </div>
 
     <h1 class="is-size-4 bit">{{ title }}</h1>
 

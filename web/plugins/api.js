@@ -2,7 +2,6 @@ import Vue from 'vue'
 import axios from 'axios'
 
 const baseURL = process.server ? process.env.API_URL : '/api'
-console.log('baseURL', baseURL)
 
 const api = axios.create({
   baseURL: baseURL + '/',

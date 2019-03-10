@@ -142,6 +142,12 @@ export default {
   },
   created () {
     this.$store.commit('user/AUTH_TOKEN')
+    this.$router.beforeEach((to, from, next) => {
+      if (this.menuActive) {
+        this.menuActive = false
+      }
+      next()
+    })
   },
 }
 </script>
