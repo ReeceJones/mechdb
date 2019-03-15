@@ -1,6 +1,18 @@
 <template>
   <div>
-    Logged in as <strong>{{ userData.name }}</strong> (<em>{{ userData.email }}</em>)
+    Logged in as <strong>{{ userData.username }}</strong>
+    <span
+      v-if="userData.isAdmin"
+      class="tag is-small is-light"
+    >
+      ADMIN
+    </span>
+    <span
+      v-else-if="userData.isVerified"
+      class="tag is-small is-light"
+    >
+      VERIFIED
+    </span>
     &nbsp;
     <button
       class="button bit is-danger is-pulled-right"

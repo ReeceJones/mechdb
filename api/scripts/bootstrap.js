@@ -17,7 +17,7 @@ async function createUsers () {
   try {
     const admins = [
       {
-        name: 'kartsims',
+        username: 'kartsims',
         email: 'kartsims@gmail.com',
         password: '123',
         isAdmin: true,

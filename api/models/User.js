@@ -13,7 +13,11 @@ const User = db.define('user', {
     type: Sequelize.BOOLEAN,
     defaultValue: false,
   },
-  name: {
+  isVerified: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+  },
+  username: {
     type: Sequelize.STRING,
   },
   email: {
@@ -25,17 +29,20 @@ const User = db.define('user', {
   password: {
     type: Sequelize.STRING,
   },
+  passwordToken: {
+    type: Sequelize.STRING,
+  },
 }, {
   indexes: [
     {
       unique: true,
-      fields: ['name'],
+      fields: ['username'],
     },
     {
       unique: true,
       fields: ['email'],
     },
-  ]
+  ],
 })
 
 User.prototype.comparePassword = function (candidatePassword) {

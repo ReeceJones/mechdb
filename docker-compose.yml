@@ -24,6 +24,7 @@ services:
       - ./web:/src
     environment:
       - HOST=0.0.0.0
+      - API_URL=http://api:3000
     expose:
       - 3000
 

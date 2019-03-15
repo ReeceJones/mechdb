@@ -3,19 +3,14 @@
 
     <form @submit.prevent="submitForm">
 
-      <h1 class="is-size-5 bit">LOGIN</h1>
+      <h1 class="is-size-5 bit">SET NEW PASSWORD</h1>
 
-      <b-field
-        :type="{'is-danger': errors.has('email')}"
-        :message="errors.first('email')"
-      >
+      <b-field>
         <b-input
-          v-validate="'required|email'"
-          v-model="email"
-          name="email"
+          :value="$route.query.email"
           type="email"
           icon="email"
-          placeholder="Enter your email"
+          disabled
         />
       </b-field>
 
@@ -25,11 +20,27 @@
       >
         <b-input
           v-validate="'required'"
+          ref="password"
           v-model="password"
           name="password"
           type="password"
           icon="key"
-          placeholder="********"
+          placeholder="New password"
+        />
+      </b-field>
+
+      <b-field
+        :type="{'is-danger': errors.has('password2')}"
+        :message="errors.first('password2')"
+      >
+        <b-input
+          v-validate="'required|confirmed:password'"
+          v-model="password2"
+          name="password2"
+          type="password"
+          icon="content-duplicate"
+          placeholder="Confirm password"
+          data-vv-as="password"
         />
       </b-field>
 
@@ -38,22 +49,13 @@
         type="submit"
         class="button bit is-large is-primary"
       >
-        LOGIN
+        SAVE
       </button>
       <nuxt-link
-        to="/auth/password"
+        to="/login"
         class="button is-text is-size-7"
       >
-        Forgot password ?
-      </nuxt-link>
-      <br>
-      <br>
-      <h2 class="is-size-5 bit">NO ACCOUNT?</h2>
-      <nuxt-link
-        to="/register"
-        class="button bit is-large is-light"
-      >
-        REGISTER
+        Back to login
       </nuxt-link>
     </form>
 
@@ -65,8 +67,8 @@ export default {
   data () {
     return {
       isLoading: false,
-      email: '',
-      password: '',
+      password: '123',
+      password2: '123',
     }
   },
   methods: {
@@ -78,8 +80,18 @@ export default {
 
       this.isLoading = true
       try {
+        await this.$api.put('users/password', {
+          email: this.$route.query.email,
+          passwordToken: this.$route.query.token,
+          password: this.password,
+        })
+        this.$toast.open({
+          message: 'Password has been updated!',
+          type: 'is-success',
+          position: 'is-bottom',
+        })
         await this.$store.dispatch('user/login', {
-          email: this.email,
+          email: this.$route.query.email,
           password: this.password,
         })
         this.$router.push('/profile')
@@ -105,8 +117,5 @@ form {
 }
 h1 {
   margin-bottom: 1em;
-}
-h2 {
-  margin: 1.5em 0 1em;
 }
 </style>

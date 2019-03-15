@@ -13,17 +13,17 @@ export const getters = {
   isAdmin (state, getters) {
     return getters.isLoggedIn && state.data.isAdmin
   },
+  isVerified (state, getters) {
+    return getters.isLoggedIn && state.data.isVerified
+  },
 }
 
 export const mutations = {
 
   AUTH_TOKEN: function (state, payload) {
-    if (payload) {
-      state.token = payload
-    }
-    if (state.token) {
-      Vue.api.defaults.headers.common['Authorization'] = 'Bearer ' + state.token
-    }
+    const token = payload || Cookie.get('token')
+    Vue.api.defaults.headers.common['Authorization'] = 'Bearer ' + token
+    state.token = token
   },
   AUTH_LOGOUT: function (state) {
     Cookie.remove('token')
