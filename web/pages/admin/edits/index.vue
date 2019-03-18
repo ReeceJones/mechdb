@@ -1,15 +1,11 @@
 <template>
   <div>
 
-    <div class="topright">
-      <div class="field">
-        <b-checkbox v-model="newOnly">
-          Only new
-        </b-checkbox>
-      </div>
-    </div>
-
     <h1 class="is-size-4 bit">Edits</h1>
+
+    <b-checkbox v-model="newOnly">
+      Show pending only
+    </b-checkbox>
 
     <b-table
       :data="filteredData"
@@ -21,7 +17,7 @@
           sortable
         >
           <nuxt-link
-            :to="'/edits/' + props.row.id"
+            :to="'/admin/edits/' + props.row.id"
           >
             See changes
           </nuxt-link>

@@ -53,33 +53,12 @@
           >
             Keycaps
           </nuxt-link>
-          <!-- <nuxt-link
-            to="/gallery"
+          <nuxt-link
+            to="/switches"
             class="navbar-item bit"
           >
-            Gallery
-          </nuxt-link> -->
-
-          <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link bit">
-              More
-            </a>
-
-            <div class="navbar-dropdown">
-              <nuxt-link
-                to="/switches"
-                class="navbar-item bit"
-              >
-                Switches
-              </nuxt-link>
-              <nuxt-link
-                to="/manufacturers"
-                class="navbar-item bit"
-              >
-                Manufacturers
-              </nuxt-link>
-            </div>
-          </div>
+            Switches
+          </nuxt-link>
 
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link bit">
@@ -88,7 +67,7 @@
 
             <div class="navbar-dropdown">
               <nuxt-link
-                to="/edits"
+                to="/admin/edits"
                 class="navbar-item bit"
               >
                 Edits
