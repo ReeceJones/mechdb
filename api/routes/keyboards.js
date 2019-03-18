@@ -1,8 +1,6 @@
 const express = require('express')
 const router = express.Router()
 
-const auth = require('../middlewares/auth')
-
 const Brand = require('../models/Brand')
 const Keyboard = require('../models/Keyboard')
 const Manufacturer = require('../models/Manufacturer')
@@ -42,8 +40,8 @@ router.get('/', async (req, res, done) => {
   }
 })
 
-router.get('/:slug', (req, res, done) => {
-  Keyboard.findOne({
+router.get('/:slug', async (req, res, done) => {
+  const doc = await Keyboard.findOne({
     where: {
       slug: req.params.slug,
     },
@@ -68,34 +66,11 @@ router.get('/:slug', (req, res, done) => {
         attributes: ['name', 'slug'],
       },
     ],
-  }).then((doc) => {
-    doc.photos = JSON.parse(doc.photos)
-    res.json(doc)
-  }).catch(done)
-})
+  })
+  if (doc === null) return done('404 Not found')
 
-router.post('/', auth.isLoggedIn, auth.isAdmin, (req, res, next) => {
-  Keyboard.create(req.body)
-    .then((doc) => res.json(doc))
-    .catch(next)
-})
-
-router.post('/:id', auth.isLoggedIn, auth.isAdmin, (req, res, next) => {
-  Keyboard.findById(req.params.id).then((doc) => {
-    doc.update(req.body)
-      .then(() => res.json(doc))
-      .catch(next)
-  }).catch(next)
-})
-
-router.delete('/:id', auth.isLoggedIn, auth.isAdmin, (req, res, next) => {
-  Keyboard.destroy({
-    where: {
-      id: req.params.id,
-    },
-  }).then((deleted) => {
-    res.json({ deleted })
-  }).catch(next)
+  doc.photos = JSON.parse(doc.photos)
+  res.json(doc)
 })
 
 module.exports = router

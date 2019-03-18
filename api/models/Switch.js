@@ -29,12 +29,12 @@ const Switch = db.define('switch', {
   },
 })
 
-Switch.hook('beforeValidate', (doc, options) => {
+Switch.addHook('beforeValidate', (doc, options) => {
   if (doc.photos && typeof doc.photos === 'object') {
     doc.photos = JSON.stringify(doc.photos)
   }
 })
-Switch.hook('beforeSave', (doc, options) => {
+Switch.addHook('beforeSave', (doc, options) => {
   doc.slug = slugify(doc.name, {
     lower: true,
   })

@@ -33,12 +33,12 @@ const Keyboard = db.define('keyboard', {
   },
 })
 
-Keyboard.hook('beforeValidate', (doc, options) => {
+Keyboard.addHook('beforeValidate', (doc) => {
   if (doc.photos && typeof doc.photos === 'object') {
     doc.photos = JSON.stringify(doc.photos)
   }
 })
-Keyboard.hook('beforeSave', (doc, options) => {
+Keyboard.addHook('beforeSave', (doc) => {
   doc.slug = slugify(doc.name, {
     lower: true,
   })

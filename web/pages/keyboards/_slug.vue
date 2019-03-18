@@ -119,26 +119,20 @@ export default {
       try {
         const { data } = await this.$api.get('/keyboards/' + this.$route.params.slug)
         this.item = data
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-          throw new Error('Bad credentials')
-        }
-        throw error
+      } catch (e) {
+        this.apiError(e)
       }
     },
     async deleteItem () {
       if (!confirm('Delete ?')) return
       try {
-        const { data } = await this.$api.delete('/keyboards/' + this.item.id)
+        const { data } = await this.$api.delete('/edits/Keyboard/' + this.item.id)
         if (data.deleted === 1) {
           this.$toast.open('Keyboard deleted')
         }
-        this.$router.go(-1)
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-          throw new Error('Bad credentials')
-        }
-        throw error
+        this.$router.push('/keyboards')
+      } catch (e) {
+        this.apiError(e)
       }
     },
   },

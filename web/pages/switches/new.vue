@@ -1,10 +1,11 @@
 <template>
-  <div>
+  <form @submit.prevent="saveData">
     <Form
+      :is-loading="isLoading"
       title="New Switch"
       @save="saveData"
     />
-  </div>
+  </form>
 </template>
 
 <script>
@@ -14,18 +15,24 @@ export default {
   components: {
     Form,
   },
+  data () {
+    return {
+      isLoading: false,
+    }
+  },
   methods: {
     async saveData (saveData) {
+      if (this.isLoading) return
+
+      this.isLoading = true
       try {
-        const { data } = await this.$api.post('/switches', saveData)
+        const { data } = await this.$api.post('/edits/Switch', saveData)
         this.$toast.open('Switch created')
-        this.$router.push('/switches/' + data.slug)
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-          throw new Error('Bad credentials')
-        }
-        throw error
+        this.$router.go(-1)
+      } catch (e) {
+        this.apiError(e)
       }
+      this.isLoading = false
     },
   },
 }

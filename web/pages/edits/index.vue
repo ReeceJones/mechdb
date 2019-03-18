@@ -1,0 +1,106 @@
+<template>
+  <div>
+
+    <div class="topright">
+      <div class="field">
+        <b-checkbox v-model="newOnly">
+          Only new
+        </b-checkbox>
+      </div>
+    </div>
+
+    <h1 class="is-size-4 bit">Edits</h1>
+
+    <b-table
+      :data="filteredData"
+      hoverable
+    >
+      <template slot-scope="props">
+        <b-table-column
+          field="id"
+          sortable
+        >
+          <nuxt-link
+            :to="'/edits/' + props.row.id"
+          >
+            See changes
+          </nuxt-link>
+        </b-table-column>
+        <b-table-column
+          field="status"
+          label="Status"
+          sortable
+        >
+          <template v-if="props.row.status === 'new'">
+            <span class="tag is-light">New</span>
+          </template>
+          <template v-else-if="props.row.status === 'approved'">
+            <span class="tag is-success">Approved</span>
+            by {{ props.row.approvedBy }}
+          </template>
+        </b-table-column>
+        <b-table-column
+          field="createdAt"
+          label="Created"
+          sortable
+        >
+          {{ props.row.createdAt }}
+        </b-table-column>
+        <b-table-column
+          field="createdBy"
+          label="Author"
+          sortable
+        >
+          {{ props.row.createdBy }}
+        </b-table-column>
+        <b-table-column
+          field="modelName"
+          label="Dataset"
+          sortable
+        >
+          {{ props.row.modelName }}
+        </b-table-column>
+      </template>
+
+    </b-table>
+
+  </div>
+</template>
+
+<script>
+import { mapGetters } from 'vuex'
+
+export default {
+  data () {
+    return {
+      data: [],
+      newOnly: true,
+    }
+  },
+  computed: {
+    filteredData () {
+      if (this.newOnly) return this.data.filter(item => item.status === 'new')
+      return this.data
+    },
+  },
+  created () {
+    this.getItems()
+  },
+  methods: {
+    async getItems () {
+      try {
+        const { data } = await this.$api.get('/edits')
+        this.data = data
+      } catch (e) {
+        this.apiError(e)
+      }
+    },
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+h1 {
+  margin-bottom: .8em;
+}
+</style>

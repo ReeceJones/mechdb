@@ -26,8 +26,8 @@ Vue.mixin({
         }
       } else {
         // default handler
-        message = 'Server error'
-        console.error(e)
+        message = '💥 There has been an error with the server'
+        console.error(err)
       }
       this.$toast.open({
         message,

@@ -32,12 +32,12 @@ const Keycap = db.define('keycap', {
   },
 })
 
-Keycap.hook('beforeValidate', (doc, options) => {
+Keycap.addHook('beforeValidate', (doc, options) => {
   if (doc.photos && typeof doc.photos === 'object') {
     doc.photos = JSON.stringify(doc.photos)
   }
 })
-Keycap.hook('beforeSave', (doc, options) => {
+Keycap.addHook('beforeSave', (doc, options) => {
   doc.slug = slugify(doc.name, {
     lower: true,
   })

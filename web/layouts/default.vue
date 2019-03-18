@@ -80,6 +80,21 @@
               </nuxt-link>
             </div>
           </div>
+
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link bit">
+              Admin
+            </a>
+
+            <div class="navbar-dropdown">
+              <nuxt-link
+                to="/edits"
+                class="navbar-item bit"
+              >
+                Edits
+              </nuxt-link>
+            </div>
+          </div>
         </div>
 
         <div

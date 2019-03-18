@@ -1,10 +1,11 @@
 <template>
-  <div>
+  <form @submit.prevent="saveData">
     <Form
       :values="item"
+      :is-loading="isLoading"
       @save="saveData"
     />
-  </div>
+  </form>
 </template>
 
 <script>
@@ -16,6 +17,7 @@ export default {
   },
   data () {
     return {
+      isLoading: false,
       item: null,
     }
   },
@@ -32,24 +34,22 @@ export default {
       try {
         const { data } = await this.$api.get('/keycaps/' + this.$route.query.slug)
         this.item = data
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-          throw new Error('Bad credentials')
-        }
-        throw error
+      } catch (e) {
+        this.apiError(e)
       }
     },
     async saveData (updateData) {
+      if (this.isLoading) return
+
+      this.isLoading = true
       try {
-        const { data } = await this.$api.post('/keycaps/' + this.item.id, updateData)
+        const { data } = await this.$api.post('/edits/Keycap/' + this.item.id, updateData)
         this.$toast.open('Changes saved')
-        this.$router.push('/keycaps/' + data.slug)
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-          throw new Error('Bad credentials')
-        }
-        throw error
+        this.$router.push('/keycaps/' + data.instance.slug)
+      } catch (e) {
+        this.apiError(e)
       }
+      this.isLoading = false
     },
   },
 }

@@ -1,6 +1,7 @@
 const db = require('../lib/db')
 
 require('../models/Brand')
+require('../models/Edit')
 require('../models/Keyboard')
 require('../models/Keycap')
 require('../models/Manufacturer')
@@ -8,8 +9,8 @@ require('../models/Switch')
 const User = require('../models/User')
 
 async function run () {
-  await db.sync()
-  // await db.sync({ force: true })
+  // await db.sync()
+  await db.sync({ force: true })
   await createUsers()
 }
 

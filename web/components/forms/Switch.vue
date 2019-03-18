@@ -21,8 +21,16 @@
     <div class="columns">
       <div class="column">
 
-        <b-field label="Name">
-          <b-input v-model="data.name"/>
+        <b-field
+          :type="{'is-danger': errors.has('name')}"
+          :message="errors.first('name')"
+          label="Name"
+        >
+          <b-input
+            v-validate="'required'"
+            v-model="data.name"
+            name="name"
+          />
         </b-field>
 
       </div>
@@ -147,7 +155,10 @@ export default {
         })
       }
     },
-    save () {
+    async save () {
+      const isValid = await this.$validator.validateAll()
+      if (!isValid) return
+
       const loadingComponent = this.$loading.open()
 
       async.each(this.data.photos, async (photo, cb) => {

@@ -114,26 +114,20 @@ export default {
       try {
         const { data } = await this.$api.get('/keycaps/' + this.$route.params.slug)
         this.item = data
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-          throw new Error('Bad credentials')
-        }
-        throw error
+      } catch (e) {
+        this.apiError(e)
       }
     },
     async deleteItem () {
       if (!confirm('Delete ?')) return
       try {
-        const { data } = await this.$api.delete('/keycaps/' + this.item.id)
+        const { data } = await this.$api.delete('/edits/Keycap/' + this.item.id)
         if (data.deleted === 1) {
           this.$toast.open('Keycaps deleted')
         }
-        this.$router.go(-1)
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-          throw new Error('Bad credentials')
-        }
-        throw error
+        this.$router.push('/keycaps')
+      } catch (e) {
+        this.apiError(e)
       }
     },
   },

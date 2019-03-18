@@ -72,11 +72,8 @@ export default {
       try {
         const { data } = await this.$api.get('/keyboards')
         this.data = data
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-          throw new Error('Bad credentials')
-        }
-        throw error
+      } catch (e) {
+        this.apiError(e)
       }
     },
   },

@@ -20,7 +20,7 @@ const Manufacturer = db.define('manufacturer', {
   },
 })
 
-Manufacturer.hook('beforeSave', (doc, options) => {
+Manufacturer.addHook('beforeSave', (doc, options) => {
   doc.slug = slugify(doc.name, {
     lower: true,
   })

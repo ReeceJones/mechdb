@@ -20,7 +20,7 @@ const Brand = db.define('brand', {
   },
 })
 
-Brand.hook('beforeSave', (doc, options) => {
+Brand.addHook('beforeSave', (doc, options) => {
   doc.slug = slugify(doc.name, {
     lower: true,
   })

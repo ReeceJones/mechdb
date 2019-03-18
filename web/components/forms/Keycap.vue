@@ -3,6 +3,7 @@
 
     <div class="topright">
       <button
+        :class="{ 'is-loading': isLoading }"
         class="button bit is-primary"
         @click.prevent="save"
       >
@@ -21,8 +22,16 @@
     <div class="columns">
       <div class="column">
 
-        <b-field label="Name">
-          <b-input v-model="data.name"/>
+        <b-field
+          :type="{'is-danger': errors.has('name')}"
+          :message="errors.first('name')"
+          label="Name"
+        >
+          <b-input
+            v-validate="'required'"
+            v-model="data.name"
+            name="name"
+          />
         </b-field>
 
       </div>
@@ -118,7 +127,11 @@ export default {
     },
     values: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
+    },
+    isLoading: {
+      type: Boolean,
+      default: () => false,
     }
   },
   data () {
@@ -160,7 +173,10 @@ export default {
     onEditorChange($event) {
       this.data.text = $event.html
     },
-    save () {
+    async save () {
+      const isValid = await this.$validator.validateAll()
+      if (!isValid) return
+
       const loadingComponent = this.$loading.open()
 
       async.each(this.data.photos, async (photo, cb) => {
