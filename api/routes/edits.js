@@ -1,9 +1,11 @@
 const express = require('express')
+const Sequelize = require('sequelize')
 const router = express.Router()
 
 const auth = require('../middlewares/auth')
 
 const Edit = require('../models/Edit')
+const User = require('../models/User')
 
 router.get('/', auth.isLoggedIn, auth.isAdmin, async (req, res, done) => {
   try {
@@ -20,6 +22,19 @@ router.get('/:id', auth.isLoggedIn, auth.isAdmin, async (req, res, done) => {
   try {
     const data = await Edit.findOne({
       where: { id: req.params.id },
+      include: [{
+        model: User,
+        attributes: ['id', 'username'],
+        as: 'approvedBy',
+      }, {
+        model: User,
+        attributes: ['id', 'username'],
+        as: 'rejectedBy',
+      }, {
+        model: User,
+        attributes: ['id', 'username'],
+        as: 'createdBy',
+      }],
     })
     res.json(data)
   } catch (e) {
@@ -33,7 +48,7 @@ router.post('/:modelName', auth.isLoggedIn, async (req, res, done) => {
       after: JSON.stringify(req.body),
       modelName: req.params.modelName,
       type: 'add',
-      createdBy: req.user.id,
+      createdById: req.user.id,
     })
     if (req.user.isAdmin) {
       await doc.approve(req.user.id)
@@ -52,7 +67,7 @@ router.post('/:modelName/:instanceId', auth.isLoggedIn, async (req, res, done) =
       modelName: req.params.modelName,
       instanceId: req.params.instanceId,
       type: 'edit',
-      createdBy: req.user.id,
+      createdById: req.user.id,
     })
     if (req.user.isAdmin) {
       await doc.approve(req.user.id)
@@ -75,7 +90,7 @@ router.delete('/:modelName/:instanceId', auth.isLoggedIn, async (req, res, done)
       modelName: req.params.modelName,
       instanceId: req.params.instanceId,
       type: 'delete',
-      createdBy: req.user.id,
+      createdById: req.user.id,
     })
     if (req.user.isAdmin) {
       await doc.approve(req.user.id)

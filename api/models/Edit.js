@@ -2,6 +2,7 @@ const _ = require('lodash')
 const Sequelize = require('sequelize')
 
 const db = require('../lib/db')
+const User = require('./User')
 
 const models = {
   Brand: require('./Brand'),
@@ -41,23 +42,17 @@ const Edit = db.define('edit', {
     values: ['new', 'approved', 'rejected'],
     defaultValue: 'new',
   },
-  approvedBy: {
-    type: Sequelize.INTEGER,
-  },
   approvedAt: {
     type: Sequelize.DATE,
-  },
-  rejectedBy: {
-    type: Sequelize.INTEGER,
   },
   rejectedAt: {
     type: Sequelize.DATE,
   },
-  createdBy: {
-    type: Sequelize.INTEGER,
-    required: true,
-  },
 })
+
+Edit.belongsTo(User, { as: 'approvedBy' })
+Edit.belongsTo(User, { as: 'rejectedBy' })
+Edit.belongsTo(User, { as: 'createdBy' })
 
 // beforeCreate an edition
 Edit.addHook('beforeCreate', async (doc) => {
@@ -159,7 +154,7 @@ Edit.prototype.approve = async function (userId) {
   if (!applied) return
 
   this.status = 'approved'
-  this.approvedBy = userId
+  this.approvedById = userId
   this.approvedAt = new Date()
 
   await this.save()
@@ -180,6 +175,5 @@ Edit.prototype.getInstance = async function () {
 
   return model.findById(this.instanceId)
 }
-
 
 module.exports = Edit

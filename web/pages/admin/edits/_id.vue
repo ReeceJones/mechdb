@@ -32,14 +32,18 @@
       v-if="data.status === 'approved'"
       type="is-success"
     >
-      Changes have been approved <strong>{{ data.approvedAt }}</strong> by <strong>user #{{ data.approvedBy }}</strong>
+      Changes have been approved <strong>{{ data.approvedAt }}</strong> by
+      <strong v-if="data.approvedBy">{{ data.approvedBy.username }}</strong>
+      <strong v-else>?</strong>
     </b-message>
 
     <b-message
       v-if="data.status === 'rejected'"
       type="is-warning"
     >
-      Changes have been rejected <strong>{{ data.rejectedAt }}</strong> by <strong>user #{{ data.rejectedBy }}</strong>
+      Changes have been rejected <strong>{{ data.rejectedAt }}</strong> by
+      <strong v-if="data.rejectedBy">{{ data.rejectedBy.username }}</strong>
+      <strong v-else>?</strong>
     </b-message>
 
     <pre>data => {{ data }}</pre>
