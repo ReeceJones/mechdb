@@ -60,17 +60,25 @@
             Switches
           </nuxt-link>
 
-          <div class="navbar-item has-dropdown is-hoverable">
+          <div
+            v-if="$store.getters['user/isAdmin']"
+            class="navbar-item has-dropdown is-hoverable"
+          >
             <a class="navbar-link bit">
               Admin
             </a>
-
             <div class="navbar-dropdown">
+              <nuxt-link
+                to="/admin/suggestions"
+                class="navbar-item bit"
+              >
+                Suggestions
+              </nuxt-link>
               <nuxt-link
                 to="/admin/edits"
                 class="navbar-item bit"
               >
-                Edits
+                Log
               </nuxt-link>
             </div>
           </div>

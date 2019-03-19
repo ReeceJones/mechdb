@@ -26,10 +26,8 @@ router.post('/', async (req, res, next) => {
   })
   try {
     await doc.save()
-    // TODO prepare token
-    res.json({
-      token: 'LKJHKLJK',
-    })
+    const token = jwt.sign({ email: doc.email }, config.jwt.secret, config.jwt.opts)
+    res.json({ token })
   } catch (e) {
     if (e.name === 'SequelizeUniqueConstraintError') {
       if (e.fields.users_username !== undefined) {

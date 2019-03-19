@@ -2,7 +2,7 @@
   <div>
 
     <div
-      v-if="$store.getters['user/isAdmin']"
+      v-if="$store.getters['user/isLoggedIn']"
       class="topright"
     >
       <nuxt-link

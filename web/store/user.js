@@ -21,7 +21,11 @@ export const getters = {
 export const mutations = {
 
   AUTH_TOKEN: function (state, payload) {
-    const token = payload || Cookie.get('token')
+    let token = Cookie.get('token')
+    if (payload) {
+      Cookie.set('token', payload, { expires: 7 })
+      token = payload
+    }
     Vue.api.defaults.headers.common['Authorization'] = 'Bearer ' + token
     state.token = token
   },
@@ -54,7 +58,6 @@ export const actions = {
   async login({ commit, dispatch }, { email, password }) {
     try {
       const { data } = await Vue.api.post('users/signin', { email, password })
-      Cookie.set('token', data.token, { expires: 7 })
       commit('AUTH_TOKEN', data.token)
       await dispatch('getUser')
     } catch (error) {

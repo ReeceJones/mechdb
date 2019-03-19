@@ -68,10 +68,13 @@ export default {
 
       this.isLoading = true
       try {
-        await this.$api.post('users', {
+        const { data } = await this.$api.post('users', {
           email: this.email,
           username: this.username,
         })
+        this.$store.commit('user/AUTH_TOKEN', data.token)
+        await this.$store.dispatch('user/getUser')
+        this.$router.push('/profile')
       } catch (e) {
         this.apiError(e, {
           'Username already in use': 'username',
