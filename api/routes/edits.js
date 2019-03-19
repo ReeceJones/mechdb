@@ -1,4 +1,5 @@
 const express = require('express')
+const Op = require('sequelize').Op
 const router = express.Router()
 
 const auth = require('../middlewares/auth')
@@ -6,9 +7,30 @@ const auth = require('../middlewares/auth')
 const Edit = require('../models/Edit')
 const User = require('../models/User')
 
+router.get('/suggestions', auth.isLoggedIn, auth.isAdmin, async (req, res, done) => {
+  try {
+    const data = await Edit.findAll({
+      where: { status: 'new' },
+      order: [['createdAt', 'ASC']],
+      include: [{
+        model: User,
+        attributes: ['id', 'username'],
+        as: 'createdBy',
+      }],
+      limit: 1000,
+    })
+    res.json(data)
+  } catch (e) {
+    done(e)
+  }
+})
+
 router.get('/', auth.isLoggedIn, auth.isAdmin, async (req, res, done) => {
   try {
     const data = await Edit.findAll({
+      where: {
+        status: { [Op.or]: ['approved', 'rejected'] },
+      },
       order: [['createdAt', 'ASC']],
       include: [{
         model: User,
@@ -23,6 +45,7 @@ router.get('/', auth.isLoggedIn, auth.isAdmin, async (req, res, done) => {
         attributes: ['id', 'username'],
         as: 'createdBy',
       }],
+      limit: 1000,
     })
     res.json(data)
   } catch (e) {

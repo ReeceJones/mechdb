@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <h1 class="is-size-4 bit">Edits</h1>
+    <h1 class="is-size-4 bit">Suggestions</h1>
 
     <b-table
       :data="data"
@@ -11,7 +11,6 @@
         <b-table-column>
           <nuxt-link
             :to="'/admin/edits/' + props.row.id"
-            :class="{ 'is-rejected': props.row.status === 'rejected' }"
           >
             <b-icon
               v-if="props.row.type === 'add'"
@@ -44,21 +43,13 @@
           sortable
         >
           {{ props.row.createdAt }}
-          by {{ props.row.createdBy.username }}
         </b-table-column>
         <b-table-column
-          label="Moderation"
+          field="createdById"
+          label="Author"
+          sortable
         >
-          <template v-if="props.row.status === 'approved'">
-            <span class="tag is-success">Approved</span>
-            {{ props.row.approvedAt }}
-            by {{ props.row.approvedBy.username }}
-          </template>
-          <template v-else-if="props.row.status === 'rejected'">
-            <span class="tag is-danger">Rejected</span>
-            {{ props.row.rejectedAt }}
-            by {{ props.row.rejectedBy.username }}
-          </template>
+          {{ props.row.createdBy.username }}
         </b-table-column>
       </template>
 
@@ -82,7 +73,7 @@ export default {
   methods: {
     async getItems () {
       try {
-        const { data } = await this.$api.get('/edits')
+        const { data } = await this.$api.get('/edits/suggestions')
         this.data = data
       } catch (e) {
         this.apiError(e)
@@ -108,8 +99,5 @@ export default {
 <style lang="scss" scoped>
 h1 {
   margin-bottom: .8em;
-}
-.is-rejected {
-  text-decoration: line-through;
 }
 </style>
