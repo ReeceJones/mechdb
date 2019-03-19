@@ -55,7 +55,6 @@ router.get('/:slug', async (req, res, done) => {
   })
   if (doc === null) return done('404 Not found')
 
-  doc.photos = JSON.parse(doc.photos)
   res.json(doc)
 })
 

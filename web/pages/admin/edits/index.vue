@@ -28,11 +28,15 @@
           sortable
         >
           <template v-if="props.row.status === 'new'">
-            <span class="tag is-light">New</span>
+            <span class="tag is-light">Pending</span>
           </template>
           <template v-else-if="props.row.status === 'approved'">
             <span class="tag is-success">Approved</span>
-            by {{ props.row.approvedBy }}
+            by {{ props.row.approvedBy.username }}
+          </template>
+          <template v-else-if="props.row.status === 'rejected'">
+            <span class="tag is-success">Rejected</span>
+            by {{ props.row.rejectedBy.username }}
           </template>
         </b-table-column>
         <b-table-column
@@ -43,11 +47,18 @@
           {{ props.row.createdAt }}
         </b-table-column>
         <b-table-column
+          field="type"
+          label="Type"
+          sortable
+        >
+          {{ props.row.type }}
+        </b-table-column>
+        <b-table-column
           field="createdBy"
           label="Author"
           sortable
         >
-          {{ props.row.createdBy }}
+          {{ props.row.createdBy.username }}
         </b-table-column>
         <b-table-column
           field="modelName"

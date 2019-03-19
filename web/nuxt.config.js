@@ -29,6 +29,12 @@ module.exports = {
     'quill/dist/quill.core.css'
   ],
 
+  styleResources: {
+    scss: [
+      '@/assets/stylesheets/vars.scss',
+    ],
+  },
+
   plugins: [
     '~/plugins/api',
     { src: '~plugins/quill', ssr: false },
@@ -38,6 +44,8 @@ module.exports = {
   modules: [
     '@nuxtjs/axios',
     ['nuxt-buefy', { materialDesignIcons: true }],
+    '@nuxtjs/moment',
+    '@nuxtjs/style-resources',
   ],
 
   env: {

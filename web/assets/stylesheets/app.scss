@@ -4,7 +4,7 @@ body {
   font-family: 'PT Sans Caption';
 }
 
-@import "colors";
+@import "vars";
 @import "layout";
 @import "helpers";
 @import 'sidebar';
@@ -49,6 +49,14 @@ h1.bit, h2.bit, h3.bit {
   &.is-large {
     font-size: .9em;
   }
+}
+
+.button {
+  .icon {
+    margin-right: .2em !important;
+  }
+}
+.tag {
   .icon {
     margin-right: .2em !important;
   }

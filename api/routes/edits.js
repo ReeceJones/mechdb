@@ -1,5 +1,4 @@
 const express = require('express')
-const Sequelize = require('sequelize')
 const router = express.Router()
 
 const auth = require('../middlewares/auth')
@@ -11,6 +10,19 @@ router.get('/', auth.isLoggedIn, auth.isAdmin, async (req, res, done) => {
   try {
     const data = await Edit.findAll({
       order: [['createdAt', 'ASC']],
+      include: [{
+        model: User,
+        attributes: ['id', 'username'],
+        as: 'approvedBy',
+      }, {
+        model: User,
+        attributes: ['id', 'username'],
+        as: 'rejectedBy',
+      }, {
+        model: User,
+        attributes: ['id', 'username'],
+        as: 'createdBy',
+      }],
     })
     res.json(data)
   } catch (e) {
