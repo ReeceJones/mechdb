@@ -44,27 +44,29 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-router.post('/signin', (req, res, next) => {
+router.post('/signin', async (req, res, next) => {
   if (!req.body.email || !req.body.password) {
     return next('400 Bad request.')
   }
 
-  const delayedError = () => {
-    setTimeout(() => next('403 Unknown email/password.'), 1500)
+  try {
+    const doc = await User.findOne({
+      where: { email: req.body.email },
+    })
+    if (!doc) {
+      next('403 Unknown email/password.')
+    }
+    const passwordMatch = await doc.comparePassword(req.body.password)
+    if (!passwordMatch) {
+      return next('403 Unknown email/password.')
+    }
+
+    const token = jwt.sign({ email: doc.email }, config.jwt.secret, config.jwt.opts)
+    res.json({ token })
+
+  } catch (e) {
+    next('403 Unknown email/password.')
   }
-
-  User.findOne({ email: req.body.email })
-    .then(doc => {
-      doc.comparePassword(req.body.password)
-        .then(passwordMatch => {
-          if (!passwordMatch) {
-            return delayedError()
-          }
-
-          const token = jwt.sign({ email: doc.email }, config.jwt.secret, config.jwt.opts)
-          res.json({ token })
-        })
-    }).error(delayedError)
 })
 
 router.post('/password', async (req, res, next) => {
