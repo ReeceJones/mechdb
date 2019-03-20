@@ -8,9 +8,17 @@
 
 _Note : This will use port 80 of your computer. You may need to shut down Apache if it is already running on your machine (that would get you a "port allocated" error)._
 
-Before being able to run the website, you'll need to run the following command:
+Before being able to run the website, you'll need to run the following commands:
 
 ```
+# make sure all dependencies are met
+cd api/
+yarn install
+cd ../
+docker-compose run api yarn install
+docker-compose run web yarn install
+
+# generate test data
 docker-compose run api yarn bootstrap
 ```
 
