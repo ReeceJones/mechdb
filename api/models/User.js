@@ -49,6 +49,7 @@ User.prototype.comparePassword = function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password)
 }
 
+// hash password, and set its value in the user field
 function hashPassword (user, options) {
   if (!user.changed('password')) return
   return bcrypt
@@ -57,6 +58,7 @@ function hashPassword (user, options) {
       user.setDataValue('password', hash)
     })
 }
+
 User.beforeCreate(hashPassword)
 User.beforeUpdate(hashPassword)
 

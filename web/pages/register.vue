@@ -32,6 +32,20 @@
         />
       </b-field>
 
+      <b-field
+        :type="{'is-danger': errors.has('password')}"
+        :message="errors.first('password')"
+      >
+        <b-input
+          v-validate="'required'"
+          v-model="password"
+          name="password"
+          icon="key"
+          placeholder="Choose a password"
+          type="password"
+        />
+      </b-field>
+
       <button
         :class="{ 'is-loading': isLoading }"
         type="submit"
@@ -57,6 +71,7 @@ export default {
       isLoading: false,
       email: '',
       username: '',
+      password: '',
     }
   },
   methods: {
@@ -71,6 +86,7 @@ export default {
         const { data } = await this.$api.post('users', {
           email: this.email,
           username: this.username,
+          password: this.password,
         })
         this.$store.commit('user/AUTH_TOKEN', data.token)
         await this.$store.dispatch('user/getUser')

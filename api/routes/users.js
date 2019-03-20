@@ -23,6 +23,7 @@ router.post('/', async (req, res, next) => {
   const doc = new User({
     email: req.body.email,
     username: req.body.username,
+    password: req.body.password,
   })
   try {
     await doc.save()
