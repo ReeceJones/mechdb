@@ -83,13 +83,15 @@ export default {
 
       this.isLoading = true
       try {
-        const { data } = await this.$api.post('users', {
+        await this.$api.post('users', {
           email: this.email,
           username: this.username,
           password: this.password,
         })
-        this.$store.commit('user/AUTH_TOKEN', data.token)
-        await this.$store.dispatch('user/getUser')
+        await this.$store.dispatch('user/login', {
+          email: this.email,
+          password: this.password,
+        })
         this.$router.push('/profile')
       } catch (e) {
         this.apiError(e, {
