@@ -12,9 +12,6 @@ Before being able to run the website, you'll need to run the following commands:
 
 ```
 # make sure all dependencies are met
-cd api/
-yarn install
-cd ../
 docker-compose run api yarn install
 docker-compose run web yarn install
 
