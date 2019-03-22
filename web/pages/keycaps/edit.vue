@@ -43,7 +43,7 @@ export default {
 
       this.isLoading = true
       try {
-        const { data } = await this.$api.post('/edits/Keycap/' + this.item.id, updateData)
+        const { data } = await this.$api.post('/edits/Keycap/' + this.item._id, updateData)
         this.$toast.open('Changes saved')
         this.$router.push('/keycaps/' + data.instance.slug)
       } catch (e) {

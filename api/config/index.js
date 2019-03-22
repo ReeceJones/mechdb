@@ -7,6 +7,6 @@ module.exports = {
     },
   },
   db: {
-    uri: 'mysql://root:root@db:3306/mechdb',
+    uri: 'mongodb://db:27017/website',
   },
 }

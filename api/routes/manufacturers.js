@@ -5,14 +5,10 @@ const auth = require('../middlewares/auth')
 
 const Manufacturer = require('../models/Manufacturer')
 
-router.get('/', async (req, res, done) => {
+router.get('/', auth.isLoggedIn, async (req, res, done) => {
   try {
-    const data = await Manufacturer.findAll({
-      attributes: [
-        'id',
-        'name',
-      ],
-      order: [['name', 'asc']],
+    const data = await Manufacturer.find({}, '_id name', {
+      sort: 'name',
     })
     res.json(data)
   } catch (e) {

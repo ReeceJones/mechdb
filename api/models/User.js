@@ -1,65 +1,38 @@
-const Sequelize = require('sequelize')
 const bcrypt = require('bcrypt')
+const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
 
-const db = require('../lib/db')
-
-const User = db.define('user', {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
+const schema = new mongoose.Schema({
+  username: String,
+  email: {
+    type: String,
+    id: true,
+    lowercase: true,
+    required: [true, 'is required'],
+    match: [/\S+@\S+\.\S+/, 'is invalid'],
+    unique: true,
   },
+  hash: String,
+  passwordToken: String,
   isAdmin: {
-    type: Sequelize.BOOLEAN,
-    defaultValue: false,
+    type: Boolean,
+    default: false,
   },
   isVerified: {
-    type: Sequelize.BOOLEAN,
-    defaultValue: false,
-  },
-  username: {
-    type: Sequelize.STRING,
-  },
-  email: {
-    type: Sequelize.STRING,
-    validate: {
-      isEmail: true,
-    },
-  },
-  password: {
-    type: Sequelize.STRING,
-  },
-  passwordToken: {
-    type: Sequelize.STRING,
+    type: Boolean,
+    default: false,
   },
 }, {
-  indexes: [
-    {
-      unique: true,
-      fields: ['username'],
-    },
-    {
-      unique: true,
-      fields: ['email'],
-    },
-  ],
+  timestamps: true,
 })
+schema.plugin(uniqueValidator, { message: 'is already taken.' })
 
-User.prototype.comparePassword = function (candidatePassword) {
-  return bcrypt.compare(candidatePassword, this.password)
+schema.methods.setPassword = async function (password) {
+  this.hash = await bcrypt.hash(password, 10)
 }
 
-// hash password, and set its value in the user field
-function hashPassword (user, options) {
-  if (!user.changed('password')) return
-  return bcrypt
-    .hash(user.password, 10)
-    .then(hash => {
-      user.setDataValue('password', hash)
-    })
+schema.methods.comparePassword = function (password) {
+  return bcrypt.compare(password, this.hash)
 }
 
-User.beforeCreate(hashPassword)
-User.beforeUpdate(hashPassword)
-
-module.exports = User
+module.exports = mongoose.model('User', schema)

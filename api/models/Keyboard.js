@@ -1,50 +1,32 @@
-const Sequelize = require('sequelize')
+const mongoose = require('mongoose')
 const slugify = require('slugify')
 
-const db = require('../lib/db')
-
-const Brand = require('./Brand')
-const Manufacturer = require('./Manufacturer')
-
-const Keyboard = db.define('keyboard', {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  name: {
-    type: Sequelize.STRING,
-  },
-  slug: {
-    type: Sequelize.STRING,
-  },
-  description: {
-    type: Sequelize.TEXT,
-  },
-  text: {
-    type: Sequelize.TEXT,
-  },
-  photos: {
-    type: Sequelize.TEXT,
-  },
+const schema = new mongoose.Schema({
+  name: String,
+  slug: String,
+  description: String,
+  text: String,
+  photos: [String],
   size: {
-    type: Sequelize.ENUM,
-    values: ['macropad', '40', '45', '60', '65', '75', 'tkl', 'full'],
+    type: String,
+    enum: [null, 'macropad', '40', '45', '60', '65', '75', 'tkl', 'full'],
   },
+  brand: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Brand',
+  },
+  manufacturer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Manufacturer',
+  },
+}, {
+  timestamps: true,
 })
 
-Keyboard.addHook('beforeValidate', (doc) => {
-  if (doc.photos && typeof doc.photos === 'object') {
-    doc.photos = JSON.stringify(doc.photos)
-  }
-})
-Keyboard.addHook('beforeSave', (doc) => {
-  doc.slug = slugify(doc.name, {
+schema.pre('save', function () {
+  this.slug = slugify(this.name, {
     lower: true,
   })
 })
 
-Keyboard.belongsTo(Brand)
-Keyboard.belongsTo(Manufacturer)
-
-module.exports = Keyboard
+module.exports = mongoose.model('Keyboard', schema)

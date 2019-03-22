@@ -9,16 +9,16 @@
     <div class="sidebar is-pulled-right">
 
       <div
-        v-if="photos.length > 0"
+        v-if="item.photos.length > 0"
         class="sidebar-photos"
       >
-        <img :src="uploadUrl + photos[0]">
+        <img :src="uploadUrl + item.photos[0]">
         <span class="is-size-7 label">
           <b-icon
             icon="image-filter"
             size="is-small"
           />
-          {{ photos.length }} photo{{ photos.length > 1 ? 's' : '' }}
+          {{ item.photos.length }} photo{{ item.photos.length > 1 ? 's' : '' }}
         </span>
       </div>
 
@@ -83,17 +83,6 @@ export default {
     hasSpecs () {
       return this.item.profile || this.item.manufacturer || this.item.brand
     },
-    photos () {
-      try {
-        return JSON.parse(this.item.photos)
-      } catch (e) {
-        this.$toast.open({
-          message: 'Could not parse photo data',
-          type: 'is-danger',
-          position: 'is-bottom',
-        })
-      }
-    }
   },
 }
 </script>

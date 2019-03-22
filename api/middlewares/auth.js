@@ -11,27 +11,25 @@ const opts = {
 }
 
 passport.use(new passportJwt.Strategy(opts, (jwtPayload, done) => {
-  User.findOne({
-    where: { email: jwtPayload.email },
-  }).then((doc) => {
-    done(null, doc)
-  }).error((err) => done(null, false, { code: 401, message: err }))
+  User.findOne({ email: jwtPayload.email })
+    .then((doc) => {
+      done(null, doc)
+    }).catch((err) => done(null, false, { code: 401, message: err }))
 }))
+
+const getUser = passport.authenticate('jwt', {
+  session: false,
+})
 
 module.exports = {
   init: passport.initialize(),
-  isLoggedIn: (req, res, next) => {
-    passport.authenticate('jwt', {
-      session: false,
-    })(req, res, next)
-  },
+  isLoggedIn: getUser,
   isAdmin: (req, res, next) => {
-    if (!req.user) {
-      return next('401 Unauthorized')
-    }
-    if (!req.user.isAdmin) {
-      return next('403 Forbidden')
-    }
-    next()
+    getUser(req, res, () => {
+      if (!req.user || !req.user.isAdmin) {
+        return next('401 Forbidden')
+      }
+      next()
+    })
   },
 }

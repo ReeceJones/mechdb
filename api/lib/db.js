@@ -1,11 +1,10 @@
-const Sequelize = require('sequelize')
+const mongoose = require('mongoose')
 const config = require('../config')
 
-const sequelize = new Sequelize(config.db.uri, {
-  define: {
-    charset: 'utf8',
-    collate: 'utf8_general_ci',
-  },
-})
-
-module.exports = sequelize
+module.exports.authenticate = function () {
+  return mongoose.connect(config.db.uri, {
+    useNewUrlParser: true,
+  }).then(() => {
+    require('../models/User')
+  })
+}

@@ -56,7 +56,7 @@ export default {
     async deleteItem () {
       if (!confirm('Delete ?')) return
       try {
-        const { data } = await this.$api.delete('/edits/Switch/' + this.item.id)
+        const { data } = await this.$api.delete('/edits/Switch/' + this.item._id)
         if (data.deleted === 1) {
           this.$toast.open('Switches deleted')
         }

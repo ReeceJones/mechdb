@@ -1,36 +1,24 @@
 const db = require('../lib/db')
 
-require('../models/Brand')
-require('../models/Edit')
-require('../models/Keyboard')
-require('../models/Keycap')
-require('../models/Manufacturer')
-require('../models/Switch')
 const User = require('../models/User')
 
 async function run () {
-  // await db.sync()
-  await db.sync({ force: true })
-  await createUsers()
+  await createAdmin()
 }
 
-async function createUsers () {
+async function createAdmin () {
   try {
-    const admins = [
-      {
-        username: 'kartsims',
-        email: 'kartsims@gmail.com',
-        password: '123',
-        isAdmin: true,
-      },
-    ]
-    await User.bulkCreate(admins, {
-      individualHooks: true,
-    })
-
-    console.log('%d admins created', admins.length)
+    const admin = {
+      email: 'kartsims@gmail.com',
+      username: 'kartsims',
+      isAdmin: true,
+    }
+    const doc = new User(admin)
+    await doc.setPassword('123')
+    await doc.save()
+    console.log('[%s] Admin created', doc.email)
   } catch (e) {
-    console.log('Error with admins creation', e)
+    console.log('Error with admin creation', e)
   }
 }
 

@@ -1,8 +1,5 @@
 const _ = require('lodash')
-const Sequelize = require('sequelize')
-
-const db = require('../lib/db')
-const User = require('./User')
+const mongoose = require('mongoose')
 
 const models = {
   Brand: require('./Brand'),
@@ -11,99 +8,86 @@ const models = {
   Manufacturer: require('./Manufacturer'),
   Switch: require('./Switch'),
 }
-
-const Edit = db.define('edit', {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  modelName: {
-    type: Sequelize.STRING,
+const schema = new mongoose.Schema({
+  instanceModel: {
+    type: String,
     required: true,
   },
   instanceId: {
-    type: Sequelize.INTEGER,
+    type: mongoose.Schema.Types.ObjectId,
   },
   type: {
-    type: Sequelize.ENUM,
-    values: ['add', 'edit', 'delete'],
+    type: String,
+    enum: ['add', 'edit', 'delete'],
   },
   before: {
-    type: Sequelize.TEXT,
-    required: true,
+    type: Object,
   },
   after: {
-    type: Sequelize.TEXT,
-    required: true,
+    type: Object,
   },
   status: {
-    type: Sequelize.ENUM,
-    values: ['new', 'approved', 'rejected'],
-    defaultValue: 'new',
+    type: String,
+    enum: ['new', 'approved', 'rejected'],
+    default: 'new',
   },
   approvedAt: {
-    type: Sequelize.DATE,
+    type: Date,
+  },
+  approvedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
   },
   rejectedAt: {
-    type: Sequelize.DATE,
+    type: Date,
   },
+  rejectedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  createdAt: {
+    type: Date,
+  },
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
+}, {
+  timestamps: true,
 })
 
-Edit.belongsTo(User, { as: 'approvedBy' })
-Edit.belongsTo(User, { as: 'rejectedBy' })
-Edit.belongsTo(User, { as: 'createdBy' })
+schema.pre('save', async function () {
+  if (!this.isNew) return
 
-// beforeCreate an edition
-Edit.addHook('beforeCreate', async (doc) => {
-  if (doc.type !== 'edit') return
+  const Model = this.getModel()
+  if (!Model) return
 
-  if (models[doc.modelName] === undefined) return
-  const model = models[doc.modelName]
+  const data = await Model.findById(this.instanceId)
+  if (!data) return
 
-  const instance = await model.findById(doc.instanceId)
-  if (!instance) return
+  // edition
+  if (this.type === 'edit') {
+    this.before = {}
+    _.each(this.after, (value, key) => {
+      this.before[key] = data[key]
+    })
+  }
 
-  doc.before = {}
-
-  const data = instance.get({ plain: true })
-  doc.after = JSON.parse(doc.after)
-  _.each(doc.after, (value, key) => {
-    if (key === 'photos') {
-      value = JSON.stringify(value)
-    }
-    if (value === data[key]) {
-      delete doc.after[key]
-      return
-    }
-    doc.before[key] = data[key]
-  })
-  doc.before = JSON.stringify(doc.before)
-  doc.after = JSON.stringify(doc.after)
+  // deletion
+  if (this.type === 'delete') {
+    this.before = data
+  }
 })
 
-// beforeCreate a deletion
-Edit.addHook('beforeCreate', async (doc) => {
-  if (doc.type !== 'delete') return
-
-  if (models[doc.modelName] === undefined) return
-  const model = models[doc.modelName]
-
-  const instance = await model.findById(doc.instanceId)
-  if (!instance) return
-
-  doc.before = instance.get({ plain: true })
-  doc.before = JSON.stringify(doc.before)
-})
-
-Edit.prototype.apply = async function () {
-  const model = this.getModel()
-  if (!model) return
+schema.methods.apply = async function () {
+  const Model = this.getModel()
+  if (!Model) return
 
   // addition
   if (this.type === 'add') {
     try {
-      await model.create(JSON.parse(this.after))
+      const doc = new Model(this.after)
+      await doc.save()
       return true
     } catch (e) {
       console.error('Edit apply (addition) failed with error', e)
@@ -118,8 +102,7 @@ Edit.prototype.apply = async function () {
     const instance = await this.getInstance()
     if (!instance) return false
 
-    const data = JSON.parse(this.after)
-    _.each(data, (value, key) => {
+    _.each(this.after, (value, key) => {
       instance[key] = value
     })
 
@@ -135,9 +118,7 @@ Edit.prototype.apply = async function () {
   // deletion
   if (this.type === 'delete') {
     try {
-      await model.destroy({
-        where: { id: this.instanceId },
-      })
+      await Model.findByIdAndRemove(this.instanceId)
       return true
     } catch (e) {
       console.error('Edit apply (deletion) failed with error', e)
@@ -148,32 +129,31 @@ Edit.prototype.apply = async function () {
   return false
 }
 
-Edit.prototype.approve = async function (userId) {
-
+schema.methods.approve = async function (userId) {
   const applied = await this.apply()
   if (!applied) return
 
   this.status = 'approved'
-  this.approvedById = userId
+  this.approvedBy = userId
   this.approvedAt = new Date()
 
   await this.save()
 }
 
-Edit.prototype.getModel = function () {
-  if (models[this.modelName] === undefined) return null
-  return models[this.modelName]
+schema.methods.getModel = function () {
+  if (models[this.instanceModel] === undefined) return null
+  return models[this.instanceModel]
 }
 
-Edit.prototype.getInstance = async function () {
-  const model = this.getModel()
-  if (!model) return
+schema.methods.getInstance = async function () {
+  const Model = this.getModel()
+  if (!Model) return
 
   if (!this.instanceId) {
     return null
   }
 
-  return model.findById(this.instanceId)
+  return Model.findById(this.instanceId)
 }
 
-module.exports = Edit
+module.exports = mongoose.model('Edit', schema)

@@ -10,7 +10,7 @@
       <template slot-scope="props">
         <b-table-column>
           <nuxt-link
-            :to="'/admin/edits/' + props.row.id"
+            :to="'/admin/edits/' + props.row._id"
             :class="{ 'is-rejected': props.row.status === 'rejected' }"
           >
             <b-icon
@@ -32,11 +32,11 @@
           </nuxt-link>
         </b-table-column>
         <b-table-column
-          field="modelName"
+          field="instanceModel"
           label="Dataset"
           sortable
         >
-          {{ props.row.modelName }}
+          {{ props.row.instanceModel }}
         </b-table-column>
         <b-table-column
           field="createdAt"
@@ -91,11 +91,9 @@ export default {
     instanceName (row) {
       try {
         if (row.type === 'add') {
-          const after = JSON.parse(row.after)
-          return after.name
+          return row.after.name
         } else {
-          const before = JSON.parse(row.before)
-          return before.name
+          return row.before.name
         }
       } catch (e) {
         console.error(e)

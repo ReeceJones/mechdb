@@ -23,23 +23,12 @@ router.post('/', async (req, res, next) => {
   const doc = new User({
     email: req.body.email,
     username: req.body.username,
-    password: req.body.password,
   })
+  await doc.setPassword(req.body.password)
   try {
     await doc.save()
     res.sendStatus(200)
   } catch (e) {
-    if (e.name === 'SequelizeUniqueConstraintError') {
-      if (e.fields.users_username !== undefined) {
-        return next('400 Username already in use')
-      } else if (e.fields.users_email !== undefined) {
-        return next('400 Email is already registered')
-      }
-      return next('400 ' + e.message)
-    }
-    if (e.name === 'ValidationError') {
-      return next('400 ' + e.message)
-    }
     next(e)
   }
 })
@@ -50,9 +39,7 @@ router.post('/signin', async (req, res, next) => {
   }
 
   try {
-    const doc = await User.findOne({
-      where: { email: req.body.email },
-    })
+    const doc = await User.findOne({ email: req.body.email })
     if (!doc) {
       next('403 Unknown email/password.')
     }
@@ -75,9 +62,7 @@ router.post('/password', async (req, res, next) => {
   }
 
   try {
-    const user = await User.findOne({
-      where: { email: req.body.email },
-    })
+    const user = await User.findOne({ email: req.body.email })
     if (!user) {
       return next('400 Unknown email')
     }
@@ -107,15 +92,13 @@ router.put('/password', async (req, res, next) => {
 
   try {
     const user = await User.findOne({
-      where: {
-        email: req.body.email,
-        passwordToken: req.body.passwordToken,
-      },
+      email: req.body.email,
+      passwordToken: req.body.passwordToken,
     })
     if (!user) {
       return next('400 Password reset denied. Please try again.')
     }
-    user.password = req.body.password
+    await user.setPassword(req.body.password)
     user.passwordToken = null
     await user.save()
 

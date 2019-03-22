@@ -78,17 +78,6 @@ export default {
     hasSpecs () {
       return this.item.type || this.item.manufacturer || this.item.brand
     },
-    photos () {
-      try {
-        return JSON.parse(this.item.photos)
-      } catch (e) {
-        this.$toast.open({
-          message: 'Could not parse photo data',
-          type: 'is-danger',
-          position: 'is-bottom',
-        })
-      }
-    }
   },
 }
 </script>

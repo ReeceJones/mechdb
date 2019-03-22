@@ -87,8 +87,8 @@
 
       <div class="banner banner-start add"/>
       <EditDetails
-        :model="data.modelName"
-        :item="after"
+        :model="data.instanceModel"
+        :item="data.after"
       />
       <div class="banner banner-end add"/>
 
@@ -99,7 +99,7 @@
 
       <div class="tags">
         <span
-          v-for="fieldName in Object.keys(after)"
+          v-for="fieldName in Object.keys(data.after)"
           :key="fieldName"
           class="tag is-light is-rounded"
           v-text="fieldName"
@@ -108,15 +108,15 @@
 
       <div class="banner banner-start remove"><span>BEFORE</span></div>
       <EditDetails
-        :model="data.modelName"
-        :item="before"
+        :model="data.instanceModel"
+        :item="data.before"
       />
       <div class="banner banner-end remove"><span>BEFORE</span></div>
 
       <div class="banner banner-start add"><span>AFTER</span></div>
       <EditDetails
-        :model="data.modelName"
-        :item="after"
+        :model="data.instanceModel"
+        :item="data.after"
       />
       <div class="banner banner-end add"><span>AFTER</span></div>
 
@@ -129,8 +129,8 @@
 
       <div class="banner banner-start remove"/>
       <EditDetails
-        :model="data.modelName"
-        :item="before"
+        :model="data.instanceModel"
+        :item="data.before"
       />
       <div class="banner banner-end remove"/>
 
@@ -157,32 +157,6 @@ export default {
       data: {},
       edits,
     }
-  },
-  computed: {
-    before () {
-      if (!this.data.before) return
-      try {
-        return JSON.parse(this.data.before)
-      } catch (e) {
-        this.$toast.open({
-          message: 'Could not parse entry item',
-          type: 'is-danger',
-          position: 'is-bottom',
-        })
-      }
-    },
-    after () {
-      if (!this.data.after) return
-      try {
-        return JSON.parse(this.data.after)
-      } catch (e) {
-        this.$toast.open({
-          message: 'Could not parse entry item',
-          type: 'is-danger',
-          position: 'is-bottom',
-        })
-      }
-    },
   },
   created () {
     this.getItems()

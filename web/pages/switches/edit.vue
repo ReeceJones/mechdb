@@ -43,7 +43,7 @@ export default {
 
       this.isLoading = true
       try {
-        const { data } = await this.$api.post('/edits/Switch/' + this.item.id, updateData)
+        const { data } = await this.$api.post('/edits/Switch/' + this.item._id, updateData)
         this.$toast.open('Changes saved')
         this.$router.push('/switches/' + data.instance.slug)
       } catch (e) {

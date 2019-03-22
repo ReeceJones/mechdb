@@ -1,29 +1,18 @@
-const Sequelize = require('sequelize')
+const mongoose = require('mongoose')
 const slugify = require('slugify')
 
-const db = require('../lib/db')
-
-const Manufacturer = db.define('manufacturer', {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  name: {
-    type: Sequelize.STRING,
-  },
-  slug: {
-    type: Sequelize.STRING,
-  },
-  description: {
-    type: Sequelize.TEXT,
-  },
+const schema = new mongoose.Schema({
+  name: String,
+  slug: String,
+  description: String,
+}, {
+  timestamps: true,
 })
 
-Manufacturer.addHook('beforeSave', (doc, options) => {
-  doc.slug = slugify(doc.name, {
+schema.pre('save', function () {
+  this.slug = slugify(this.name, {
     lower: true,
   })
 })
 
-module.exports = Manufacturer
+module.exports = mongoose.model('Manufacturer', schema)

@@ -1,24 +1,18 @@
+const _ = require('lodash')
 const express = require('express')
-const Op = require('sequelize').Op
 const router = express.Router()
 
 const auth = require('../middlewares/auth')
 
 const Edit = require('../models/Edit')
-const User = require('../models/User')
 
 router.get('/suggestions', auth.isLoggedIn, auth.isAdmin, async (req, res, done) => {
   try {
-    const data = await Edit.findAll({
-      where: { status: 'new' },
-      order: [['createdAt', 'ASC']],
-      include: [{
-        model: User,
-        attributes: ['id', 'username'],
-        as: 'createdBy',
-      }],
-      limit: 1000,
-    })
+    const data = await Edit.find({
+      status: 'new',
+    }, null, {
+      sort: 'createdAt',
+    }).populate('createdBy')
     res.json(data)
   } catch (e) {
     done(e)
@@ -27,26 +21,16 @@ router.get('/suggestions', auth.isLoggedIn, auth.isAdmin, async (req, res, done)
 
 router.get('/', auth.isLoggedIn, auth.isAdmin, async (req, res, done) => {
   try {
-    const data = await Edit.findAll({
-      where: {
-        status: { [Op.or]: ['approved', 'rejected'] },
-      },
-      order: [['createdAt', 'ASC']],
-      include: [{
-        model: User,
-        attributes: ['id', 'username'],
-        as: 'approvedBy',
-      }, {
-        model: User,
-        attributes: ['id', 'username'],
-        as: 'rejectedBy',
-      }, {
-        model: User,
-        attributes: ['id', 'username'],
-        as: 'createdBy',
-      }],
-      limit: 1000,
-    })
+    const data = await Edit.find({
+      $or: [
+        { status: 'approved' },
+        { status: 'rejected' },
+      ],
+    }, null, {
+      sort: 'createdAt',
+    }).populate('createdBy')
+      .populate('approvedBy')
+      .populate('rejectedBy')
     res.json(data)
   } catch (e) {
     done(e)
@@ -55,38 +39,27 @@ router.get('/', auth.isLoggedIn, auth.isAdmin, async (req, res, done) => {
 
 router.get('/:id', auth.isLoggedIn, auth.isAdmin, async (req, res, done) => {
   try {
-    const data = await Edit.findOne({
-      where: { id: req.params.id },
-      include: [{
-        model: User,
-        attributes: ['id', 'username'],
-        as: 'approvedBy',
-      }, {
-        model: User,
-        attributes: ['id', 'username'],
-        as: 'rejectedBy',
-      }, {
-        model: User,
-        attributes: ['id', 'username'],
-        as: 'createdBy',
-      }],
-    })
+    const data = await Edit.findById(req.params.id)
+      .populate('createdBy')
+      .populate('approvedBy')
+      .populate('rejectedBy')
     res.json(data)
   } catch (e) {
     done(e)
   }
 })
 
-router.post('/:modelName', auth.isLoggedIn, async (req, res, done) => {
+router.post('/:instanceModel', auth.isLoggedIn, async (req, res, done) => {
   try {
-    const doc = await Edit.create({
-      after: JSON.stringify(req.body),
-      modelName: req.params.modelName,
+    const doc = new Edit({
+      after: req.body,
+      instanceModel: req.params.instanceModel,
       type: 'add',
-      createdById: req.user.id,
+      createdBy: req.user._id,
     })
+    await doc.save()
     if (req.user.isAdmin) {
-      await doc.approve(req.user.id)
+      await doc.approve(req.user._id)
     }
 
     res.json(doc)
@@ -95,17 +68,18 @@ router.post('/:modelName', auth.isLoggedIn, async (req, res, done) => {
   }
 })
 
-router.post('/:modelName/:instanceId', auth.isLoggedIn, async (req, res, done) => {
+router.post('/:instanceModel/:instanceId', auth.isLoggedIn, async (req, res, done) => {
   try {
-    const doc = await Edit.create({
-      after: JSON.stringify(req.body),
-      modelName: req.params.modelName,
+    const doc = new Edit({
+      after: req.body,
+      instanceModel: req.params.instanceModel,
       instanceId: req.params.instanceId,
       type: 'edit',
-      createdById: req.user.id,
+      createdBy: req.user._id,
     })
+    await doc.save()
     if (req.user.isAdmin) {
-      await doc.approve(req.user.id)
+      await doc.approve(req.user._id)
     }
 
     const instance = await doc.getInstance()
@@ -119,16 +93,17 @@ router.post('/:modelName/:instanceId', auth.isLoggedIn, async (req, res, done) =
   }
 })
 
-router.delete('/:modelName/:instanceId', auth.isLoggedIn, async (req, res, done) => {
+router.delete('/:instanceModel/:instanceId', auth.isLoggedIn, async (req, res, done) => {
   try {
-    const doc = await Edit.create({
-      modelName: req.params.modelName,
+    const doc = new Edit({
+      instanceModel: req.params.instanceModel,
       instanceId: req.params.instanceId,
       type: 'delete',
-      createdById: req.user.id,
+      createdBy: req.user._id,
     })
+    await doc.save()
     if (req.user.isAdmin) {
-      await doc.approve(req.user.id)
+      await doc.approve(req.user._id)
     }
 
     res.json(doc)

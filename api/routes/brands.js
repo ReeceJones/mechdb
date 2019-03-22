@@ -7,12 +7,8 @@ const Brand = require('../models/Brand')
 
 router.get('/', async (req, res, done) => {
   try {
-    const data = await Brand.findAll({
-      attributes: [
-        'id',
-        'name',
-      ],
-      order: [['name', 'asc']],
+    const data = await Brand.find({}, 'id name', {
+      sort: 'name',
     })
     res.json(data)
   } catch (e) {
