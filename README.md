@@ -15,7 +15,7 @@ Before being able to run the website, you'll need to run the following commands:
 docker-compose run api yarn install
 docker-compose run web yarn install
 
-# generate test data
+# generate admin user
 docker-compose run api yarn bootstrap
 ```
 
@@ -27,9 +27,7 @@ docker-compose up
 
 Then open your web browser: [http://localhost](http://localhost)
 
-To access PHPMyAdmin:
-- Add `127.0.0.1 mechdb.pma` to your hosts file
-- open [http://mechdb.pma](http://mechdb.pma) in your browser
+To access MongoDB client (UI for mongodb), open [http://0.0.0.0:3333](http://0.0.0.0:3333) in your browser and use `db` as Host, and `website` as Database name.
 
 # Development
 
