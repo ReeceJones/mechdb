@@ -7,18 +7,41 @@ const schema = new mongoose.Schema({
   description: String,
   text: String,
   photos: [String],
-  size: {
-    type: String,
-    enum: [null, 'macropad', '40', '45', '60', '65', '75', 'tkl', 'full'],
-  },
-  brand: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Brand',
-  },
   manufacturer: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Manufacturer',
   },
+  // specs
+  size: String,
+  switches: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Switch',
+  }],
+  cable: String,
+  firmware: String,
+  interface: String,
+  dimensions: String,
+  weight: String,
+  // features
+  programmable: String,
+  bluetooth: Boolean,
+  hotswappable: Boolean,
+  simultaneousInput: Boolean,
+  // layout
+  keysLayout: String,
+  layout: String,
+  spacebarSize: String,
+  // design
+  usbPassthrough: Boolean,
+  // manufacturing
+  caseMaterial: String,
+  plateMaterial: String,
+  // purchase
+  availability: String,
+  vendors: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Vendor',
+  }],
 }, {
   timestamps: true,
 })

@@ -2,11 +2,11 @@ const _ = require('lodash')
 const mongoose = require('mongoose')
 
 const models = {
-  Brand: require('./Brand'),
   Keyboard: require('./Keyboard'),
   Keycap: require('./Keycap'),
   Manufacturer: require('./Manufacturer'),
   Switch: require('./Switch'),
+  Vendor: require('./Vendor'),
 }
 const schema = new mongoose.Schema({
   instanceModel: {
@@ -88,6 +88,7 @@ schema.methods.apply = async function () {
     try {
       const doc = new Model(this.after)
       await doc.save()
+      this.instanceId = doc._id
       return true
     } catch (e) {
       console.error('Edit apply (addition) failed with error', e)

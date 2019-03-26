@@ -21,4 +21,14 @@ router.get('/:slug', async (req, res, done) => {
   res.json(doc)
 })
 
+// used for "edit" forms
+router.get('/edit/:slug', async (req, res, done) => {
+  const doc = await Keyboard.findOne({
+    slug: req.params.slug,
+  })
+  if (doc === null) return done('404 Not found')
+
+  res.json(doc)
+})
+
 module.exports = router

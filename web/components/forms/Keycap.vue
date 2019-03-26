@@ -37,10 +37,7 @@
       </div>
       <div class="column">
 
-        <ManufacturerPicker
-          :value="data.manufacturerId"
-          @select="data.manufacturerId = $event"
-        />
+        TODO : manufacturer picker
 
       </div>
     </div>
@@ -77,7 +74,7 @@
 
     <h2 class="bit">Photos</h2>
 
-    <PhotosUpload v-model="data.photos" />
+    <PhotosField v-model="data.photos" />
 
     <br>
     <br>
@@ -103,8 +100,7 @@
 import _ from 'lodash'
 import async from 'async'
 
-import ManufacturerPicker from '@/components/forms/ManufacturerPicker'
-import PhotosUpload from '@/components/forms/PhotosUpload'
+import PhotosField from '@/components/formFields/Photos'
 
 const defaultData = {
   name: '',
@@ -117,8 +113,7 @@ const defaultData = {
 
 export default {
   components: {
-    ManufacturerPicker,
-    PhotosUpload,
+    PhotosField,
   },
   props: {
     title: {

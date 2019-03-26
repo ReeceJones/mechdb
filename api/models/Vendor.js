@@ -15,4 +15,4 @@ schema.pre('save', function () {
   })
 })
 
-module.exports = mongoose.model('Brand', schema)
+module.exports = mongoose.model('Vendor', schema)

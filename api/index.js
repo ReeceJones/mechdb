@@ -19,14 +19,7 @@ app.use(bodyParser.json({
 app.use(require('./middlewares/cors'))
 app.use(auth.init)
 
-app.use('/brands', require('./routes/brands'))
-app.use('/edits', require('./routes/edits'))
-app.use('/keyboards', require('./routes/keyboards'))
-app.use('/keycaps', require('./routes/keycaps'))
-app.use('/manufacturers', require('./routes/manufacturers'))
-app.use('/switches', require('./routes/switches'))
-app.use('/upload', require('./routes/upload'))
-app.use('/users', require('./routes/users'))
+app.use('/', require('./routes'))
 
 app.use(require('./middlewares/errors'))
 

@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import boardSizes from '@/assets/configuration/boardSizes'
+import options from '@/assets/configuration/options'
 
 export default {
   props: {
@@ -84,7 +84,7 @@ export default {
   },
   computed: {
     boardSize () {
-      return boardSizes[this.item.size] || null
+      return options.boardSizes[this.item.size] || null
     },
     hasSpecs () {
       return this.item.size || this.item.manufacturer || this.item.brand

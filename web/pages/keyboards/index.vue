@@ -36,7 +36,9 @@
           label="Manufacturer"
           sortable
         >
-          {{ props.row.manufacturer }}
+          <span v-if="props.row.manufacturer">
+            {{ props.row.manufacturer.name }}
+          </span>
         </b-table-column>
         <b-table-column
           field="size"
@@ -55,12 +57,12 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import boardSizes from '@/assets/configuration/boardSizes'
+import options from '@/assets/configuration/options'
 
 export default {
   data () {
     return {
-      boardSizes,
+      boardSizes: options.boardSizes,
       data: [],
     }
   },

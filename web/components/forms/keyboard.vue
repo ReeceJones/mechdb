@@ -36,9 +36,10 @@
       </div>
       <div class="column">
 
-        <ManufacturerPicker
-          :value="data.manufacturerId"
-          @select="data.manufacturerId = $event"
+        <AutocompleteField
+          v-model="data.manufacturer"
+          dataset="Manufacturer"
+          label="Manufacturer"
         />
 
       </div>
@@ -53,16 +54,162 @@
       />
     </b-field>
 
-    <b-field label="Size"/>
-    <b-field>
-      <b-radio-button
-        v-for="(name, id) in sizes"
-        v-model="data.size"
-        :native-value="id"
-        :key="id"
-      >
-        {{ name }}
-      </b-radio-button>
+    <h2 class="bit">Specs</h2>
+
+    <OptionsField
+      :options="options.boardSizes"
+      v-model="data.size"
+      label="Size"
+    />
+
+    <AutocompleteMultiField
+      v-model="data.switches"
+      dataset="Switch"
+      label="Switch options"
+    />
+
+    <b-field
+      label="Keycaps"
+      type="is-warning"
+    >
+      <b-input/>
+    </b-field>
+
+    <b-field label="Cable">
+      <b-input v-model="data.cable"/>
+    </b-field>
+
+    <b-field
+      label="PCB"
+      type="is-warning"
+    >
+      <b-input/>
+    </b-field>
+
+    <OptionsField
+      :options="options.keyboardFirmwares"
+      v-model="data.firmware"
+      label="Firmware"
+      allow-other
+    />
+
+    <OptionsField
+      :options="options.keyboardInterfaces"
+      v-model="data.interface"
+      label="Interface"
+      allow-other
+    />
+
+    <div class="columns">
+      <div class="column">
+        <b-field label="Dimensions">
+          <b-input v-model="data.dimensions"/>
+        </b-field>
+      </div>
+      <div class="column">
+        <b-field label="Weight">
+          <b-input v-model="data.weight"/>
+        </b-field>
+      </div>
+    </div>
+
+    <h2 class="bit">Features</h2>
+
+    <OptionsField
+      :options="options.keyboardProgrammable"
+      v-model="data.programmable"
+      label="Programmable"
+    />
+
+    <OptionsField
+      v-model="data.bluetooth"
+      label="Bluetooth"
+      checkbox
+    />
+
+    <b-field
+      label="Lighting"
+      type="is-warning"
+    >
+      <b-input/>
+    </b-field>
+
+    <OptionsField
+      v-model="data.hotswappable"
+      label="Hotswappable"
+      checkbox
+    />
+
+    <OptionsField
+      v-model="data.simultaneousInput"
+      label="Simultaneous Key Input"
+      checkbox
+    />
+
+    <h2 class="bit">Layout</h2>
+
+    <OptionsField
+      :options="options.keysLayouts"
+      v-model="data.keysLayout"
+      label="Keys Layout"
+    />
+
+    <OptionsField
+      :options="options.layouts"
+      v-model="data.layout"
+      label="Layout"
+    />
+
+    <OptionsField
+      :options="options.spacebarSizes"
+      v-model="data.spacebarSize"
+      label="Spacebar size"
+      allow-other
+    />
+
+    <h2 class="bit">Design</h2>
+
+    <b-field
+      label="Colors"
+      type="is-warning"
+    >
+      <b-input/>
+    </b-field>
+
+    <b-field
+      label="Slope/Typing Angle"
+      type="is-warning"
+    >
+      <b-input/>
+    </b-field>
+
+    <OptionsField
+      v-model="data.usbPassthrough"
+      label="USB Passthrough"
+      checkbox
+    />
+
+    <h2 class="bit">Manufacturing Details</h2>
+
+    <OptionsField
+      :options="options.caseMaterials"
+      v-model="data.caseMaterial"
+      label="Case Material"
+      allow-other
+    />
+
+    <OptionsField
+      :options="options.plateMaterials"
+      v-model="data.plateMaterial"
+      label="Plate Material"
+      allow-other
+    />
+
+    <b-field
+      label="Units Made"
+      type="is-warning"
+    >
+      <b-input/>
     </b-field>
 
     <h2 class="bit">Text</h2>
@@ -76,9 +223,29 @@
 
     <h2 class="bit">Photos</h2>
 
-    <PhotosUpload v-model="data.photos" />
+    <PhotosField v-model="data.photos" />
 
-    <br>
+    <h2 class="bit">Purchase</h2>
+
+    <OptionsField
+      :options="options.availability"
+      v-model="data.availability"
+      label="Availability"
+    />
+
+    <AutocompleteMultiField
+      v-model="data.vendors"
+      dataset="Vendor"
+      label="Vendors"
+    />
+
+    <b-field
+      label="Price"
+      type="is-warning"
+    >
+      <b-input/>
+    </b-field>
+
     <br>
 
     <button
@@ -102,24 +269,52 @@
 import _ from 'lodash'
 import async from 'async'
 
-import sizes from '@/assets/configuration/boardSizes'
+import options from '@/assets/configuration/options'
 
-import ManufacturerPicker from '@/components/forms/ManufacturerPicker'
-import PhotosUpload from '@/components/forms/PhotosUpload'
+import AutocompleteField from '@/components/formFields/Autocomplete'
+import AutocompleteMultiField from '@/components/formFields/AutocompleteMulti'
+import OptionsField from '@/components/formFields/Options'
+import PhotosField from '@/components/formFields/Photos'
 
 const defaultData = {
   name: '',
   description: '',
   text: '',
-  size: null,
-  manufacturerId: null,
   photos: [],
+  manufacturer: null,
+  // specs
+  size: null,
+  switches: [],
+  cable: '',
+  firmware: null,
+  interface: null,
+  dimensions: null,
+  weight: null,
+  // features
+  programmable: null,
+  bluetooth: null,
+  hotswappable: null,
+  simultaneousInput: null,
+  // layout
+  keysLayout: null,
+  layout: null,
+  spacebarSize: null,
+  // design
+  usbPassthrough: null,
+  // manufacturing
+  caseMaterial: null,
+  plateMaterial: null,
+  // purchase
+  availability: null,
+  vendors: [],
 }
 
 export default {
   components: {
-    ManufacturerPicker,
-    PhotosUpload,
+    AutocompleteField,
+    AutocompleteMultiField,
+    OptionsField,
+    PhotosField,
   },
   props: {
     title: {
@@ -134,6 +329,7 @@ export default {
   data () {
     return {
       data: JSON.parse(JSON.stringify(defaultData)),
+      options,
       quillOpts: {
         modules: {
           toolbar: [
@@ -144,7 +340,6 @@ export default {
           ],
         },
       },
-      sizes,
     }
   },
   watch: {
@@ -161,7 +356,7 @@ export default {
 
       if (this.values) {
         Object.keys(defaultData).forEach(key => {
-          if (this.values[key]) {
+          if (this.values[key] !== undefined) {
             this.data[key] = this.values[key]
           }
         })
@@ -204,8 +399,9 @@ h2 {
   margin: 2em 0 1em;
   opacity: .8;
   font-size: 1.1em;
-  background: whitesmoke;
-  padding: .3em .5em;
+  background: $dark;
+  color: #fff;
+  padding: .8em .6em;
 }
 p.control {
   top: -.5em;

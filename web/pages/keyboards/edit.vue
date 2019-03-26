@@ -32,7 +32,7 @@ export default {
   methods: {
     async getData () {
       try {
-        const { data } = await this.$api.get('/keyboards/' + this.$route.query.slug)
+        const { data } = await this.$api.get('/keyboards/edit/' + this.$route.query.slug)
         this.item = data
       } catch (e) {
         this.apiError(e)
