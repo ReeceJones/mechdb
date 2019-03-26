@@ -14,7 +14,6 @@ services:
     links:
       - web
       - api
-      - phpmyadmin
 
   web:
     container_name: mechdb-web
@@ -49,24 +48,7 @@ services:
 
   db:
     container_name: mechdb-db
-    image: mariadb:10.3
+    image: mongo:4.1-xenial
     restart: always
-    volumes:
-      - ./db:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: mechdb
     expose:
-     - 3306
-
-  phpmyadmin:
-    container_name: mechdb-pma
-    image: phpmyadmin/phpmyadmin
-    restart: always
-    environment:
-      PMA_USER: root
-      PMA_PASSWORD: root
-    expose:
-     - 80
-    links:
-      - db
+      - 27017
