@@ -20,6 +20,14 @@
       hoverable
     >
       <template slot-scope="props">
+        <b-table-column>
+          <nuxt-link
+            v-if="props.row.photos && props.row.photos.length > 0"
+            :to="'/keyboards/' + props.row.slug"
+            :style="photoBackground(props.row.photos)"
+            class="photo"
+          />
+        </b-table-column>
         <b-table-column
           field="name"
           label="Name"
@@ -89,6 +97,13 @@ export default {
       const option = _.find(options.keyboardSizes, { value })
       return option ? option.label : null
     },
+    photoBackground (photos) {
+      if (photos && photos.length > 0) {
+        return {
+          'background-image': `url(${process.env.uploadUrl + photos[0]})`
+        }
+      }
+    },
   },
 }
 </script>
@@ -96,5 +111,12 @@ export default {
 <style lang="scss" scoped>
 h1 {
   margin-bottom: .8em;
+}
+a.photo {
+  display: inline-block;
+  width: 100px;
+  height: 75px;
+  background-size: contain;
+  background-position: center;
 }
 </style>
