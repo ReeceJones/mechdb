@@ -350,25 +350,9 @@ export default {
     },
     async save () {
       const isValid = await this.$validator.validateAll()
-      if (!isValid) return
-
-      const loadingComponent = this.$loading.open()
-
-      async.each(this.data.photos, async (photo, cb) => {
-        if (!photo.match(/^data:/)) return cb()
-
-        const { data } = await this.$api.post('upload', {
-          data: photo
-        })
-        const index = this.data.photos.indexOf(photo)
-        if (index >= 0) {
-          this.data.photos.splice(index, 1, data.filename)
-        }
-        cb()
-      }, () => {
-        loadingComponent.close()
+      if (isValid) {
         this.$emit('save', this.data)
-      })
+      }
     },
   },
 }

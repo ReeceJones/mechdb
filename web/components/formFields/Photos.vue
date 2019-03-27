@@ -11,14 +11,7 @@
         class="item"
         @click="removeItem(i)"
       >
-        <img
-          v-if="url.match(/^data:/)"
-          :src="url"
-        >
-        <img
-          v-else
-          :src="uploadUrl + url"
-        >
+        <img :src="uploadUrl + url">
       </div>
       <div style="clear: left"/>
     </div>
@@ -72,14 +65,22 @@ export default {
   },
   methods: {
     upload (files) {
-      let urls = []
+      let updatedValue = JSON.parse(JSON.stringify(this.value))
       this.isLoading = true
 
       async.each(files, (file, cb) => {
         const reader = new FileReader()
-        reader.onload = () => {
-          urls.push(reader.result)
-          cb()
+        reader.onload = async () => {
+          try {
+            const photo = reader.result
+            const { data } = await this.$api.post('upload', {
+              data: photo
+            })
+            updatedValue.push(data.filename)
+            cb()
+          } catch (err) {
+            cb(err)
+          }
         }
         reader.onerror = cb
         reader.readAsDataURL(file)
@@ -92,19 +93,15 @@ export default {
             type: 'is-danger',
           })
         }
-        if (urls.length > 0) {
-          const value = JSON.parse(JSON.stringify(this.value)).concat(urls)
-          this.$emit('input', value)
-        }
-        this.uploaded.splice(0)
+        this.$emit('input', updatedValue)
         this.isLoading = false
       })
     },
     removeItem (index) {
       if (!confirm('Remove ?')) return
-      let value = JSON.parse(JSON.stringify(this.value))
-      value.splice(index, 1)
-      this.$emit('input', value)
+      let updatedValue = JSON.parse(JSON.stringify(this.value))
+      updatedValue.splice(index, 1)
+      this.$emit('input', updatedValue)
     },
   },
 }
