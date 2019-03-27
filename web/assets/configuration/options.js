@@ -1,5 +1,5 @@
 export default {
-  boardSizes: [
+  keyboardSizes: [
     {
       value: 'full',
       label: '100% / Fullsize',
@@ -97,4 +97,5 @@ export default {
   caseMaterials: ['Aluminum', 'Wood', 'Plastic', 'Acrylic'],
   keyboardFirmwares: ['TMK', 'QMK', 'Built-in'],
   keyboardInterfaces: ['USB-C', 'Micro-USB'],
+  keyboardPrices: ['0-50', '50-100', '100-200', '200-300', '300+', 'Aftermarket only'],
 }

@@ -5,7 +5,7 @@ const Keyboard = require('../models/Keyboard')
 
 router.get('/', async (req, res, done) => {
   try {
-    const data = await Keyboard.find({}, '_id name slug description size').populate('manufacturer')
+    const data = await Keyboard.find({}, '_id name slug size price').populate('manufacturer')
     res.json(data)
   } catch (e) {
     done(e)

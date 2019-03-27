@@ -45,22 +45,23 @@
       </div>
     </div>
 
-    <b-field label="Description">
-      <textarea
-        v-model="data.description"
-        class="textarea"
-        placeholder="Enter a short description here"
-        rows="3"
-      />
-    </b-field>
-
-    <h2 class="bit">Specs</h2>
-
     <OptionsField
-      :options="options.boardSizes"
+      :options="options.keyboardSizes"
       v-model="data.size"
       label="Size"
     />
+
+    <OptionsField
+      :options="options.keyboardPrices"
+      v-model="data.price"
+      label="Price range (USD)"
+    />
+
+    <h2 class="bit">Photos</h2>
+
+    <PhotosField v-model="data.photos" />
+
+    <h2 class="bit">Specs</h2>
 
     <AutocompleteMultiField
       v-model="data.switches"
@@ -221,10 +222,6 @@
       @change="onEditorChange($event)"
     />
 
-    <h2 class="bit">Photos</h2>
-
-    <PhotosField v-model="data.photos" />
-
     <h2 class="bit">Purchase</h2>
 
     <OptionsField
@@ -232,19 +229,6 @@
       v-model="data.availability"
       label="Availability"
     />
-
-    <AutocompleteMultiField
-      v-model="data.vendors"
-      dataset="Vendor"
-      label="Vendors"
-    />
-
-    <b-field
-      label="Price"
-      type="is-warning"
-    >
-      <b-input/>
-    </b-field>
 
     <br>
 
@@ -278,12 +262,12 @@ import PhotosField from '@/components/formFields/Photos'
 
 const defaultData = {
   name: '',
-  description: '',
   text: '',
   photos: [],
   manufacturer: null,
-  // specs
   size: '',
+  price: '',
+  // specs
   switches: [],
   cable: '',
   firmware: '',
@@ -306,7 +290,6 @@ const defaultData = {
   plateMaterial: '',
   // purchase
   availability: '',
-  vendors: [],
 }
 
 export default {

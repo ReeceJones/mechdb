@@ -45,7 +45,14 @@
           label="Size"
           sortable
         >
-          {{ boardSizes[props.row.size] || null }}
+          {{ keyboardSize(props.row.size) }}
+        </b-table-column>
+        <b-table-column
+          field="price"
+          label="Price range (USD)"
+          sortable
+        >
+          {{ props.row.price }}
         </b-table-column>
       </template>
 
@@ -55,6 +62,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import { mapGetters } from 'vuex'
 
 import options from '@/assets/configuration/options'
@@ -62,7 +70,6 @@ import options from '@/assets/configuration/options'
 export default {
   data () {
     return {
-      boardSizes: options.boardSizes,
       data: [],
     }
   },
@@ -77,6 +84,10 @@ export default {
       } catch (e) {
         this.apiError(e)
       }
+    },
+    keyboardSize (value) {
+      const option = _.find(options.keyboardSizes, { value })
+      return option ? option.label : null
     },
   },
 }

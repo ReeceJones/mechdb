@@ -84,7 +84,7 @@ export default {
   },
   computed: {
     boardSize () {
-      return options.boardSizes[this.item.size] || null
+      return options.keyboardSizes[this.item.size] || null
     },
     hasSpecs () {
       return this.item.size || this.item.manufacturer || this.item.brand

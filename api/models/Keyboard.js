@@ -4,15 +4,15 @@ const slugify = require('slugify')
 const schema = new mongoose.Schema({
   name: String,
   slug: String,
-  description: String,
   text: String,
   photos: [String],
   manufacturer: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Manufacturer',
   },
-  // specs
   size: String,
+  price: String,
+  // specs
   switches: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Switch',
@@ -38,10 +38,6 @@ const schema = new mongoose.Schema({
   plateMaterial: String,
   // purchase
   availability: String,
-  vendors: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Vendor',
-  }],
 }, {
   timestamps: true,
 })
