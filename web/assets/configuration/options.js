@@ -94,7 +94,7 @@ export default {
   ],
   spacebarSizes: ['3u', '6u', '6.25u', '6.5u', '7u'],
   plateMaterials: ['Brass', 'Aluminum', 'Stainless steel'],
-  caseMaterials: ['Aluminum', 'Wood'],
+  caseMaterials: ['Aluminum', 'Wood', 'Plastic', 'Acrylic'],
   keyboardFirmwares: ['TMK', 'QMK', 'Built-in'],
   keyboardInterfaces: ['USB-C', 'Micro-USB'],
 }
