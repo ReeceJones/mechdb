@@ -99,7 +99,7 @@ export default {
   methods: {
     getLocalValue () {
       this.localValue = JSON.parse(JSON.stringify(this.value))
-      if (!this.checkbox && this.allowOther && this.value.length > 0) {
+      if (!this.checkbox && this.allowOther && this.value) {
         this.isOther = (this.options.indexOf(this.localValue) === -1)
       }
     },

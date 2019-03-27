@@ -283,29 +283,29 @@ const defaultData = {
   photos: [],
   manufacturer: null,
   // specs
-  size: null,
+  size: '',
   switches: [],
   cable: '',
-  firmware: null,
-  interface: null,
-  dimensions: null,
-  weight: null,
+  firmware: '',
+  interface: '',
+  dimensions: '',
+  weight: '',
   // features
-  programmable: null,
+  programmable: '',
   bluetooth: null,
   hotswappable: null,
   simultaneousInput: null,
   // layout
-  keysLayout: null,
-  layout: null,
-  spacebarSize: null,
+  keysLayout: '',
+  layout: '',
+  spacebarSize: '',
   // design
   usbPassthrough: null,
   // manufacturing
-  caseMaterial: null,
-  plateMaterial: null,
+  caseMaterial: '',
+  plateMaterial: '',
   // purchase
-  availability: null,
+  availability: '',
   vendors: [],
 }
 
