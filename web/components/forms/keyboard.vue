@@ -19,7 +19,7 @@
     <h1 class="is-size-4 bit">{{ title }}</h1>
 
     <div class="columns">
-      <div class="column">
+      <div class="column mandatory-field">
 
         <b-field
           :type="{'is-danger': errors.has('name')}"
@@ -57,7 +57,9 @@
       label="Price range (USD)"
     />
 
-    <h2 class="bit">Photos</h2>
+    <b-field
+      label="Photos"
+    />
 
     <PhotosField v-model="data.photos" />
 

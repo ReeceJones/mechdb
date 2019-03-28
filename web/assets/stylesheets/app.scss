@@ -36,6 +36,11 @@ body {
   }
 }
 
+.mandatory-field .label:after {
+  color: $danger;
+  content: "*";
+}
+
 .bit {
   font-family: '8bit';
   letter-spacing: -0.15em;

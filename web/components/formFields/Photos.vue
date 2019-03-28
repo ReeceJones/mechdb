@@ -16,13 +16,6 @@
       <div style="clear: left"/>
     </div>
 
-    <div
-      v-else
-      class="empty"
-    >
-      No photo
-    </div>
-
     <b-field class="file">
 
       <b-upload
@@ -114,7 +107,7 @@ export default {
     height: 120px;
     padding: 6px;
     border-radius: 2px;
-    background: whitesmoke;
+    background: $light;
     float: left;
     margin-right: 5px;
     margin-bottom: 5px;
@@ -126,10 +119,5 @@ export default {
       max-height: 100%;
     }
   }
-}
-div.empty {
-  color: #999;
-  font-style: italic;
-  padding-bottom: 2em;
 }
 </style>
