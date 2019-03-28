@@ -69,22 +69,19 @@
       label="Switch options"
     />
 
-    <b-field
-      label="Keycaps"
-      type="is-warning"
-    >
-      <b-input/>
-    </b-field>
+    <OptionsField
+      :options="options.keyboardKeycaps"
+      v-model="data.keycaps"
+      label="Default Keycaps"
+      allow-other
+    />
 
     <b-field label="Cable">
       <b-input v-model="data.cable"/>
     </b-field>
 
-    <b-field
-      label="PCB"
-      type="is-warning"
-    >
-      <b-input/>
+    <b-field label="PCB">
+      <b-input v-model="data.pcb"/>
     </b-field>
 
     <OptionsField
@@ -116,36 +113,71 @@
 
     <h2 class="bit">Features</h2>
 
-    <OptionsField
-      :options="options.keyboardProgrammable"
-      v-model="data.programmable"
-      label="Programmable"
-    />
+    <div class="columns">
+      <div class="column">
 
-    <OptionsField
-      v-model="data.bluetooth"
-      label="Bluetooth"
-      checkbox
-    />
+        <OptionsField
+          :options="options.keyboardProgrammable"
+          v-model="data.programmable"
+          label="Programmable"
+        />
 
-    <b-field
-      label="Lighting"
-      type="is-warning"
-    >
-      <b-input/>
-    </b-field>
+      </div>
+      <div class="column">
 
-    <OptionsField
-      v-model="data.hotswappable"
-      label="Hotswappable"
-      checkbox
-    />
+        <OptionsField
+          v-model="data.simultaneousInput"
+          label="Simultaneous Key Input"
+          checkbox
+        />
 
-    <OptionsField
-      v-model="data.simultaneousInput"
-      label="Simultaneous Key Input"
-      checkbox
-    />
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column">
+
+        <OptionsField
+          v-model="data.bluetooth"
+          label="Bluetooth"
+          checkbox
+        />
+
+      </div>
+      <div class="column">
+
+        <OptionsField
+          v-model="data.hotswappable"
+          label="Hotswappable"
+          checkbox
+        />
+
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-narrow">
+
+        <OptionsField
+          v-model="data.backlighting"
+          label="Backlighting"
+          checkbox
+        />
+
+      </div>
+      <div
+        v-show="data.backlighting"
+        class="column"
+      >
+
+        <OptionsField
+          v-model="data.rgb"
+          label="RGB"
+          checkbox
+        />
+
+      </div>
+    </div>
 
     <h2 class="bit">Layout</h2>
 
@@ -171,17 +203,15 @@
     <h2 class="bit">Design</h2>
 
     <b-field
-      label="Colors"
-      type="is-warning"
-    >
-      <b-input/>
-    </b-field>
-
-    <b-field
+      :type="{'is-danger': errors.has('angle')}"
+      :message="errors.first('angle') || 'In degrees (°), numbers only.'"
       label="Slope/Typing Angle"
-      type="is-warning"
     >
-      <b-input/>
+      <b-input
+        v-validate="'decimal:1'"
+        v-model="data.angle"
+        name="angle"
+      />
     </b-field>
 
     <OptionsField
@@ -206,11 +236,8 @@
       allow-other
     />
 
-    <b-field
-      label="Units Made"
-      type="is-warning"
-    >
-      <b-input/>
+    <b-field label="Units made">
+      <b-input v-model="data.unitsMade"/>
     </b-field>
 
     <h2 class="bit">Text</h2>
@@ -269,25 +296,31 @@ const defaultData = {
   price: '',
   // specs
   switches: [],
+  keycaps: '',
   cable: '',
+  pcb: '',
   firmware: '',
   interface: '',
   dimensions: '',
   weight: '',
   // features
   programmable: '',
+  simultaneousInput: null,
   bluetooth: null,
   hotswappable: null,
-  simultaneousInput: null,
+  backlighting: null,
+  rgb: null,
   // layout
   keysLayout: '',
   layout: '',
   spacebarSize: '',
   // design
   usbPassthrough: null,
+  angle: '',
   // manufacturing
   caseMaterial: '',
   plateMaterial: '',
+  unitsMade: '',
   // purchase
   availability: '',
 }
@@ -352,6 +385,12 @@ export default {
       const isValid = await this.$validator.validateAll()
       if (isValid) {
         this.$emit('save', this.data)
+      } else {
+        this.$toast.open({
+          message: 'There has been errors while validating the form. Please check all the fields highlighted in red.',
+          type: 'is-danger',
+          position: 'is-bottom',
+        })
       }
     },
   },

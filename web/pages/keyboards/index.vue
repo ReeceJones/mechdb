@@ -118,5 +118,6 @@ a.photo {
   height: 75px;
   background-size: contain;
   background-position: center;
+  background-repeat: no-repeat;
 }
 </style>

@@ -98,4 +98,5 @@ export default {
   keyboardFirmwares: ['TMK', 'QMK', 'Built-in'],
   keyboardInterfaces: ['USB-C', 'Micro-USB'],
   keyboardPrices: ['0-50', '50-100', '100-200', '200-300', '300+', 'Aftermarket only'],
+  keyboardKeycaps: ['ABS', 'PBT', 'ABS Doubleshot', 'PBT Doubleshot'],
 }

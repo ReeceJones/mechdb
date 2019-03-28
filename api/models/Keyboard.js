@@ -17,25 +17,31 @@ const schema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Switch',
   }],
+  keycaps: String,
   cable: String,
+  pcb: String,
   firmware: String,
   interface: String,
   dimensions: String,
   weight: String,
   // features
   programmable: String,
+  simultaneousInput: Boolean,
   bluetooth: Boolean,
   hotswappable: Boolean,
-  simultaneousInput: Boolean,
+  backlighting: Boolean,
+  rgb: Boolean,
   // layout
   keysLayout: String,
   layout: String,
   spacebarSize: String,
   // design
   usbPassthrough: Boolean,
+  angle: Number,
   // manufacturing
   caseMaterial: String,
   plateMaterial: String,
+  unitsMade: String,
   // purchase
   availability: String,
 }, {
