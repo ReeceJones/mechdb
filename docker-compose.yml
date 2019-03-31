@@ -38,6 +38,8 @@ services:
     environment:
       - NODE_ENV=development
       - NODE_PORT=3000
+    env_file:
+      - ./api/api.env
     depends_on:
       - db
     links:
