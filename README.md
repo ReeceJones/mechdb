@@ -48,3 +48,5 @@ Icons used are listed on [materialdesignicons.com](https://materialdesignicons.c
 Back-end is in the `api` folder.
 
 It is based on [Express](https://expressjs.com), a NodeJS framework to make web servers.
+
+**Configure the API** using a `api.env` file. Copy `api.env.sample` to `api.env` (in the `/api` folder) and replace the variables with the secret keys (ask @kartsims, or use your own).
