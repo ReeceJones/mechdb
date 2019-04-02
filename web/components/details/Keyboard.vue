@@ -84,11 +84,11 @@
     <table class="table details is-fullwidth">
       <tbody>
 
-        <tr v-if="item.switches || item.keycaps || item.cable || item.pcb || item.firmware || item.interface || item.dimensions || item.weight">
+        <tr v-if="item.switches.length || item.keycaps || item.cable || item.pcb || item.firmware || item.interface || item.dimensions || item.weight">
           <th colspan="2">Specs</th>
         </tr>
 
-        <tr v-if="item.switches">
+        <tr v-if="item.switches.length">
           <td>Switch options:</td>
           <td>
             <span
@@ -228,7 +228,7 @@
           </td>
         </tr>
 
-        <tr v-if="item.caseMaterial !== null || item.plateMaterial !== null || item.unitsMade !== null">
+        <tr v-if="item.caseMaterial !== null || item.plateMaterial !== null || item.unitsMade">
           <th colspan="2">Manufacturing Details</th>
         </tr>
 
@@ -244,7 +244,7 @@
             {{ item.plateMaterial }}
           </td>
         </tr>
-        <tr v-if="item.unitsMade !== null">
+        <tr v-if="item.unitsMade">
           <td>Units made:</td>
           <td>
             {{ item.unitsMade }}

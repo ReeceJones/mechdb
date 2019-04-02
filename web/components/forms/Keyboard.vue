@@ -306,22 +306,22 @@ const defaultData = {
   dimensions: '',
   weight: '',
   // features
-  programmable: '',
+  programmable: null,
   simultaneousInput: null,
   bluetooth: null,
   hotswappable: null,
   backlighting: null,
   rgb: null,
   // layout
-  keysLayout: '',
-  layout: '',
-  spacebarSize: '',
+  keysLayout: null,
+  layout: null,
+  spacebarSize: null,
   // design
   usbPassthrough: null,
   angle: '',
   // manufacturing
-  caseMaterial: '',
-  plateMaterial: '',
+  caseMaterial: null,
+  plateMaterial: null,
   unitsMade: '',
   // purchase
   availability: '',
