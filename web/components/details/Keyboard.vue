@@ -1,65 +1,78 @@
 <template>
-  <div>
+  <div class="page-details">
 
-    <h1 class="is-size-4 bit">{{ item.name }}</h1>
+    <h1 class="title bit">{{ item.name }}</h1>
 
-    <div class="description mb">
-      {{ item.description }}
-    </div>
+    <h2 class="subtitle">
+      <span v-if="size">{{ size.label }}</span> keyboard
+      <span v-if="item.manufacturer">
+        manufactured by {{ item.manufacturer.name }}
+      </span>
+    </h2>
 
-    <div class="sidebar is-pulled-right">
+    <div class="columns main">
+      <div class="column">
 
-      <div
-        v-if="item.photos.length > 0"
-        class="sidebar-photos"
-      >
-        <img :src="uploadUrl + item.photos[0]">
-        <span class="is-size-7 label">
-          <b-icon
-            icon="image-filter"
-            size="is-small"
-          />
-          {{ item.photos.length }} photo{{ item.photos.length > 1 ? 's' : '' }}
-        </span>
+        <div
+          v-if="item.photos.length > 0"
+          class="photos"
+        >
+          <img
+            :src="uploadUrl + item.photos[0]"
+            @click="photoModal = 0"
+          >
+          <div
+            v-if="item.photos.length > 1"
+            class="columns is-mobile"
+          >
+            <div
+              v-for="(photo, i) in item.photos"
+              v-show="i > 0"
+              :key="photo"
+              class="column"
+            >
+              <img
+                :src="uploadUrl + photo"
+                @click="photoModal = i"
+              >
+            </div>
+          </div>
+        </div>
+
+        <b-modal
+          :active="photoModal >= 0"
+          @close="closeModal"
+        >
+          <p class="image is-4by3">
+            <img :src="uploadUrl + item.photos[photoModal]">
+          </p>
+        </b-modal>
+
       </div>
+      <div class="column is-narrow">
 
-      <div
-        v-if="hasSpecs"
-        class="sidebar-specs"
-      >
-        <h3 class="bit">
-          SPECS
-        </h3>
-        <table class="table specs is-narrow is-fullwidth">
-          <tbody>
-            <tr v-if="boardSize">
-              <td>Size :</td>
-              <td>{{ boardSize }}</td>
-            </tr>
-            <tr v-if="item.manufacturer">
-              <td>Manufacturer :</td>
-              <td>
-                <nuxt-link
-                  :to="'/manufacturers/' + item.manufacturer.slug"
-                >
-                  {{ item.manufacturer.name }}
-                </nuxt-link>
-              </td>
-            </tr>
-            <tr v-if="item.brand">
-              <td>Brand :</td>
-              <td>
-                <nuxt-link
-                  :to="'/brands/' + item.brand.slug"
-                >
-                  {{ item.brand.name }}
-                </nuxt-link>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="purchase">
+
+          <!-- <h3 class="is-size-6 bit">Availability</h3> -->
+
+          <span
+            v-if="item.availability !== null"
+            :class="availabilityClass(item.availability)"
+            class="tag is-light bit is-rounded availability"
+          >
+            {{ optionLabel('availability', item.availability) }}
+          </span>
+          <br>
+          <span
+            v-if="item.price"
+            class="tag"
+          >
+            $ {{ item.price }}
+          </span>
+
+        </div>
+
       </div>
-
     </div>
 
     <div
@@ -68,11 +81,186 @@
       v-html="item.text"
     />
 
+    <table class="table details is-fullwidth">
+      <tbody>
+
+        <tr v-if="item.switches || item.keycaps || item.cable || item.pcb || item.firmware || item.interface || item.dimensions || item.weight">
+          <th colspan="2">Specs</th>
+        </tr>
+
+        <tr v-if="item.switches">
+          <td>Switch options:</td>
+          <td>
+            <span
+              v-for="sw in item.switches"
+              :key="sw._id"
+            >
+              <nuxt-link
+                :to="'/switches/' + sw.slug"
+                class="button is-text"
+              >
+                {{ sw.name }}
+              </nuxt-link>
+            </span>
+          </td>
+        </tr>
+        <tr v-if="item.keycaps">
+          <td>Default Keycaps:</td>
+          <td>
+            {{ item.keycaps }}
+          </td>
+        </tr>
+        <tr v-if="item.cable">
+          <td>Cable:</td>
+          <td>
+            {{ item.cable }}
+          </td>
+        </tr>
+        <tr v-if="item.pcb">
+          <td>PCB:</td>
+          <td>
+            {{ item.pcb }}
+          </td>
+        </tr>
+        <tr v-if="item.firmware">
+          <td>Firmware:</td>
+          <td>
+            {{ item.firmware }}
+          </td>
+        </tr>
+        <tr v-if="item.interface">
+          <td>Interface:</td>
+          <td>
+            {{ item.interface }}
+          </td>
+        </tr>
+        <tr v-if="item.dimensions">
+          <td>Dimensions:</td>
+          <td>
+            {{ item.dimensions }}
+          </td>
+        </tr>
+        <tr v-if="item.weight">
+          <td>Weight:</td>
+          <td>
+            {{ item.weight }}
+          </td>
+        </tr>
+
+        <tr v-if="item.programmable !== null || item.simultaneousInput !== null || item.bluetooth !== null || item.hotswappable !== null || item.backlighting !== null || item.rgb !== null">
+          <th colspan="2">Features</th>
+        </tr>
+
+        <tr v-if="item.programmable !== null">
+          <td>Programmable:</td>
+          <td>
+            {{ item.programmable }}
+          </td>
+        </tr>
+        <tr v-if="item.simultaneousInput !== null">
+          <td>Simultaneous Key Input:</td>
+          <td>
+            {{ item.simultaneousInput ? 'Yes' : 'No' }}
+          </td>
+        </tr>
+        <tr v-if="item.bluetooth !== null">
+          <td>Bluetooth:</td>
+          <td>
+            {{ item.bluetooth ? 'Yes' : 'No' }}
+          </td>
+        </tr>
+        <tr v-if="item.hotswappable !== null">
+          <td>Hotswappable:</td>
+          <td>
+            {{ item.hotswappable ? 'Yes' : 'No' }}
+          </td>
+        </tr>
+        <tr v-if="item.backlighting !== null">
+          <td>Backlighting:</td>
+          <td>
+            {{ item.backlighting ? 'Yes' : 'No' }}
+          </td>
+        </tr>
+        <tr v-if="item.rgb !== null">
+          <td>RGB:</td>
+          <td>
+            {{ item.rgb ? 'Yes' : 'No' }}
+          </td>
+        </tr>
+
+        <tr v-if="item.keysLayout !== null || item.layout !== null || item.spacebarSize !== null">
+          <th colspan="2">Layout</th>
+        </tr>
+
+        <tr v-if="item.keysLayout !== null">
+          <td>Keys Layout:</td>
+          <td>
+            {{ optionLabel('keysLayouts', item.keysLayout) }}
+          </td>
+        </tr>
+        <tr v-if="item.layout !== null">
+          <td>Layout:</td>
+          <td>
+            {{ optionLabel('layouts', item.layout) }}
+          </td>
+        </tr>
+        <tr v-if="item.spacebarSize !== null">
+          <td>Spacebar size:</td>
+          <td>
+            {{ item.spacebarSize }}
+          </td>
+        </tr>
+
+        <tr v-if="item.angle !== null || item.usbPassthrough !== null">
+          <th colspan="2">Design</th>
+        </tr>
+
+        <tr v-if="item.angle !== null">
+          <td>Slope/Typing Angle:</td>
+          <td>
+            {{ item.angle }}°
+          </td>
+        </tr>
+        <tr v-if="item.usbPassthrough !== null">
+          <td>USB Passthrough:</td>
+          <td>
+            {{ item.usbPassthrough ? 'Yes' : 'No' }}
+          </td>
+        </tr>
+
+        <tr v-if="item.caseMaterial !== null || item.plateMaterial !== null || item.unitsMade !== null">
+          <th colspan="2">Manufacturing Details</th>
+        </tr>
+
+        <tr v-if="item.caseMaterial !== null">
+          <td>Case Material:</td>
+          <td>
+            {{ item.caseMaterial }}
+          </td>
+        </tr>
+        <tr v-if="item.plateMaterial !== null">
+          <td>Plate Material:</td>
+          <td>
+            {{ item.plateMaterial }}
+          </td>
+        </tr>
+        <tr v-if="item.unitsMade !== null">
+          <td>Units made:</td>
+          <td>
+            {{ item.unitsMade }}
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+
     <div style="clear: both"/>
   </div>
 </template>
 
 <script>
+import _ from 'lodash'
+
 import options from '@/assets/configuration/options'
 
 export default {
@@ -82,12 +270,50 @@ export default {
       required: true,
     },
   },
+  data () {
+    return {
+      photoModal: -1,
+      photosModalActive: false,
+    }
+  },
   computed: {
-    boardSize () {
-      return options.keyboardSizes[this.item.size] || null
+    size () {
+      return _.find(options.keyboardSizes, { value: this.item.size})
     },
-    hasSpecs () {
-      return this.item.size || this.item.manufacturer || this.item.brand
+  },
+  mounted () {
+    window.addEventListener('keyup', this.keyupHandler)
+  },
+  beforeDestroy () {
+    window.removeEventListener('keyup', this.keyupHandler)
+  },
+  methods: {
+    availabilityClass (value) {
+      switch (value) {
+        case 'available': return 'is-success'
+        case 'IC': return 'is-info'
+        case 'GB': return 'is-success'
+        case 'GBend': return 'is-warning'
+        case 'end': return 'is-warning'
+        default: return null
+      }
+    },
+    optionLabel (opt, value) {
+      if (!options[opt]) return null
+      const option = _.find(options[opt], { value })
+      return option ? option.label : null
+    },
+    closeModal () {
+      this.photoModal = -1
+    },
+    keyupHandler (event) {
+      if (this.photoModal < 0) return
+
+      if (event.keyCode === 37 && this.photoModal > 0) {
+        this.photoModal--
+      } else if (event.keyCode === 39 && this.photoModal < (this.item.photos.length - 1)) {
+        this.photoModal++
+      }
     },
   },
 }

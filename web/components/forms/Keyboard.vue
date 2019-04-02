@@ -405,9 +405,8 @@ h1 {
 }
 h2 {
   margin: 2em 0 1em;
-  opacity: .8;
   font-size: 1.1em;
-  background: $dark;
+  background: $dark-medium;
   color: #fff;
   padding: .8em .6em;
 }

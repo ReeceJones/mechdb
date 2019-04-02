@@ -73,7 +73,7 @@ export default {
   availability: [
     {
       value: 'IC',
-      label: 'IC',
+      label: 'Interest Check',
     },
     {
       value: 'GB',

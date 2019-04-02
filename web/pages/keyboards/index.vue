@@ -13,10 +13,15 @@
       </nuxt-link>
     </div>
 
-    <h1 class="is-size-4 bit">Keyboards</h1>
+    <h1 class="title bit">Keyboards</h1>
+
+    <SearchKeyboard :nb-results="data.length"/>
 
     <b-table
       :data="data"
+      :paginated="true"
+      :pagination-simple="true"
+      :per-page="20"
       hoverable
     >
       <template slot-scope="props">
@@ -75,11 +80,24 @@ import { mapGetters } from 'vuex'
 
 import options from '@/assets/configuration/options'
 
+import SearchKeyboard from '@/components/search/Keyboard'
+
 export default {
+  components: {
+    SearchKeyboard,
+  },
   data () {
     return {
       data: [],
     }
+  },
+  watch: {
+    '$route.query': {
+      deep: true,
+      handler () {
+        this.getItems()
+      },
+    },
   },
   created () {
     this.getItems()
@@ -87,7 +105,9 @@ export default {
   methods: {
     async getItems () {
       try {
-        const { data } = await this.$api.get('/keyboards')
+        const { data } = await this.$api.get('/keyboards', {
+          params: this.$route.query,
+        })
         this.data = data
       } catch (e) {
         this.apiError(e)

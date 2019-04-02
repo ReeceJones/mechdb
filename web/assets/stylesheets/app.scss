@@ -7,8 +7,9 @@ body {
 @import "vars";
 @import "layout";
 @import "helpers";
-@import 'sidebar';
-@import 'quill';
+@import "details";
+@import "list";
+@import "quill";
 
 // WIP page
 .notification.is-warning {
@@ -65,6 +66,13 @@ h1.bit, h2.bit, h3.bit {
   .icon {
     margin-right: .2em !important;
   }
+}
+
+.title {
+  font-size: 1.5em;
+}
+.subtitle {
+  font-size: 1em;
 }
 
 .topright {

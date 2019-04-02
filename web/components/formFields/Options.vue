@@ -1,19 +1,23 @@
 <template>
   <div>
-    <b-field :label="label">
+    <b-field
+      :label="label"
+      :custom-class="size"
+    >
       <div class="field has-addons">
         <b-radio-button
           v-for="option in allOptions"
           v-model="localValue"
           :native-value="option.value"
           :key="option.value"
+          :size="size"
           @click.native.prevent="checkValue(option.value)"
         >
           {{ option.label }}
         </b-radio-button>
         <button
           v-if="allowOther"
-          :class="{ 'is-light': isOther }"
+          :class="{ 'is-light': isOther, [size]: true }"
           class="button"
           @click.prevent="selectOther"
         >
@@ -22,6 +26,7 @@
         <b-input
           v-if="isOther"
           v-model="localValue"
+          :class="size"
           style="margin-left: 1em; width: 360px"
         />
       </div>
@@ -53,6 +58,10 @@ export default {
     checkbox: {
       type: Boolean,
       default: () => false,
+    },
+    size: {
+      type: String,
+      default: () => null,
     },
   },
   data () {

@@ -1,0 +1,41 @@
+.page-details {
+
+  div.main {
+    clear: both;
+  }
+
+  div.purchase {
+    h3 {
+      margin-bottom: .75em;
+    }
+    .tag.availability {
+      text-transform: uppercase;
+    }
+  }
+
+  .photos {
+    img {
+      cursor: pointer;
+    }
+    .column {
+      max-width: 33%;
+    }
+  }
+
+  .quill-content {
+    margin-bottom: 1.5rem;
+  }
+
+  table.details {
+    th {
+      background: $dark-medium;
+      color: $white;
+      font-family: '8bit';
+      letter-spacing: -0.15em;
+      font-size: 1.2em;
+      padding: .75em .5em .5em;
+      border: none;
+    }
+  }
+
+}
