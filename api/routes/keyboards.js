@@ -1,17 +1,9 @@
-const _ = require('lodash')
 const express = require('express')
 const router = express.Router()
 
-const Keyboard = require('../models/Keyboard')
+const { getSearchFilters } = require('../lib/params')
 
-const getSearchFilters = (query, fields) => {
-  const filters = _.pick(query, fields)
-  return _.mapValues(filters, value => {
-    if (value === 'true') return true
-    if (value === 'false') return false
-    return value
-  })
-}
+const Keyboard = require('../models/Keyboard')
 
 router.get('/', async (req, res, done) => {
   const findOptions = getSearchFilters(req.query, ['size', 'price', 'availability', 'interface', 'keysLayout', 'layout', 'keycaps', 'firmware', 'bluetooth', 'hotswappable', 'backlighting'])

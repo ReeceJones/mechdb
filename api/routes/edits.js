@@ -2,6 +2,7 @@ const _ = require('lodash')
 const express = require('express')
 const router = express.Router()
 
+const { getSearchFilters } = require('../lib/params')
 const auth = require('../middlewares/auth')
 
 const Edit = require('../models/Edit')
@@ -21,14 +22,15 @@ router.get('/suggestions', auth.isLoggedIn, auth.isAdmin, async (req, res, done)
 
 router.get('/', auth.isLoggedIn, auth.isAdmin, async (req, res, done) => {
   try {
+    const params = getSearchFilters(req.query, ['instanceModel', 'status'])
     const data = await Edit.find({
+      ...params,
       $or: [
         { status: 'approved' },
         { status: 'rejected' },
       ],
-    }, null, {
-      sort: 'createdAt',
-    }).populate('createdBy')
+    }).sort({ createdAt: -1 })
+      .populate('createdBy')
       .populate('approvedBy')
       .populate('rejectedBy')
     res.json(data)

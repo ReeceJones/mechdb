@@ -13,7 +13,7 @@ Vue.mixin({
       if (typeof err === 'string') {
         // simple string as parameter
         message = err
-      } else if (err.response.data.error) {
+      } else if (err.response && err.response.data.error) {
         // API standard error
         message = err.response.data.error
         // catch form-specific error

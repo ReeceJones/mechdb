@@ -39,7 +39,7 @@
     </div>
 
     <div class="is-size-7 edit-info">
-      Submitted {{ data.createdAt }}
+      Submitted {{ data.createdAt | date }}
       <span v-if="data.createdBy">by {{ data.createdBy.username }}</span>
     </div>
 
@@ -62,7 +62,7 @@
           />
           Approved
         </span>
-        {{ data.approvedAt }}
+        {{ data.approvedAt | date }}
         <span v-if="data.approvedBy">by {{ data.approvedBy.username }}</span>
       </template>
       <template v-if="data.status === 'rejected'">
@@ -73,7 +73,7 @@
           />
           Rejected
         </span>
-        {{ data.rejectedAt }}
+        {{ data.rejectedAt | date }}
         <span v-if="data.rejectedBy">by {{ data.rejectedBy.username }}</span>
       </template>
     </div>
@@ -95,13 +95,13 @@
     </div>
     <div v-if="data.type === 'edit'">
 
-      <h2 class="is-size-6 bit">Review changes :</h2>
+      <h2 class="is-size-6 bit">Changes list:</h2>
 
       <div class="tags">
         <span
           v-for="fieldName in Object.keys(data.after)"
           :key="fieldName"
-          class="tag is-light is-rounded"
+          class="tag is-light"
           v-text="fieldName"
         />
       </div>
