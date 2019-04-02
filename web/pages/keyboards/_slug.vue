@@ -10,14 +10,22 @@
     >
       <nuxt-link
         :to="'/keyboards/edit?slug=' + item.slug"
-        class="button bit is-primary"
+        class="button bit"
       >
+        <b-icon
+          icon="pencil"
+          size="is-small"
+        />
         EDIT
       </nuxt-link>
       <button
-        class="button bit is-danger"
+        class="button bit"
         @click.prevent="deleteItem"
       >
+        <b-icon
+          icon="delete"
+          size="is-small"
+        />
         DELETE
       </button>
     </div>
