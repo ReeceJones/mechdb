@@ -2,11 +2,18 @@
   <div class="container">
 
     <div
-      v-if="$store.getters['user/isLoggedIn']"
       class="topright"
     >
       <nuxt-link
+        v-if="$store.getters['user/isLoggedIn']"
         to="/keyboards/new"
+        class="button bit is-primary"
+      >
+        + NEW KEYBOARD
+      </nuxt-link>
+      <nuxt-link
+        v-else
+        to="/register"
         class="button bit is-primary"
       >
         + NEW KEYBOARD
