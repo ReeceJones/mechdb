@@ -37,6 +37,7 @@ module.exports = {
 
   plugins: [
     '~/plugins/api',
+    '~/plugins/misc',
     { src: '~plugins/quill', ssr: false },
     '~plugins/vee-validate.js',
   ],
