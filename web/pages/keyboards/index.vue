@@ -7,14 +7,14 @@
       <nuxt-link
         v-if="$store.getters['user/isLoggedIn']"
         to="/keyboards/new"
-        class="button bit is-primary"
+        class="button bit"
       >
         + NEW KEYBOARD
       </nuxt-link>
       <nuxt-link
         v-else
         to="/login"
-        class="button bit is-primary"
+        class="button bit"
       >
         + NEW KEYBOARD
       </nuxt-link>

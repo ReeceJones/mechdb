@@ -19,7 +19,7 @@
         EDIT
       </nuxt-link>
       <button
-        class="button bit is-danger"
+        class="button bit"
         @click.prevent="deleteItem"
       >
         <b-icon
