@@ -32,15 +32,6 @@
         class="navbar-menu"
       >
         <div class="navbar-start">
-          <!-- <nuxt-link
-            to="/search"
-            class="navbar-item"
-          >
-            <b-icon
-              icon="magnify"
-              size="is-small"
-            />
-          </nuxt-link> -->
           <nuxt-link
             to="/keyboards"
             class="navbar-item bit"
@@ -113,7 +104,7 @@
           <div class="navbar-item">
             <div class="buttons">
               <nuxt-link
-                to="/profile"
+                :to="'/u/' + $store.state.user.data.username"
                 class="button bit is-light"
               >
                 <b-icon
@@ -122,6 +113,12 @@
                 />
                 <strong>MY PROFILE</strong>
               </nuxt-link>
+              <button
+                class="button bit is-dark is-pulled-right"
+                @click="logout"
+              >
+                SIGN OUT
+              </button>
             </div>
           </div>
         </div>
@@ -150,6 +147,12 @@ export default {
       }
       next()
     })
+  },
+  methods: {
+    async logout () {
+      await this.$store.dispatch('user/logout')
+      this.$router.push('/')
+    },
   },
 }
 </script>

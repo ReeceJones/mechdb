@@ -136,8 +136,6 @@
 
     </div>
 
-    <pre>data => {{ data }}</pre>
-
   </div>
 </template>
 

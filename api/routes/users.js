@@ -114,4 +114,17 @@ router.post('/signout', (req, res, next) => {
   res.status(200).send()
 })
 
+router.get('/:username', async (req, res, next) => {
+  try {
+    const doc = await User.findOne({ username: req.params.username }, 'username isAdmin isVerified')
+    if (!doc) {
+      next('404 User does not exist.')
+    }
+    res.json(doc)
+
+  } catch (e) {
+    next('403 Unknown email/password.')
+  }
+})
+
 module.exports = router

@@ -82,7 +82,7 @@ export default {
           email: this.email,
           password: this.password,
         })
-        this.$router.push('/profile')
+        this.$router.push('/u/' + this.$store.state.user.data.username)
       } catch (e) {
         this.apiError(e)
       }

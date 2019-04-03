@@ -1,4 +1,3 @@
-const _ = require('lodash')
 const express = require('express')
 const router = express.Router()
 
@@ -42,6 +41,28 @@ router.get('/', auth.isLoggedIn, auth.isAdmin, async (req, res, done) => {
 router.get('/:id', auth.isLoggedIn, auth.isAdmin, async (req, res, done) => {
   try {
     const data = await Edit.findById(req.params.id)
+      .populate('createdBy')
+      .populate('approvedBy')
+      .populate('rejectedBy')
+    res.json(data)
+  } catch (e) {
+    done(e)
+  }
+})
+
+router.get('/u/:username', auth.isLoggedIn, async (req, res, done) => {
+  if (!req.user.isAdmin && req.params.username !== req.user.username) {
+    return done('401 Forbidden.')
+  }
+  try {
+    const params = getSearchFilters(req.query, ['instanceModel', 'status'])
+    const data = await Edit.find({
+      ...params,
+      $or: [
+        { status: 'approved' },
+        { status: 'rejected' },
+      ],
+    }).sort({ createdAt: -1 })
       .populate('createdBy')
       .populate('approvedBy')
       .populate('rejectedBy')
