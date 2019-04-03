@@ -13,7 +13,7 @@
       </nuxt-link>
       <nuxt-link
         v-else
-        to="/register"
+        to="/login"
         class="button bit is-primary"
       >
         + NEW KEYCAPS

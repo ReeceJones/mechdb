@@ -18,6 +18,21 @@
         DELETE
       </button>
     </div>
+    <div
+      v-else
+      class="topright"
+    >
+      <nuxt-link
+        to="/login"
+        class="button bit"
+      >
+        <b-icon
+          icon="pencil"
+          size="is-small"
+        />
+        EDIT
+      </nuxt-link>
+    </div>
 
     <SwitchDetails :item="item"/>
 
