@@ -19,7 +19,7 @@
         EDIT
       </nuxt-link>
       <button
-        class="button bit"
+        class="button bit is-danger"
         @click.prevent="deleteItem"
       >
         <b-icon
@@ -28,6 +28,21 @@
         />
         DELETE
       </button>
+    </div>
+    <div
+      v-else
+      class="topright"
+    >
+      <nuxt-link
+        to="/login"
+        class="button bit"
+      >
+        <b-icon
+          icon="pencil"
+          size="is-small"
+        />
+        EDIT
+      </nuxt-link>
     </div>
 
     <KeyboardDetails :item="item"/>

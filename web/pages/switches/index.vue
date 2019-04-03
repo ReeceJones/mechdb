@@ -2,11 +2,18 @@
   <div>
 
     <div
-      v-if="$store.getters['user/isLoggedIn']"
       class="topright"
     >
       <nuxt-link
+        v-if="$store.getters['user/isLoggedIn']"
         to="/switches/new"
+        class="button bit is-primary"
+      >
+        + NEW SWITCH
+      </nuxt-link>
+      <nuxt-link
+        v-else
+        to="/login"
         class="button bit is-primary"
       >
         + NEW SWITCH
