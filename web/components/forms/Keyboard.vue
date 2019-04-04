@@ -1,18 +1,31 @@
 <template>
   <div>
 
+    <nav class="navbar is-fixed-bottom">
+      <div class="navbar-item">
+        <button
+          class="button is-large bit is-primary"
+          @click.prevent="save"
+        >
+          SAVE CHANGES
+        </button>
+      </div>
+      <div class="navbar-item">
+        <button
+          class="button is-large bit is-light"
+          @click.prevent="$router.go(-1)"
+        >
+          CANCEL
+        </button>
+      </div>
+    </nav>
+
     <div class="topright">
       <button
-        class="button bit is-primary"
-        @click.prevent="save"
-      >
-        SAVE
-      </button>
-      <button
-        class="button bit is-light"
+        class="button is-large bit is-light"
         @click.prevent="$router.go(-1)"
       >
-        CANCEL
+        BACK
       </button>
     </div>
 
@@ -261,20 +274,6 @@
 
     <br>
 
-    <button
-      class="button bit is-primary is-large mr"
-      @click.prevent="save"
-    >
-      SAVE
-    </button>
-
-    <button
-      class="button bit is-light is-large"
-      @click.prevent="$router.go(-1)"
-    >
-      CANCEL
-    </button>
-
   </div>
 </template>
 
@@ -412,5 +411,8 @@ h2 {
 }
 p.control {
   top: -.5em;
+}
+.navbar-item {
+  padding-right: 0;
 }
 </style>
