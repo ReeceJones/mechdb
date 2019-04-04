@@ -81,8 +81,8 @@ router.post('/:instanceModel', auth.isLoggedIn, async (req, res, done) => {
       createdBy: req.user._id,
     })
     await doc.save()
-    if (req.user.isAdmin) {
-      await doc.approve(req.user._id)
+    if (req.user.isAdmin || req.user.isVerified) {
+      await doc.approve()
     }
 
     res.json(doc)
@@ -101,8 +101,8 @@ router.post('/:instanceModel/:instanceId', auth.isLoggedIn, async (req, res, don
       createdBy: req.user._id,
     })
     await doc.save()
-    if (req.user.isAdmin) {
-      await doc.approve(req.user._id)
+    if (req.user.isAdmin || req.user.isVerified) {
+      await doc.approve()
     }
 
     const instance = await doc.getInstance()

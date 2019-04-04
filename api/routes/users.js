@@ -1,3 +1,4 @@
+const _ = require('lodash')
 const express = require('express')
 const router = express.Router()
 
@@ -123,7 +124,47 @@ router.get('/:username', async (req, res, next) => {
     res.json(doc)
 
   } catch (e) {
-    next('403 Unknown email/password.')
+    next(e)
+  }
+})
+
+router.post('/:username/verify', auth.isLoggedIn, auth.isAdmin, async (req, res, next) => {
+  if (req.body.isVerified === undefined) {
+    return next('400 Bad request')
+  }
+  try {
+    const doc = await User.findOneAndUpdate({
+      username: req.params.username,
+    }, {
+      isVerified: req.body.isVerified,
+    })
+    if (!doc) {
+      next('404 User does not exist.')
+    }
+    res.json({ isVerified: req.body.isVerified })
+
+  } catch (e) {
+    next(e)
+  }
+})
+
+router.post('/:username/admin', auth.isLoggedIn, auth.isSuperAdmin, async (req, res, next) => {
+  if (req.body.isAdmin === undefined) {
+    return next('400 Bad request')
+  }
+  try {
+    const doc = await User.findOneAndUpdate({
+      username: req.params.username,
+    }, {
+      isAdmin: req.body.isAdmin,
+    })
+    if (!doc) {
+      next('404 User does not exist.')
+    }
+    res.json({ isAdmin: req.body.isAdmin })
+
+  } catch (e) {
+    next(e)
   }
 })
 

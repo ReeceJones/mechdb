@@ -10,6 +10,9 @@ export const getters = {
   isLoggedIn (state) {
     return !!state.data.email
   },
+  isSuperAdmin (state, getters) {
+    return getters.isLoggedIn && state.data.username === 'kartsims'
+  },
   isAdmin (state, getters) {
     return getters.isLoggedIn && state.data.isAdmin
   },

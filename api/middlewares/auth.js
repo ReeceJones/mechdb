@@ -32,4 +32,15 @@ module.exports = {
       next()
     })
   },
+  isSuperAdmin: (req, res, next) => {
+    getUser(req, res, () => {
+      if (!req.user) {
+        return next('401 Forbidden')
+      }
+      if (req.user.username !== 'kartsims') {
+        return next('401 Forbidden')
+      }
+      next()
+    })
+  },
 }

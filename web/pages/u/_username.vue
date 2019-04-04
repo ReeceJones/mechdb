@@ -4,6 +4,58 @@
     class="container"
   >
 
+    <div
+      v-if="$store.getters['user/isAdmin']"
+      class="topright"
+    >
+      <template v-if="$store.getters['user/isSuperAdmin']">
+        <button
+          v-if="user.isAdmin"
+          class="button is-success is-outlined"
+          @click="isAdminUpdate(false)"
+        >
+          <b-icon
+            icon="check"
+            size="is-small"
+          />
+          Admin
+        </button>
+        <button
+          v-else
+          class="button is-light"
+          @click="isAdminUpdate(true)"
+        >
+          <b-icon
+            icon="close"
+            size="is-small"
+          />
+          Admin
+        </button>
+      </template>
+      <button
+        v-if="user.isVerified"
+        class="button is-success is-outlined"
+        @click="isVerifiedUpdate(false)"
+      >
+        <b-icon
+          icon="check"
+          size="is-small"
+        />
+        Verified
+      </button>
+      <button
+        v-else
+        class="button is-light"
+        @click="isVerifiedUpdate(true)"
+      >
+        <b-icon
+          icon="close"
+          size="is-small"
+        />
+        Verified
+      </button>
+    </div>
+
     <h1 class="is-size-4 bit">
       {{ user.username }}
       <span
@@ -16,7 +68,7 @@
         v-else-if="user.isVerified"
         class="tag is-light"
       >
-        VERIFIED
+        VERIFIED USER
       </span>
     </h1>
 
@@ -62,6 +114,22 @@ export default {
         this.apiError(e)
       }
     },
+    async isVerifiedUpdate (isVerified) {
+      try {
+        const { data } = await this.$api.post('/users/' + this.$route.params.username + '/verify', { isVerified })
+        this.user.isVerified = data.isVerified
+      } catch (e) {
+        this.apiError(e)
+      }
+    },
+    async isAdminUpdate (isAdmin) {
+      try {
+        const { data } = await this.$api.post('/users/' + this.$route.params.username + '/admin', { isAdmin })
+        this.user.isAdmin = data.isAdmin
+      } catch (e) {
+        this.apiError(e)
+      }
+    },
   },
 }
 </script>
@@ -72,5 +140,12 @@ h1 {
 }
 h2 {
   margin-bottom: .5em;
+}
+span.tag {
+  font-family: 'PT Sans Caption';
+  letter-spacing: normal;
+  position: relative;
+  top: -.4em;
+  font-size: .4em;
 }
 </style>
