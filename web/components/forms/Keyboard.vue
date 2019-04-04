@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
 
     <div class="topright">
       <button
@@ -17,6 +17,8 @@
     </div>
 
     <h1 class="is-size-4 bit">{{ title }}</h1>
+
+    <UserNotVerified/>
 
     <div class="columns">
       <div class="column mandatory-field">

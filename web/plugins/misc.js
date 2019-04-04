@@ -1,12 +1,16 @@
 import Vue from 'vue'
 import moment from 'moment'
 
+// moderation components
+import UserNotVerified from '../components/global/UserNotVerified.vue'
+Vue.component('UserNotVerified', UserNotVerified)
+
 // empty table content
-import EmptyTable from '../components/EmptyTable.vue'
+import EmptyTable from '../components/global/EmptyTable.vue'
 Vue.component('EmptyTable', EmptyTable)
 
 // temporary WIP component
-import wip from '../components/wip.vue'
+import wip from '../components/global/Wip.vue'
 Vue.component('wip', wip)
 
 // global read-only upload url variable

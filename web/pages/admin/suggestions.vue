@@ -10,7 +10,7 @@
       <template slot-scope="props">
         <b-table-column>
           <nuxt-link
-            :to="'/admin/edits/' + props.row._id"
+            :to="'/edits/' + props.row._id"
           >
             <b-icon
               v-if="props.row.type === 'add'"

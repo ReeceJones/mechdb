@@ -9,7 +9,7 @@
       <template slot-scope="props">
         <b-table-column>
           <nuxt-link
-            :to="'/admin/edits/' + props.row._id"
+            :to="'/edits/' + props.row._id"
             :class="{ 'is-rejected': props.row.status === 'rejected' }"
           >
             <b-icon
@@ -56,6 +56,9 @@
             <span class="tag is-danger">Rejected</span>
             {{ props.row.rejectedAt | date }}
             <span v-if="props.row.rejectedBy">by {{ props.row.rejectedBy.username }}</span>
+          </template>
+          <template v-else-if="props.row.status === 'new'">
+            <span class="tag is-light">Pending</span>
           </template>
         </b-table-column>
       </template>

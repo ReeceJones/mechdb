@@ -19,6 +19,9 @@ export const getters = {
   isVerified (state, getters) {
     return getters.isLoggedIn && state.data.isVerified
   },
+  isNotVerified (state, getters) {
+    return getters.isLoggedIn && !state.data.isVerified && !state.data.isAdmin
+  },
 }
 
 export const mutations = {

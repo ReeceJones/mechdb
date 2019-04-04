@@ -5,6 +5,7 @@ const { getSearchFilters } = require('../lib/params')
 const auth = require('../middlewares/auth')
 
 const Edit = require('../models/Edit')
+const User = require('../models/User')
 
 router.get('/suggestions', auth.isLoggedIn, auth.isAdmin, async (req, res, done) => {
   try {
@@ -38,7 +39,7 @@ router.get('/', auth.isLoggedIn, auth.isAdmin, async (req, res, done) => {
   }
 })
 
-router.get('/:id', auth.isLoggedIn, auth.isAdmin, async (req, res, done) => {
+router.get('/:id', auth.isLoggedIn, async (req, res, done) => {
   try {
     const data = await Edit.findById(req.params.id)
       .populate('createdBy')
@@ -55,13 +56,14 @@ router.get('/u/:username', auth.isLoggedIn, async (req, res, done) => {
     return done('401 Forbidden.')
   }
   try {
-    const params = getSearchFilters(req.query, ['instanceModel', 'status'])
+    const user = await User.findOne({
+      username: req.params.username,
+    })
+    if (!user) {
+      return done('400 Bad Request')
+    }
     const data = await Edit.find({
-      ...params,
-      $or: [
-        { status: 'approved' },
-        { status: 'rejected' },
-      ],
+      createdBy: user._id,
     }).sort({ createdAt: -1 })
       .populate('createdBy')
       .populate('approvedBy')
@@ -85,7 +87,12 @@ router.post('/:instanceModel', auth.isLoggedIn, async (req, res, done) => {
       await doc.approve()
     }
 
-    res.json(doc)
+    const instance = await doc.getInstance()
+
+    res.json({
+      edit: doc,
+      instance,
+    })
   } catch (e) {
     done(e)
   }

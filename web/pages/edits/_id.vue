@@ -199,7 +199,7 @@ h2 {
 $banner-size: 34px;
 .banner {
   height: $banner-size;
-  background-image: url(../../../assets/images/caret-reverse.png);
+  background-image: url(../../assets/images/caret-reverse.png);
   background-position: center;
   text-align: center;
   margin: 2em 0;
@@ -219,7 +219,7 @@ $banner-size: 34px;
     background-color: $danger;
   }
   &.banner-end {
-    background-image: url(../../../assets/images/caret.png);
+    background-image: url(../../assets/images/caret.png);
   }
 }
 </style>
