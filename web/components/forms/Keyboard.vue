@@ -324,7 +324,7 @@ const defaultData = {
   plateMaterial: null,
   unitsMade: '',
   // purchase
-  availability: '',
+  availability: null,
 }
 
 export default {

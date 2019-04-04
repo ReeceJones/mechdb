@@ -93,13 +93,16 @@
       <div class="banner banner-end add"/>
 
     </div>
-    <div v-if="data.type === 'edit'">
+    <div v-if="data.type === 'edit' && changesList.length">
 
       <h2 class="is-size-6 bit">Changes list:</h2>
 
-      <div class="tags">
+      <div
+        v-if="changesList.length"
+        class="tags"
+      >
         <span
-          v-for="fieldName in Object.keys(data.after)"
+          v-for="fieldName in changesList"
           :key="fieldName"
           class="tag is-light"
           v-text="fieldName"
@@ -121,6 +124,12 @@
       <div class="banner banner-end add"><span>AFTER</span></div>
 
     </div>
+    <b-message
+      v-else-if="data.type === 'edit'"
+      type="is-info"
+    >
+      No changes have been recorded.
+    </b-message>
     <div v-else-if="data.type === 'delete'">
 
       <h2 class="is-size-6 bit">
@@ -140,6 +149,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import { mapGetters } from 'vuex'
 
 import edits from '@/assets/configuration/edits'
@@ -155,6 +165,13 @@ export default {
       data: {},
       edits,
     }
+  },
+  computed: {
+    changesList () {
+      return Object.keys(this.data.after).filter(fieldName => {
+        return !_.isEqual(this.data.before[fieldName], this.data.after[fieldName])
+      })
+    },
   },
   created () {
     this.getItems()
