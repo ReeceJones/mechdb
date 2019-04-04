@@ -75,6 +75,9 @@
           {{ props.row.price }}
         </b-table-column>
       </template>
+      <template slot="empty">
+        <EmptyTable/>
+      </template>
 
     </b-table>
 

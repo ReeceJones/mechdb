@@ -52,6 +52,9 @@
           {{ props.row.createdBy.username }}
         </b-table-column>
       </template>
+      <template slot="empty">
+        <EmptyTable/>
+      </template>
 
     </b-table>
 
