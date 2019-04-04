@@ -150,8 +150,8 @@ export default {
   },
   methods: {
     async logout () {
+      if (!confirm('Terminate your session?')) return
       await this.$store.dispatch('user/logout')
-      this.$router.push('/')
     },
   },
 }
