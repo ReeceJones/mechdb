@@ -4,7 +4,6 @@
     class="container"
   >
 
-
     <h1 class="is-size-4 bit">
       {{ user.username }}
       <span
@@ -21,9 +20,10 @@
       </span>
     </h1>
 
-    <h2 class="bit">History</h2>
-
-    <UserEdits :username="username"/>
+    <template v-if="canSeeHistory">
+      <h2 class="bit">History</h2>
+      <UserEdits :username="user.username"/>
+    </template>
 
   </div>
 </template>
@@ -35,16 +35,15 @@ export default {
   components: {
     UserEdits,
   },
-  props: {
-    username: {
-      type: String,
-      default: () => null,
-    },
-  },
   data () {
     return {
       user: null,
     }
+  },
+  computed: {
+    canSeeHistory () {
+      return this.$store.getters['user/isLoggedIn'] && (this.$store.getters['user/isAdmin'] || this.$store.state.user.data.username === this.user.username)
+    },
   },
   watch: {
     username () {

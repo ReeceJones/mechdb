@@ -59,6 +59,9 @@
           </template>
         </b-table-column>
       </template>
+      <template slot="empty">
+        <EmptyTable/>
+      </template>
 
     </b-table>
   </div>
