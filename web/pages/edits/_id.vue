@@ -1,42 +1,10 @@
 <template>
   <div>
 
-    <div
-      v-if="data.status === 'new'"
-      class="topright"
-    >
-      <button
-        class="button bit is-success"
-        @click.prevent=""
-      >
-        <b-icon icon="check"/>
-        APPROVE
-      </button>
-      <button
-        class="button bit is-danger"
-        @click.prevent=""
-      >
-        <b-icon icon="close"/>
-        REJECT
-      </button>
-      <button
-        class="button bit is-light"
-        @click.prevent="$router.go(-1)"
-      >
-        CANCEL
-      </button>
-    </div>
-    <div
-      v-else
-      class="topright"
-    >
-      <button
-        class="button bit is-light"
-        @click.prevent="$router.go(-1)"
-      >
-        BACK
-      </button>
-    </div>
+    <EditModeration
+      :item="data"
+      @update="getItem"
+    />
 
     <div class="is-size-7 edit-info">
       Submitted {{ data.createdAt | date }}
@@ -155,10 +123,12 @@ import { mapGetters } from 'vuex'
 import edits from '@/assets/configuration/edits'
 
 import EditDetails from '@/components/details/Edit'
+import EditModeration from '@/components/edits/moderation'
 
 export default {
   components: {
     EditDetails,
+    EditModeration,
   },
   data () {
     return {
@@ -174,10 +144,10 @@ export default {
     },
   },
   created () {
-    this.getItems()
+    this.getItem()
   },
   methods: {
-    async getItems () {
+    async getItem () {
       try {
         const { data } = await this.$api.get('/edits/' + this.$route.params.id)
         this.data = data

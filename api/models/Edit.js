@@ -130,13 +130,33 @@ schema.methods.apply = async function () {
   return false
 }
 
+schema.virtual('isModerated').get(function () {
+  return !!this.approvedAt || !!this.rejectedAt
+})
+
 schema.methods.approve = async function (userId) {
+  if (this.isModerated) {
+    throw new Error('This item has already been moderated')
+  }
+
   const applied = await this.apply()
   if (!applied) return
 
   this.status = 'approved'
   this.approvedBy = userId
   this.approvedAt = new Date()
+
+  await this.save()
+}
+
+schema.methods.reject = async function (userId) {
+  if (this.isModerated) {
+    throw new Error('This item has already been moderated')
+  }
+
+  this.status = 'rejected'
+  this.rejectedBy = userId
+  this.rejectedAt = new Date()
 
   await this.save()
 }

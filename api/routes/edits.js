@@ -66,6 +66,26 @@ router.get('/u/:username', auth.isLoggedIn, async (req, res, done) => {
   }
 })
 
+router.post('/:id/approve', auth.isLoggedIn, auth.isAdmin, async (req, res, done) => {
+  try {
+    const doc = await Edit.findById(req.params.id)
+    await doc.approve(req.user._id)
+    res.json(doc)
+  } catch (e) {
+    done(e)
+  }
+})
+
+router.post('/:id/reject', auth.isLoggedIn, auth.isAdmin, async (req, res, done) => {
+  try {
+    const doc = await Edit.findById(req.params.id)
+    await doc.reject(req.user._id)
+    res.json(doc)
+  } catch (e) {
+    done(e)
+  }
+})
+
 router.post('/:instanceModel', auth.isLoggedIn, async (req, res, done) => {
   try {
     const doc = new Edit({

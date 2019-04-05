@@ -64,7 +64,13 @@
             <span v-if="props.row.rejectedBy">by {{ props.row.rejectedBy.username }}</span>
           </template>
           <template v-else-if="props.row.status === 'new'">
-            <span class="tag is-light">Pending</span>
+            <span class="tag is-light">
+              <b-icon
+                icon="clock-outline"
+                size="is-small"
+              />
+              Pending
+            </span>
           </template>
         </b-table-column>
       </template>
