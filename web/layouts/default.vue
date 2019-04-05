@@ -60,16 +60,10 @@
             </a>
             <div class="navbar-dropdown">
               <nuxt-link
-                to="/admin/suggestions"
-                class="navbar-item bit"
-              >
-                Suggestions
-              </nuxt-link>
-              <nuxt-link
                 to="/admin/edits"
                 class="navbar-item bit"
               >
-                Log
+                Edits
               </nuxt-link>
             </div>
           </div>
@@ -103,6 +97,13 @@
         >
           <div class="navbar-item">
             <div class="buttons">
+              <nuxt-link
+                v-if="$store.state.user.editsPending > 0"
+                to="/admin/edits?status=new"
+                class="button bit is-rounded is-danger"
+              >
+                {{ $store.state.user.editsPending }}
+              </nuxt-link>
               <nuxt-link
                 :to="'/u/' + $store.state.user.data.username"
                 class="button bit is-light"

@@ -7,33 +7,25 @@ const auth = require('../middlewares/auth')
 const Edit = require('../models/Edit')
 const User = require('../models/User')
 
-router.get('/suggestions', auth.isLoggedIn, auth.isAdmin, async (req, res, done) => {
+router.get('/', auth.isLoggedIn, auth.isAdmin, async (req, res, done) => {
   try {
+    const params = getSearchFilters(req.query, ['instanceModel', 'status'])
     const data = await Edit.find({
-      status: 'new',
-    }, null, {
-      sort: 'createdAt',
-    }).populate('createdBy')
+      ...params,
+    }).sort({ createdAt: -1 })
+      .populate('createdBy')
+      .populate('approvedBy')
+      .populate('rejectedBy')
     res.json(data)
   } catch (e) {
     done(e)
   }
 })
 
-router.get('/', auth.isLoggedIn, auth.isAdmin, async (req, res, done) => {
+router.get('/pending', auth.isLoggedIn, auth.isAdmin, async (req, res, done) => {
   try {
-    const params = getSearchFilters(req.query, ['instanceModel', 'status'])
-    const data = await Edit.find({
-      ...params,
-      $or: [
-        { status: 'approved' },
-        { status: 'rejected' },
-      ],
-    }).sort({ createdAt: -1 })
-      .populate('createdBy')
-      .populate('approvedBy')
-      .populate('rejectedBy')
-    res.json(data)
+    const nb = await Edit.count({ status: 'new' })
+    res.json({ nb })
   } catch (e) {
     done(e)
   }

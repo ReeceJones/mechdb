@@ -4,6 +4,7 @@ import Cookie from 'js-cookie'
 export const state = () => ({
   token: null,
   data: {},
+  editsPending: 0,
 })
 
 export const getters = {
@@ -44,15 +45,21 @@ export const mutations = {
   AUTH_USER: function (state, payload) {
     state.data = payload
   },
+  EDITS_PENDING: function (state, payload) {
+    state.editsPending = payload
+  },
 
 }
 
 export const actions = {
 
-  async getUser({ commit }) {
+  async getUser({ commit, dispatch }) {
     try {
       const { data } = await Vue.api.get('users')
       commit('AUTH_USER', data)
+      if (data.isAdmin) {
+        await dispatch('getEditsPending')
+      }
     } catch (error) {
       if (error.response && error.response.status === 401) {
         throw new Error('Bad credentials')
@@ -89,6 +96,18 @@ export const actions = {
       await dispatch('getUser')
     } catch(e) {
       commit('AUTH_LOGOUT')
+    }
+  },
+
+  async getEditsPending({ commit }) {
+    try {
+      const { data } = await Vue.api.get('edits/pending')
+      commit('EDITS_PENDING', data.nb)
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        throw new Error('Bad credentials')
+      }
+      throw error
     }
   },
 
