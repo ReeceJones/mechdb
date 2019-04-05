@@ -19,6 +19,7 @@
         EDIT
       </nuxt-link>
       <button
+        v-if="!$store.getters['user/isNotVerified']"
         class="button bit"
         @click.prevent="deleteItem"
       >
