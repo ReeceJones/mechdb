@@ -56,17 +56,25 @@
           <div class="has-text-centered">
             <button 
               class="button"
-              @click="photoModal = photoModal-1 < 0 ? photoModal : photoModal - 1">
-              <img 
-                class="image is-24x24" 
-                src="~/assets/images/arrow-left-drop-circle.png">
+              @click="moveModal(-1)">
+              <svg
+                style="width:24px;height:24px" 
+                viewBox="0 0 24 24">
+                <path 
+                  fill="#000000" 
+                  d="M22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12M14,7L9,12L14,17V7Z"/>
+              </svg>
             </button>
             <button 
               class="button"
-              @click="photoModal = photoModal+1 >= item.photos.length ? photoModal : photoModal + 1">
-              <img
-                class="image is-24x24"
-                src="~/assets/images/arrow-right-drop-circle.png">
+              @click="moveModal(1)">
+              <svg 
+                style="width:24px;height:24px" 
+                viewBox="0 0 24 24">
+                <path 
+                  fill="#000000" 
+                  d="M2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12M10,17L15,12L10,7V17Z" />
+              </svg>
             </button>
           </div>
         </b-modal>
@@ -328,6 +336,15 @@ export default {
     },
     closeModal () {
       this.photoModal = -1
+    },
+    moveModal(direction) {
+      if (direction === 1 && this.photoModal + 1 < this.item.photos.length) {
+        console.log(direction);
+        this.photoModal++;
+      }
+      else if (direction === -1 && this.photoModal - 1 >= 0) {
+        this.photoModal--;
+      }
     },
     keyupHandler (event) {
       if (this.photoModal < 0) return
