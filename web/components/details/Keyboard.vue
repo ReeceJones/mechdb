@@ -43,6 +43,12 @@
           :active="photoModal >= 0"
           @close="closeModal"
         >
+          <div class="has-text-centered">
+            <b class="has-text-light">
+              ( {{ photoModal + 1 }} / {{ item.photos.length }} )
+            </b>
+          </div>
+
           <p class="image">
             <img :src="uploadUrl + item.photos[photoModal]">
           </p>
@@ -50,7 +56,7 @@
           <div class="has-text-centered">
             <button 
               class="button"
-              @click="photoModal -= 1">
+              @click="photoModal--">
               <img 
                 class="image is-24x24" 
                 src="~/assets/images/arrow-left-drop-circle.png">
