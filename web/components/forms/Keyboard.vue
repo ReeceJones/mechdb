@@ -65,6 +65,15 @@
 
     <PhotosField v-model="data.photos" />
 
+    <h2 class="bit">Text</h2>
+
+    <div
+      v-quill:myQuillEditor="quillOpts"
+      :content="data.text"
+      class="quill-editor"
+      @change="onEditorChange($event)"
+    />
+
     <h2 class="bit">Specs</h2>
 
     <AutocompleteMultiField
@@ -244,14 +253,6 @@
       <b-input v-model="data.unitsMade"/>
     </b-field>
 
-    <h2 class="bit">Text</h2>
-
-    <div
-      v-quill:myQuillEditor="quillOpts"
-      :content="data.text"
-      class="quill-editor"
-      @change="onEditorChange($event)"
-    />
 
     <h2 class="bit">Purchase</h2>
 
