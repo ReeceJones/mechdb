@@ -31,46 +31,41 @@
 
     </div>
 
-    <div class="columns main">
-      <div class="column">
 
+    <div
+      v-if="item.photos.length > 0"
+      class="photos"
+    >
+      <img
+        :src="uploadUrl + item.photos[0]"
+        @click="photoModal = 0"
+      >
+      <div
+        v-if="item.photos.length > 1"
+        class="columns is-mobile"
+      >
         <div
-          v-if="item.photos.length > 0"
-          class="photos"
+          v-for="(photo, i) in item.photos"
+          v-show="i > 0"
+          :key="photo"
+          class="column"
         >
           <img
-            :src="uploadUrl + item.photos[0]"
-            @click="photoModal = 0"
+            :src="uploadUrl + photo"
+            @click="photoModal = i"
           >
-          <div
-            v-if="item.photos.length > 1"
-            class="columns is-mobile"
-          >
-            <div
-              v-for="(photo, i) in item.photos"
-              v-show="i > 0"
-              :key="photo"
-              class="column"
-            >
-              <img
-                :src="uploadUrl + photo"
-                @click="photoModal = i"
-              >
-            </div>
-          </div>
         </div>
-
-        <b-modal
-          :active="photoModal >= 0"
-          @close="closeModal"
-        >
-          <p class="image is-4by3">
-            <img :src="uploadUrl + item.photos[photoModal]">
-          </p>
-        </b-modal>
-
       </div>
     </div>
+
+    <b-modal
+      :active="photoModal >= 0"
+      @close="closeModal"
+    >
+      <p class="image is-4by3">
+        <img :src="uploadUrl + item.photos[photoModal]">
+      </p>
+    </b-modal>
 
     <div class="columns">
       <div
