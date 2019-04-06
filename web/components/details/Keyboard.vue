@@ -56,14 +56,14 @@
           <div class="has-text-centered">
             <button 
               class="button"
-              @click="photoModal--">
+              @click="photoModal = photoModal-1 < 0 ? photoModal : photoModal - 1">
               <img 
                 class="image is-24x24" 
                 src="~/assets/images/arrow-left-drop-circle.png">
             </button>
             <button 
               class="button"
-              @click="photoModal++">
+              @click="photoModal = photoModal+1 >= item.photos.length ? photoModal : photoModal + 1">
               <img
                 class="image is-24x24"
                 src="~/assets/images/arrow-right-drop-circle.png">
