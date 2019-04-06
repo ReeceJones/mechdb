@@ -15,7 +15,7 @@
 
         <div
           v-if="item.photos.length > 0"
-          class="photos"
+          class="photos has-text-centered"
         >
           <img
             :src="uploadUrl + item.photos[0]"
@@ -43,9 +43,26 @@
           :active="photoModal >= 0"
           @close="closeModal"
         >
-          <p class="image is-4by3">
+          <p class="image">
             <img :src="uploadUrl + item.photos[photoModal]">
           </p>
+          <br>
+          <div class="has-text-centered">
+            <button 
+              class="button"
+              @click="photoModal -= 1">
+              <img 
+                class="image is-24x24" 
+                src="~/assets/images/arrow-left-drop-circle.png">
+            </button>
+            <button 
+              class="button"
+              @click="photoModal++">
+              <img
+                class="image is-24x24"
+                src="~/assets/images/arrow-right-drop-circle.png">
+            </button>
+          </div>
         </b-modal>
 
       </div>
