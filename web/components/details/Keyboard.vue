@@ -10,6 +10,27 @@
       </span>
     </h2>
 
+    <div class="purchase">
+
+      <!-- <h3 class="is-size-6 bit">Availability</h3> -->
+
+      <span
+        v-if="item.availability !== null"
+        :class="availabilityClass(item.availability)"
+        class="tag is-light bit is-rounded availability"
+      >
+        {{ optionLabel('availability', item.availability) }}
+      </span>
+      <br>
+      <span
+        v-if="item.price"
+        class="tag"
+      >
+        $ {{ item.price }}
+      </span>
+
+    </div>
+
     <div class="columns main">
       <div class="column">
 
@@ -47,30 +68,6 @@
             <img :src="uploadUrl + item.photos[photoModal]">
           </p>
         </b-modal>
-
-      </div>
-      <div class="column is-narrow">
-
-        <div class="purchase">
-
-          <!-- <h3 class="is-size-6 bit">Availability</h3> -->
-
-          <span
-            v-if="item.availability !== null"
-            :class="availabilityClass(item.availability)"
-            class="tag is-light bit is-rounded availability"
-          >
-            {{ optionLabel('availability', item.availability) }}
-          </span>
-          <br>
-          <span
-            v-if="item.price"
-            class="tag"
-          >
-            $ {{ item.price }}
-          </span>
-
-        </div>
 
       </div>
     </div>
