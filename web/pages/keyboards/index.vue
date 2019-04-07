@@ -32,7 +32,11 @@
       hoverable
     >
       <template slot-scope="props">
-        <b-table-column>
+        <b-table-column
+          key="photo"
+          :width="10"
+          centered
+        >
           <nuxt-link
             v-if="props.row.photos && props.row.photos.length > 0"
             :to="'/keyboards/' + props.row.slug"
