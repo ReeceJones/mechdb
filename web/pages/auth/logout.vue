@@ -28,6 +28,16 @@
   </section>
 </template>
 
+<script>
+export default {
+  created () {
+    if (this.$store.getters['user/isLoggedIn']) {
+      this.$router.push('/')
+    }
+  },
+}
+</script>
+
 <style lang="scss" scoped>
 .container {
   min-height: 100vh;
