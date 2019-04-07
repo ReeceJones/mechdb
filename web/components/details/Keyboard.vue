@@ -12,16 +12,13 @@
 
     <div class="purchase">
 
-      <!-- <h3 class="is-size-6 bit">Availability</h3> -->
-
       <span
         v-if="item.availability !== null"
         :class="availabilityClass(item.availability)"
-        class="tag is-light bit is-rounded availability"
+        class="tag is-light bit availability"
       >
         {{ optionLabel('availability', item.availability) }}
       </span>
-      <br>
       <span
         v-if="item.price"
         class="tag"
@@ -70,11 +67,11 @@
     <div class="columns">
       <div
         v-if="item.text"
-        class="quill-content column is-four-fifths-desktop is-full-mobile is-three-fifths-tablet"
+        class="quill-content column is-two-thirds-tablet is-three-quarters-widescreen"
         v-html="item.text"
       />
-      <div class="column is-full-mobile">
-        <table class="table details is-fullwidth">
+      <div class="column  ">
+        <table class="table is-narrow details is-fullwidth">
           <tbody>
 
             <tr v-if="item.switches.length || item.keycaps || item.cable || item.pcb || item.firmware || item.interface || item.dimensions || item.weight">
@@ -249,7 +246,7 @@
       </div>
 
     </div>
-    
+
 
     <div style="clear: both"/>
   </div>
