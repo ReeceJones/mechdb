@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <div
+    v-if="data"
+    class="container"
+  >
 
     <div class="topright">
       <button
@@ -18,8 +21,10 @@
 
     <h1 class="is-size-4 bit">{{ title }}</h1>
 
+    <UserNotVerified/>
+
     <div class="columns">
-      <div class="column">
+      <div class="column mandatory-field">
 
         <b-field
           :type="{'is-danger': errors.has('name')}"
@@ -36,37 +41,126 @@
       </div>
       <div class="column">
 
-        TODO : manufacturer picker
+        <AutocompleteField
+          v-model="data.manufacturer"
+          dataset="Manufacturer"
+          label="Manufacturer"
+        />
 
       </div>
     </div>
 
-    <b-field label="Description">
-      <textarea
-        v-model="data.description"
-        class="textarea"
-        placeholder="Enter a short description here"
-        rows="3"
-      />
-    </b-field>
+    <div class="columns">
+      <div class="column">
 
-    <b-field label="Type"/>
-    <b-field>
-      <b-radio-button
-        v-for="type in types"
-        v-model="data.type"
-        :native-value="type"
-        :key="type"
-      >
-        {{ type }}
-      </b-radio-button>
-    </b-field>
+        <OptionsField
+          :options="options.switchTypes"
+          v-model="data.type"
+          label="Type"
+        />
 
-    <h2 class="bit">Photos</h2>
+      </div>
+      <div class="column">
+
+        <OptionsField
+          :options="options.switchStemTypes"
+          v-model="data.stemType"
+          label="Stem Types"
+        />
+
+      </div>
+    </div>
+
+    <b-field
+      label="Photos"
+    />
 
     <PhotosField v-model="data.photos" />
 
-    <br>
+    <h2 class="bit">Text</h2>
+
+    <div
+      v-quill:myQuillEditor="quillOpts"
+      :content="data.text"
+      class="quill-editor"
+      @change="data.text = $event.html"
+    />
+
+    <h2 class="bit">Specs</h2>
+
+    <div class="columns">
+      <div class="column">
+
+        <b-field label="Housing Color">
+          <b-input v-model="data.housingColor"/>
+        </b-field>
+
+      </div>
+      <div class="column">
+
+        <b-field label="Stem Color">
+          <b-input v-model="data.stemColor"/>
+        </b-field>
+
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column">
+
+        <b-field
+          :type="{'is-danger': errors.has('actuationForce')}"
+          :message="errors.first('actuationForce')"
+          label="Actuation Force (kg)"
+        >
+          <b-input
+            v-validate="'numeric'"
+            v-model="data.actuationForce"
+            name="actuationForce"
+          />
+        </b-field>
+
+      </div>
+      <div class="column">
+
+        <b-field
+          :type="{'is-danger': errors.has('bottomOutForce')}"
+          :message="errors.first('bottomOutForce')"
+          label="Bottom Out Force (kg)"
+        >
+          <b-input
+            v-validate="'numeric'"
+            v-model="data.bottomOutForce"
+            name="bottomOutForce"
+          />
+        </b-field>
+
+      </div>
+      <div class="column">
+
+        <b-field
+          :type="{'is-danger': errors.has('travelLength')}"
+          :message="errors.first('travelLength')"
+          label="Travel Length (mm)"
+        >
+          <b-input
+            v-validate="'decimal:1'"
+            v-model="data.travelLength"
+            name="travelLength"
+          />
+        </b-field>
+
+      </div>
+    </div>
+
+    <h2 class="bit">Purchase</h2>
+
+    <OptionsField
+      :options="options.availability"
+      v-model="data.availability"
+      label="Availability"
+    />
+
     <br>
 
     <button
@@ -87,105 +181,56 @@
 </template>
 
 <script>
-import _ from 'lodash'
-import async from 'async'
+import options from '@/assets/configuration/options'
 
+import mixin from './_mixin'
+import AutocompleteField from '@/components/formFields/Autocomplete'
+import OptionsField from '@/components/formFields/Options'
 import PhotosField from '@/components/formFields/Photos'
-
-const defaultData = {
-  name: '',
-  description: '',
-  type: null,
-  manufacturerId: null,
-  photos: [],
-}
 
 export default {
   components: {
+    AutocompleteField,
+    OptionsField,
     PhotosField,
   },
-  props: {
-    title: {
-      type: String,
-      default: 'Edit',
-    },
-    values: {
-      type: Object,
-      default: () => ({})
-    }
-  },
+  mixins: [mixin],
   data () {
     return {
-      data: JSON.parse(JSON.stringify(defaultData)),
-      quillOpts: {
-        modules: {
-          toolbar: [
-            [{ 'header': [false, 2, 3, 4] }],
-            ['bold', 'italic', 'underline', 'strike', 'code'],
-            [{ 'list': 'bullet'}, { 'list': 'ordered' }],
-            ['link', 'blockquote'],
-          ],
-        },
-      },
-      types: ['Linear', 'Clicky', 'Tactile'],
+      options,
     }
   },
-  watch: {
-    values () {
-      this.getData()
-    },
-  },
-  async created () {
-    this.getData()
-  },
-  methods: {
-    getData () {
-      this.data = JSON.parse(JSON.stringify(defaultData))
-
-      if (this.values) {
-        Object.keys(defaultData).forEach(key => {
-          if (this.values[key]) {
-            this.data[key] = this.values[key]
-          }
-        })
-      }
-    },
-    async save () {
-      const isValid = await this.$validator.validateAll()
-      if (!isValid) return
-
-      const loadingComponent = this.$loading.open()
-
-      async.each(this.data.photos, async (photo, cb) => {
-        if (!photo.match(/^data:/)) return cb()
-
-        const { data } = await this.$api.post('upload', {
-          data: photo
-        })
-        const index = this.data.photos.indexOf(photo)
-        if (index >= 0) {
-          this.data.photos.splice(index, 1, data.filename)
-        }
-        cb()
-      }, () => {
-        loadingComponent.close()
-        this.$emit('save', this.data)
-      })
-    },
+  created () {
+    this.initData({
+      name: '',
+      text: '',
+      photos: [],
+      manufacturer: null,
+      type: null,
+      stemType: null,
+      // specs
+      housingColor: '',
+      stemColor: '',
+      actuationForce: '',
+      bottomOutForce: '',
+      travelLength: '',
+      // purchase
+      availability: null,
+    })
   },
 }
 </script>
 
 <style lang="scss" scoped>
 h1 {
-  margin-bottom: 1em;
+  margin-bottom: 1.4em;
 }
 h2 {
   margin: 2em 0 1em;
-  opacity: .8;
   font-size: 1.1em;
-  background: whitesmoke;
-  padding: .3em .5em;
+  background: $dark-medium;
+  color: #fff;
+  padding: .8em .6em;
 }
 p.control {
   top: -.5em;

@@ -4,16 +4,22 @@ const slugify = require('slugify')
 const schema = new mongoose.Schema({
   name: String,
   slug: String,
-  description: String,
+  text: String,
   photos: [String],
-  type: {
-    type: String,
-    enum: [null, 'Linear', 'Clicky', 'Tactile'],
-  },
   manufacturer: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Manufacturer',
   },
+  type: String,
+  stemType: String,
+  // specs
+  housingColor: String,
+  stemColor: String,
+  actuationForce: Number,
+  bottomOutForce: Number,
+  travelLength: Number,
+  // purchase
+  availability: String,
 }, {
   timestamps: true,
 })

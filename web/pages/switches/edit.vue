@@ -32,7 +32,7 @@ export default {
   methods: {
     async getData () {
       try {
-        const { data } = await this.$api.get('/switches/' + this.$route.query.slug)
+        const { data } = await this.$api.get('/switches/edit/' + this.$route.query.slug)
         this.item = data
       } catch (e) {
         this.apiError(e)

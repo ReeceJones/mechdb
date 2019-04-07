@@ -350,7 +350,7 @@ export default {
 
 <style lang="scss" scoped>
 h1 {
-  margin-bottom: 1em;
+  margin-bottom: 1.4em;
 }
 h2 {
   margin: 2em 0 1em;

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
 
     <div
       class="topright"
@@ -7,79 +7,32 @@
       <nuxt-link
         v-if="$store.getters['user/isLoggedIn']"
         to="/switches/new"
-        class="button bit is-primary"
+        class="button bit"
       >
         + NEW SWITCH
       </nuxt-link>
       <nuxt-link
         v-else
         to="/login"
-        class="button bit is-primary"
+        class="button bit"
       >
         + NEW SWITCH
       </nuxt-link>
     </div>
 
-    <h1 class="is-size-4 bit">Switches</h1>
+    <h1 class="title bit">Switches</h1>
 
-    <b-table
-      :data="data"
-      hoverable
-    >
-      <template slot-scope="props">
-        <b-table-column
-          field="name"
-          label="Name"
-          sortable
-        >
-          <nuxt-link
-            :to="'/switches/' + props.row.slug"
-          >
-            {{ props.row.name }}
-          </nuxt-link>
-        </b-table-column>
-        <b-table-column
-          field="manufacturer"
-          label="Manufacturer"
-          sortable
-        >
-          {{ props.row.manufacturer }}
-        </b-table-column>
-        <b-table-column
-          field="type"
-          label="Type"
-          sortable
-        >
-          {{ props.row.type }}
-        </b-table-column>
-      </template>
-
-    </b-table>
+    <ListSwitch/>
 
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import ListSwitch from '@/components/list/Switch'
 
 export default {
-  data () {
-    return {
-      data: [],
-    }
-  },
-  created () {
-    this.getItems()
-  },
-  methods: {
-    async getItems () {
-      try {
-        const { data } = await this.$api.get('/switches')
-        this.data = data
-      } catch (e) {
-        this.apiError(e)
-      }
-    },
+  components: {
+    ListSwitch,
   },
 }
 </script>
