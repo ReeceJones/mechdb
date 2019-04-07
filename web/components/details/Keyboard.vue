@@ -28,10 +28,9 @@
 
     </div>
 
-
     <div
       v-if="item.photos.length > 0"
-      class="photos"
+      class="photos has-text-centered"
     >
       <img
         :src="uploadUrl + item.photos[0]"
@@ -59,9 +58,26 @@
       :active="photoModal >= 0"
       @close="closeModal"
     >
-      <p class="image is-4by3">
+      <div class="nb-count">
+        {{ photoModal + 1 }}/{{ item.photos.length }}
+      </div>
+
+      <p class="image">
         <img :src="uploadUrl + item.photos[photoModal]">
       </p>
+      <br>
+      <div class="has-text-centered nav-icons">
+        <b-icon
+          icon="arrow-left-drop-circle-outline"
+          size="is-medium"
+          @click.native="moveModal(-1)"
+        />
+        <b-icon
+          icon="arrow-right-drop-circle-outline"
+          size="is-medium"
+          @click.native="moveModal(1)"
+        />
+      </div>
     </b-modal>
 
     <div class="columns">
@@ -300,6 +316,12 @@ export default {
     closeModal () {
       this.photoModal = -1
     },
+    moveModal (direction) {
+      const value = this.photoModal + direction
+      if (value >= 0 && value < this.item.photos.length - 1) {
+        this.photoModal = value;
+      }
+    },
     keyupHandler (event) {
       if (this.photoModal < 0) return
 
@@ -312,3 +334,31 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.nav-icons {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  margin-top: -20px;
+  color: #fff;
+  width: 100%;
+  .icon {
+    font-size: 40px;
+    position: absolute;
+    &:first-child {
+      left: 1em;
+    }
+    &:last-child {
+      right: 1em;
+    }
+  }
+}
+.nb-count {
+  text-align: center;
+  font-weight: bold;
+  color: $light;
+  font-size: .8em;
+  padding-bottom: 1em;
+}
+</style>
