@@ -153,7 +153,7 @@ export default {
     async logout () {
       if (!confirm('Terminate your session?')) return
       await this.$store.dispatch('user/logout')
-      this.$toast.open('You have been successfully signed out')
+      this.$router.push('/auth/logout')
     },
   },
 }
