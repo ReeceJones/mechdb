@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import UserEdits from '@/components/User/Edits'
+import UserEdits from '@/components/user/Edits'
 
 export default {
   components: {
