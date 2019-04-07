@@ -70,13 +70,11 @@
         <b-icon
           icon="arrow-left-drop-circle-outline"
           size="is-medium"
-          class="modal-icon"
           @click.native="moveModal(-1)"
         />
         <b-icon
           icon="arrow-right-drop-circle-outline"
           size="is-medium"
-          class="modal-icon"
           @click.native="moveModal(1)"
         />
       </div>
@@ -345,6 +343,7 @@ export default {
   .icon {
     font-size: 40px;
     position: absolute;
+    cursor: pointer;
     &:first-child {
       left: 1em;
     }
@@ -352,9 +351,6 @@ export default {
       right: 1em;
     }
   }
-}
-.modal-icon:hover {
-  cursor: pointer;
 }
 .nb-count {
   text-align: center;
