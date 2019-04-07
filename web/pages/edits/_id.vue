@@ -123,7 +123,7 @@ import { mapGetters } from 'vuex'
 import edits from '@/assets/configuration/edits'
 
 import EditDetails from '@/components/details/Edit'
-import EditModeration from '@/components/edits/moderation'
+import EditModeration from '@/components/edits/Moderation'
 
 export default {
   components: {
