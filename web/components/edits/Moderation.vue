@@ -38,6 +38,7 @@ export default {
       if (!confirm('Approve these changes ? This operation is irreversible')) return
       try {
         const { data } = await this.$api.post('/edits/' + this.item._id + '/approve')
+        this.$store.dispatch('user/getEditsPending')
         this.$emit('update')
       } catch (e) {
         this.apiError(e)
@@ -47,6 +48,7 @@ export default {
       if (!confirm('Reject these changes ? This operation is irreversible')) return
       try {
         const { data } = await this.$api.post('/edits/' + this.item._id + '/reject')
+        this.$store.dispatch('user/getEditsPending')
         this.$emit('update')
       } catch (e) {
         this.apiError(e)
