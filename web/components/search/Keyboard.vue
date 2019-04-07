@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="searchFields"
     :class="{ 'show-fields': showFields }"
     class="search-form"
   >
@@ -305,68 +306,35 @@
 </template>
 
 <script>
-import _ from 'lodash'
-
 import options from '@/assets/configuration/options'
 
+import mixin from './_mixin'
 import OptionsField from '@/components/formFields/Options'
-
-const defaultFields = {
-  size: null,
-  price: null,
-  availability: null,
-  interface: null,
-  keysLayout: null,
-  layout: null,
-  keycaps: null,
-  firmware: null,
-  bluetooth: null,
-  hotswappable: null,
-  backlighting: null,
-}
 
 export default {
   components: {
     OptionsField,
   },
-  props: {
-    nbResults: {
-      type: Number,
-      default: () => null,
-    },
-  },
+  mixins: [mixin],
   data () {
-    const searchFields = {
-      ...JSON.parse(JSON.stringify(defaultFields)),
-      ..._.mapValues(this.$route.query, value => {
-        if (value === 'true') return true
-        if (value === 'false') return false
-        return value
-      })
-    }
     return {
-      searchFields,
       options,
-      showFields: false,
     }
   },
-  computed: {
-    searchQuery () {
-      return _.pickBy(this.searchFields, i => i !== null)
-    },
-    hasFilters () {
-      return Object.keys(this.searchQuery).length
-    },
-  },
-  methods: {
-    search () {
-      this.$router.push({ query: this.searchQuery })
-      this.showFields = false
-    },
-    reset () {
-      this.searchFields = JSON.parse(JSON.stringify(defaultFields))
-      this.search()
-    },
+  created () {
+    this.initSearchFields({
+      size: null,
+      price: null,
+      availability: null,
+      interface: null,
+      keysLayout: null,
+      layout: null,
+      keycaps: null,
+      firmware: null,
+      bluetooth: null,
+      hotswappable: null,
+      backlighting: null,
+    })
   },
 }
 </script>

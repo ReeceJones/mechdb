@@ -55,48 +55,20 @@
 </template>
 
 <script>
-import _ from 'lodash'
-
 import options from '@/assets/configuration/options'
 
+import mixin from './_mixin'
 import OptionsField from '@/components/formFields/Options'
-
-const defaultFields = {
-  instanceModel: null,
-  status: null,
-}
 
 export default {
   components: {
     OptionsField,
   },
-  props: {
-    nbResults: {
-      type: Number,
-      default: () => null,
-    },
-  },
+  mixins: [mixin],
   data () {
-    const searchFields = {
-      ...JSON.parse(JSON.stringify(defaultFields)),
-      ..._.mapValues(this.$route.query, value => {
-        if (value === 'true') return true
-        if (value === 'false') return false
-        return value
-      })
-    }
     return {
-      searchFields,
       options,
     }
-  },
-  computed: {
-    searchQuery () {
-      return _.pickBy(this.searchFields, i => i !== null)
-    },
-    hasFilters () {
-      return Object.keys(this.searchQuery).length
-    },
   },
   watch: {
     searchFields: {
@@ -106,14 +78,11 @@ export default {
       },
     },
   },
-  methods: {
-    search () {
-      this.$router.push({ query: this.searchQuery })
-    },
-    reset () {
-      this.searchFields = JSON.parse(JSON.stringify(defaultFields))
-      this.search()
-    },
+  created () {
+    this.initSearchFields({
+      instanceModel: null,
+      status: null,
+    })
   },
 }
 </script>
