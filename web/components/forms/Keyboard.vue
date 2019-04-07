@@ -1,5 +1,8 @@
 <template>
-  <div class="container">
+  <div
+    v-if="data"
+    class="container"
+  >
 
     <div class="topright">
       <button
@@ -71,7 +74,7 @@
       v-quill:myQuillEditor="quillOpts"
       :content="data.text"
       class="quill-editor"
-      @change="onEditorChange($event)"
+      @change="data.text = $event.html"
     />
 
     <h2 class="bit">Specs</h2>
@@ -282,53 +285,13 @@
 </template>
 
 <script>
-import _ from 'lodash'
-import async from 'async'
-
 import options from '@/assets/configuration/options'
 
+import mixin from './_mixin'
 import AutocompleteField from '@/components/formFields/Autocomplete'
 import AutocompleteMultiField from '@/components/formFields/AutocompleteMulti'
 import OptionsField from '@/components/formFields/Options'
 import PhotosField from '@/components/formFields/Photos'
-
-const defaultData = {
-  name: '',
-  text: '',
-  photos: [],
-  manufacturer: null,
-  size: '',
-  price: '',
-  // specs
-  switches: [],
-  keycaps: '',
-  cable: '',
-  pcb: '',
-  firmware: '',
-  interface: '',
-  dimensions: '',
-  weight: '',
-  // features
-  programmable: null,
-  simultaneousInput: null,
-  bluetooth: null,
-  hotswappable: null,
-  backlighting: null,
-  rgb: null,
-  // layout
-  keysLayout: null,
-  layout: null,
-  spacebarSize: null,
-  // design
-  usbPassthrough: null,
-  angle: '',
-  // manufacturing
-  caseMaterial: null,
-  plateMaterial: null,
-  unitsMade: '',
-  // purchase
-  availability: null,
-}
 
 export default {
   components: {
@@ -337,67 +300,50 @@ export default {
     OptionsField,
     PhotosField,
   },
-  props: {
-    title: {
-      type: String,
-      default: 'Edit',
-    },
-    values: {
-      type: Object,
-      default: () => ({})
-    }
-  },
+  mixins: [mixin],
   data () {
     return {
-      data: JSON.parse(JSON.stringify(defaultData)),
       options,
-      quillOpts: {
-        modules: {
-          toolbar: [
-            [{ 'header': [false, 2, 3, 4] }],
-            ['bold', 'italic', 'underline', 'strike', 'code'],
-            [{ 'list': 'bullet'}, { 'list': 'ordered' }],
-            ['link', 'blockquote'],
-          ],
-        },
-      },
     }
   },
-  watch: {
-    values () {
-      this.getData()
-    },
-  },
-  async created () {
-    this.getData()
-  },
-  methods: {
-    getData () {
-      this.data = JSON.parse(JSON.stringify(defaultData))
-
-      if (this.values) {
-        Object.keys(defaultData).forEach(key => {
-          if (this.values[key] !== undefined) {
-            this.data[key] = this.values[key]
-          }
-        })
-      }
-    },
-    onEditorChange($event) {
-      this.data.text = $event.html
-    },
-    async save () {
-      const isValid = await this.$validator.validateAll()
-      if (isValid) {
-        this.$emit('save', this.data)
-      } else {
-        this.$toast.open({
-          message: 'There has been errors while validating the form. Please check all the fields highlighted in red.',
-          type: 'is-danger',
-          position: 'is-bottom',
-        })
-      }
-    },
+  created () {
+    this.initData({
+      name: '',
+      text: '',
+      photos: [],
+      manufacturer: null,
+      size: '',
+      price: '',
+      // specs
+      switches: [],
+      keycaps: '',
+      cable: '',
+      pcb: '',
+      firmware: '',
+      interface: '',
+      dimensions: '',
+      weight: '',
+      // features
+      programmable: null,
+      simultaneousInput: null,
+      bluetooth: null,
+      hotswappable: null,
+      backlighting: null,
+      rgb: null,
+      // layout
+      keysLayout: null,
+      layout: null,
+      spacebarSize: null,
+      // design
+      usbPassthrough: null,
+      angle: '',
+      // manufacturing
+      caseMaterial: null,
+      plateMaterial: null,
+      unitsMade: '',
+      // purchase
+      availability: null,
+    })
   },
 }
 </script>
