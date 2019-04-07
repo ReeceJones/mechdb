@@ -62,6 +62,11 @@
 
 <script>
 export default {
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.$store.commit('user/AUTH_REDIRECT', from.fullPath)
+    })
+  },
   data () {
     return {
       isLoading: false,
@@ -82,7 +87,7 @@ export default {
           email: this.email,
           password: this.password,
         })
-        this.$router.push('/u/' + this.$store.state.user.data.username)
+        this.$router.push(this.$store.getters['user/redirectTo'])
       } catch (e) {
         this.apiError(e)
       }

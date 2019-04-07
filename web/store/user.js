@@ -4,6 +4,7 @@ import Cookie from 'js-cookie'
 export const state = () => ({
   token: null,
   data: {},
+  redirectToAfterLogin: null,
   editsPending: 0,
 })
 
@@ -22,6 +23,10 @@ export const getters = {
   },
   isNotVerified (state, getters) {
     return getters.isLoggedIn && !state.data.isVerified && !state.data.isAdmin
+  },
+  redirectTo (state, getters) {
+    if (!getters.isLoggedIn) return '/'
+    return state.redirectToAfterLogin || '/u/' + state.data.username
   },
 }
 
@@ -44,6 +49,9 @@ export const mutations = {
   },
   AUTH_USER: function (state, payload) {
     state.data = payload
+  },
+  AUTH_REDIRECT: function (state, payload) {
+    state.redirectToAfterLogin = payload
   },
   EDITS_PENDING: function (state, payload) {
     state.editsPending = payload

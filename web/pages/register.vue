@@ -92,7 +92,7 @@ export default {
           email: this.email,
           password: this.password,
         })
-        this.$router.push('/u/' + this.$store.state.user.data.username)
+        this.$router.push(this.$store.getters['user/redirectTo'])
       } catch (e) {
         this.apiError(e, {
           'Username already in use': 'username',
