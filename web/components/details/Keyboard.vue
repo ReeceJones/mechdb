@@ -97,17 +97,14 @@
             <tr v-if="item.switches.length">
               <td>Switch options:</td>
               <td>
-                <span
+                <div
                   v-for="sw in item.switches"
                   :key="sw._id"
                 >
-                  <nuxt-link
-                    :to="'/switches/' + sw.slug"
-                    class="button is-text"
-                  >
+                  <nuxt-link :to="'/switches/' + sw.slug">
                     {{ sw.name }}
                   </nuxt-link>
-                </span>
+                </div>
               </td>
             </tr>
             <tr v-if="item.keycaps">
