@@ -317,7 +317,7 @@ export default {
     },
     moveModal (direction) {
       const value = this.photoModal + direction
-      if (value >= 0 && value < this.item.photos.length - 1) {
+      if (value >= 0 && value < this.item.photos.length) {
         this.photoModal = value;
       }
     },
