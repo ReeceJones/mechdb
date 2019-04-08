@@ -27,8 +27,12 @@ export default {
       this.isLoading = true
       try {
         const { data } = await this.$api.post('/edits/Keycap', saveData)
-        this.$toast.open('Changes saved')
-        this.$router.go(-1)
+        if (this.$store.getters['user/isNotVerified']) {
+          this.$router.push('/edits/pending?id=' + data.edit._id)
+        } else {
+          this.$toast.open('Keycap created')
+          this.$router.push('/keycaps/' + data.instance.slug)
+        }
       } catch (e) {
         this.apiError(e)
       }

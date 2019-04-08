@@ -2,11 +2,12 @@ const _ = require('lodash')
 const mongoose = require('mongoose')
 
 const models = {
+  Color: require('./Color'),
+  Designer: require('./Designer'),
   Keyboard: require('./Keyboard'),
   Keycap: require('./Keycap'),
   Manufacturer: require('./Manufacturer'),
   Switch: require('./Switch'),
-  Vendor: require('./Vendor'),
 }
 const schema = new mongoose.Schema({
   instanceModel: {

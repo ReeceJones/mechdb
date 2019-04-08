@@ -50,11 +50,11 @@
         <div class="column">
 
           <b-field
-            label="Type"
+            label="Profile"
             custom-class="is-small"
           >
             <b-select
-              v-model="searchFields.type"
+              v-model="searchFields.profile"
               placeholder="Any"
               size="is-small"
             >
@@ -62,7 +62,7 @@
                 Any
               </option>
               <option
-                v-for="option in options.switchTypes"
+                v-for="option in options.keycapProfile"
                 :key="option"
                 :value="option"
               >
@@ -100,6 +100,58 @@
         <div class="column">
 
           <b-field
+            label="Material"
+            custom-class="is-small"
+          >
+            <b-select
+              v-model="searchFields.material"
+              placeholder="Any"
+              size="is-small"
+            >
+              <option :value="null">
+                Any
+              </option>
+              <option
+                v-for="option in options.keycapMaterial"
+                :key="option"
+                :value="option"
+              >
+                {{ option }}
+              </option>
+            </b-select>
+          </b-field>
+
+        </div>
+        <div class="column">
+
+          <b-field
+            label="Print Method"
+            custom-class="is-small"
+          >
+            <b-select
+              v-model="searchFields.printMethod"
+              placeholder="Any"
+              size="is-small"
+            >
+              <option :value="null">
+                Any
+              </option>
+              <option
+                v-for="option in options.keycapPrintMethods"
+                :key="option"
+                :value="option"
+              >
+                {{ option }}
+              </option>
+            </b-select>
+          </b-field>
+
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column">
+
+          <b-field
             label="Availability"
             custom-class="is-small"
           >
@@ -120,6 +172,27 @@
               </option>
             </b-select>
           </b-field>
+
+        </div>
+        <div class="column"/>
+        <div class="column">
+
+          <OptionsField
+            v-model="searchFields.sidePrint"
+            label="Side Print"
+            size="is-small"
+            checkbox
+          />
+
+        </div>
+        <div class="column">
+
+          <OptionsField
+            v-model="searchFields.backlighting"
+            label="Backlighting"
+            size="is-small"
+            checkbox
+          />
 
         </div>
       </div>
@@ -163,9 +236,13 @@ export default {
   },
   created () {
     this.initSearchFields({
-      type: null,
+      profile: null,
       stemType: null,
+      material: null,
+      printMethod: null,
       availability: null,
+      backlighting: null,
+      sidePrint: null,
     })
   },
 }

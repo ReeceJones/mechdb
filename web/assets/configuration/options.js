@@ -100,5 +100,9 @@ export default {
   keyboardPrices: ['0-50', '50-100', '100-200', '200-300', '300+', 'Aftermarket only'],
   keyboardKeycaps: ['ABS', 'PBT', 'ABS Doubleshot', 'PBT Doubleshot'],
   switchTypes: ['Linear', 'Tactile', 'Clicky'],
-  switchStemTypes: ['Cherry MX', 'Alps', 'Choc', 'Matias'],
+  stemTypes: ['Cherry MX', 'Alps', 'Choc', 'Matias'],
+  keycapProfile: ['Cherry', 'OEM', 'DSA', 'SA', 'XDA', 'MDA', 'MIX', 'KAT', 'KAM', 'MT3', 'ADA'],
+  keycapMaterial: ['ABS', 'PBT'],
+  keycapKits: ['Spacebar', '40%', 'Ortho', 'Ergo', 'Alphas', 'Mods', 'Numpad'],
+  keycapPrintMethods: ['Dye Sub', 'Double-shot', 'Laser', 'Triple-shot', 'None'],
 }

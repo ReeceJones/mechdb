@@ -4,13 +4,35 @@ const slugify = require('slugify')
 const schema = new mongoose.Schema({
   name: String,
   slug: String,
-  description: String,
   text: String,
   photos: [String],
-  profile: {
-    type: String,
-    enum: [null, 'Cherry', 'OEM', 'DSA', 'SA', 'XDA', 'KAT', 'MT3'],
+  manufacturer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Manufacturer',
   },
+  designer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Designer',
+  },
+  profile: String,
+  stemType: String,
+  // specs
+  material: String,
+  printMethod: String,
+  sidePrint: Boolean,
+  backlighting: Boolean,
+  kits: [String],
+  // design
+  baseColors: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Color',
+  }],
+  textColors: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Color',
+  }],
+  // purchase
+  availability: String,
 }, {
   timestamps: true,
 })

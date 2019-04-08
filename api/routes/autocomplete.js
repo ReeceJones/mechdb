@@ -6,11 +6,12 @@ const auth = require('../middlewares/auth')
 const Edit = require('../models/Edit')
 
 const models = {
+  Color: require('../models/Color'),
+  Designer: require('../models/Designer'),
   Keyboard: require('../models/Keyboard'),
   Keycap: require('../models/Keycap'),
   Manufacturer: require('../models/Manufacturer'),
   Switch: require('../models/Switch'),
-  Vendor: require('../models/Vendor'),
 }
 
 router.get('/:dataset', async (req, res, done) => {

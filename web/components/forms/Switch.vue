@@ -63,7 +63,7 @@
       <div class="column">
 
         <OptionsField
-          :options="options.switchStemTypes"
+          :options="options.stemTypes"
           v-model="data.stemType"
           label="Stem Types"
         />

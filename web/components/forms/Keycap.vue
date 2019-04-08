@@ -1,9 +1,11 @@
 <template>
-  <div>
+  <div
+    v-if="data"
+    class="container"
+  >
 
     <div class="topright">
       <button
-        :class="{ 'is-loading': isLoading }"
         class="button bit is-primary"
         @click.prevent="save"
       >
@@ -19,8 +21,10 @@
 
     <h1 class="is-size-4 bit">{{ title }}</h1>
 
+    <UserNotVerified/>
+
     <div class="columns">
-      <div class="column">
+      <div class="column mandatory-field">
 
         <b-field
           :type="{'is-danger': errors.has('name')}"
@@ -37,31 +41,43 @@
       </div>
       <div class="column">
 
-        TODO : manufacturer picker
+        <AutocompleteField
+          v-model="data.designer"
+          dataset="Designer"
+          label="Designer"
+        />
+
+      </div>
+      <div class="column">
+
+        <AutocompleteField
+          v-model="data.manufacturer"
+          dataset="Manufacturer"
+          label="Manufacturer"
+        />
 
       </div>
     </div>
 
-    <b-field label="Description">
-      <textarea
-        v-model="data.description"
-        class="textarea"
-        placeholder="Enter a short description here"
-        rows="3"
-      />
-    </b-field>
+    <OptionsField
+      :options="options.keycapProfile"
+      v-model="data.profile"
+      label="Profile"
+      allow-other
+    />
 
-    <b-field label="Profile"/>
-    <b-field>
-      <b-radio-button
-        v-for="profile in profiles"
-        v-model="data.profile"
-        :native-value="profile"
-        :key="profile"
-      >
-        {{ profile }}
-      </b-radio-button>
-    </b-field>
+    <OptionsField
+      :options="options.stemTypes"
+      v-model="data.stemType"
+      label="Stem type"
+      allow-other
+    />
+
+    <b-field
+      label="Photos"
+    />
+
+    <PhotosField v-model="data.photos" />
 
     <h2 class="bit">Text</h2>
 
@@ -69,14 +85,84 @@
       v-quill:myQuillEditor="quillOpts"
       :content="data.text"
       class="quill-editor"
-      @change="onEditorChange($event)"
+      @change="data.text = $event.html"
     />
 
-    <h2 class="bit">Photos</h2>
+    <h2 class="bit">Specs</h2>
 
-    <PhotosField v-model="data.photos" />
+    <div class="columns">
+      <div class="column">
 
-    <br>
+        <OptionsField
+          :options="options.keycapMaterial"
+          v-model="data.material"
+          label="Material"
+          allow-other
+        />
+
+      </div>
+      <div class="column">
+
+        <OptionsField
+          v-model="data.sidePrint"
+          label="Side print"
+          checkbox
+        />
+
+      </div>
+      <div class="column">
+
+        <OptionsField
+          v-model="data.backlighting"
+          label="Backlighting"
+          checkbox
+        />
+
+      </div>
+    </div>
+
+    <OptionsField
+      :options="options.keycapPrintMethods"
+      v-model="data.printMethod"
+      label="Print Method"
+      allow-other
+    />
+
+    <b-field label="Available Kits">
+      <b-message type="is-warning">TODO</b-message>
+    </b-field>
+
+    <h2 class="bit">Design</h2>
+
+    <div class="columns">
+      <div class="column">
+
+        <AutocompleteMultiField
+          v-model="data.baseColors"
+          dataset="Color"
+          label="Base colors"
+        />
+
+      </div>
+      <div class="column">
+
+        <AutocompleteMultiField
+          v-model="data.textColors"
+          dataset="Color"
+          label="Text colors"
+        />
+
+      </div>
+    </div>
+
+    <h2 class="bit">Purchase</h2>
+
+    <OptionsField
+      :options="options.availability"
+      v-model="data.availability"
+      label="Availability"
+    />
+
     <br>
 
     <button
@@ -97,113 +183,62 @@
 </template>
 
 <script>
-import _ from 'lodash'
-import async from 'async'
+import options from '@/assets/configuration/options'
 
+import mixin from './_mixin'
+import AutocompleteField from '@/components/formFields/Autocomplete'
+import AutocompleteMultiField from '@/components/formFields/AutocompleteMulti'
+import OptionsField from '@/components/formFields/Options'
 import PhotosField from '@/components/formFields/Photos'
-
-const defaultData = {
-  name: '',
-  description: '',
-  text: '',
-  profile: null,
-  manufacturerId: null,
-  photos: [],
-}
 
 export default {
   components: {
+    AutocompleteField,
+    AutocompleteMultiField,
+    OptionsField,
     PhotosField,
   },
-  props: {
-    title: {
-      type: String,
-      default: 'Edit',
-    },
-    values: {
-      type: Object,
-      default: () => ({}),
-    },
-    isLoading: {
-      type: Boolean,
-      default: () => false,
-    }
-  },
+  mixins: [mixin],
   data () {
     return {
-      data: JSON.parse(JSON.stringify(defaultData)),
-      quillOpts: {
-        modules: {
-          toolbar: [
-            [{ 'header': [false, 2, 3, 4] }],
-            ['bold', 'italic', 'underline', 'strike', 'code'],
-            [{ 'list': 'bullet'}, { 'list': 'ordered' }],
-            ['link', 'blockquote'],
-          ],
-        },
-      },
-      profiles: ['Cherry', 'OEM', 'DSA', 'SA', 'XDA', 'KAT', 'MT3'],
+      options,
     }
   },
-  watch: {
-    values () {
-      this.getData()
-    },
-  },
-  async created () {
-    this.getData()
-  },
-  methods: {
-    getData () {
-      this.data = JSON.parse(JSON.stringify(defaultData))
-
-      if (this.values) {
-        Object.keys(defaultData).forEach(key => {
-          if (this.values[key]) {
-            this.data[key] = this.values[key]
-          }
-        })
-      }
-    },
-    onEditorChange($event) {
-      this.data.text = $event.html
-    },
-    async save () {
-      const isValid = await this.$validator.validateAll()
-      if (!isValid) return
-
-      const loadingComponent = this.$loading.open()
-
-      async.each(this.data.photos, async (photo, cb) => {
-        if (!photo.match(/^data:/)) return cb()
-
-        const { data } = await this.$api.post('upload', {
-          data: photo
-        })
-        const index = this.data.photos.indexOf(photo)
-        if (index >= 0) {
-          this.data.photos.splice(index, 1, data.filename)
-        }
-        cb()
-      }, () => {
-        loadingComponent.close()
-        this.$emit('save', this.data)
-      })
-    },
+  created () {
+    this.initData({
+      name: '',
+      text: '',
+      photos: [],
+      designer: null,
+      manufacturer: null,
+      profile: null,
+      stemType: null,
+      // specs
+      material: null,
+      printMethod: null,
+      sidePrint: null,
+      backlighting: null,
+      kits: [],
+      // design
+      baseColors: [],
+      textColors: [],
+      // purchase
+      availability: null,
+    })
   },
 }
 </script>
 
 <style lang="scss" scoped>
 h1 {
-  margin-bottom: 1em;
+  margin-bottom: 1.4em;
 }
 h2 {
   margin: 2em 0 1em;
-  opacity: .8;
   font-size: 1.1em;
-  background: whitesmoke;
-  padding: .3em .5em;
+  background: $dark-medium;
+  color: #fff;
+  padding: .8em .6em;
 }
 p.control {
   top: -.5em;
