@@ -42,6 +42,15 @@
           {{ props.row.type }}
         </b-table-column>
         <b-table-column
+          field="actuationForce"
+          label="Actuation Force"
+          sortable
+        >
+          <span v-if="props.row.actuationForce">
+            {{ props.row.actuationForce }}g
+          </span>
+        </b-table-column>
+        <b-table-column
           field="manufacturer"
           label="Manufacturer"
           sortable

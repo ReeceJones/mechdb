@@ -111,7 +111,7 @@
         <b-field
           :type="{'is-danger': errors.has('actuationForce')}"
           :message="errors.first('actuationForce')"
-          label="Actuation Force (kg)"
+          label="Actuation Force (g)"
         >
           <b-input
             v-validate="'numeric'"
@@ -126,7 +126,7 @@
         <b-field
           :type="{'is-danger': errors.has('bottomOutForce')}"
           :message="errors.first('bottomOutForce')"
-          label="Bottom Out Force (kg)"
+          label="Bottom Out Force (g)"
         >
           <b-input
             v-validate="'numeric'"

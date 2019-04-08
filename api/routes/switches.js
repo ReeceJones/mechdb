@@ -8,7 +8,7 @@ const Switch = require('../models/Switch')
 router.get('/', async (req, res, done) => {
   const findOptions = getSearchFilters(req.query, ['type', 'stemType', 'availability'])
   try {
-    const data = await Switch.find(findOptions, '_id name slug type photos').populate('manufacturer')
+    const data = await Switch.find(findOptions, '_id name slug type photos actuationForce').populate('manufacturer')
     res.json(data)
   } catch (e) {
     done(e)
