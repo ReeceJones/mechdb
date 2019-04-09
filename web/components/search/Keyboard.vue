@@ -288,7 +288,7 @@
         class="button is-info"
         @click="search"
       >
-        Save
+        Search
       </button>
       <button
         class="button is-pulled-right"
