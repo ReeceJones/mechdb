@@ -1,5 +1,16 @@
 .page-details {
 
+  .title-labels {
+    position: relative;
+    top: -1em;
+
+    & > span.tag,
+    .tags.has-addons {
+      float: left;
+      margin-right: .75em;
+    }
+  }
+
   div.purchase {
     padding-bottom: .5em;
     position: relative;
@@ -10,6 +21,9 @@
   }
 
   .photos {
+    .column {
+      max-width: 25%;
+    }
     img {
       cursor: pointer;
     }
