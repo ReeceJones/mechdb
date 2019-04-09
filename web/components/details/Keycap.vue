@@ -88,6 +88,12 @@
         <table class="table is-narrow details is-fullwidth">
           <tbody>
 
+            <tr v-if="item.profile">
+              <td>Profile:</td>
+              <td>
+                {{ item.profile }}
+              </td>
+            </tr>
             <tr v-if="item.designer">
               <td>Designer:</td>
               <td>
@@ -98,12 +104,6 @@
               <td>Manufacturer:</td>
               <td>
                 {{ item.manufacturer.name }}
-              </td>
-            </tr>
-            <tr v-if="item.profile">
-              <td>Profile:</td>
-              <td>
-                {{ item.profile }}
               </td>
             </tr>
 

@@ -3,24 +3,28 @@
 
     <h1 class="title bit">{{ item.name }}</h1>
 
-    <h2 class="subtitle">
-      <span v-if="item.type">{{ item.type }}</span> switch
-      <span v-if="item.manufacturer">
-        manufactured by {{ item.manufacturer.name }}
-      </span>
-    </h2>
-
-    <div class="purchase">
-
-      <span
+    <h2 class="title-labels">
+      <b-tag
         v-if="item.availability !== null"
-        :class="availabilityClass(item.availability)"
-        class="tag is-light bit availability"
+        :type="availabilityClass(item.availability)"
       >
         {{ optionLabel('availability', item.availability) }}
-      </span>
-
-    </div>
+      </b-tag>
+      <b-taglist
+        v-if="item.type"
+        attached
+      >
+        <b-tag type="is-light">Type:</b-tag>
+        <b-tag type="is-info">{{ item.type }}</b-tag>
+      </b-taglist>
+      <b-taglist
+        v-if="item.manufacturer"
+        attached
+      >
+        <b-tag type="is-light">Manufacturer:</b-tag>
+        <b-tag type="is-info">{{ item.manufacturer.name }}</b-tag>
+      </b-taglist>
+    </h2>
 
     <div
       v-if="item.photos.length > 0"
@@ -83,6 +87,19 @@
       <div class="column  ">
         <table class="table is-narrow details is-fullwidth">
           <tbody>
+
+            <tr v-if="item.type">
+              <td>Type:</td>
+              <td>
+                {{ item.type }}
+              </td>
+            </tr>
+            <tr v-if="item.manufacturer">
+              <td>Manufacturer:</td>
+              <td>
+                {{ item.manufacturer.name }}
+              </td>
+            </tr>
 
             <tr v-if="item.stemType || item.housingColor || item.stemColor || item.actuationForce || item.bottomOutForce || item.travelLength">
               <th colspan="2">Specs</th>

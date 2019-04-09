@@ -3,20 +3,12 @@
   .title-labels {
     position: relative;
     top: -1em;
+    height: 1.5em;
 
     & > span.tag,
     .tags.has-addons {
       float: left;
       margin-right: .75em;
-    }
-  }
-
-  div.purchase {
-    padding-bottom: .5em;
-    position: relative;
-    top: -.75em;
-    .tag.availability {
-      text-transform: uppercase;
     }
   }
 
