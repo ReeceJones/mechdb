@@ -5,16 +5,55 @@
       v-if="value.length > 0"
       class="photos"
     >
-      <div
-        v-for="(url, i) in value"
-        :key="i"
-        class="item"
-        @click="removeItem(i)"
+      <draggable 
+        :list="value"
+        class="columns is-multiline"
       >
-        <img :src="uploadUrl + url">
-      </div>
-      <div style="clear: left"/>
+        <div
+          v-for="(url, i) in value"
+          :key="i"
+          class="column is-one-fifth"
+        >
+          <div class="card image-card">
+            <header class="card-header">
+              <p class="card-header-title">
+                Image {{ i + 1 }}
+              </p>
+              <div 
+                class="card-header-icon"
+                @click="removeItem(i)"
+              >
+                <b-icon 
+                  type="is-danger"
+                  size="is-small"
+                  icon="delete"
+                />
+              </div>
+            </header>
+            <div class="card-content">
+              <img 
+                :src="uploadUrl + url"
+                class="click"
+                @click="photoModal = i"
+              >
+            </div>
+          </div>
+        </div>
+        <div style="clear: left"/>
+      </draggable>
     </div>
+
+    <b-modal
+      :active="photoModal >= 0"
+      @close="closeModal"
+    >
+      <p class="image">
+        <img :src="uploadUrl + value[photoModal]">
+      </p>
+    </b-modal>
+
+    <br>
+
 
     <b-field class="file">
 
@@ -42,8 +81,12 @@
 
 <script>
 import async from 'async'
+import draggable from 'vuedraggable'
 
 export default {
+  components: {
+    draggable,
+  },
   props: {
     value: {
       type: Array,
@@ -54,6 +97,7 @@ export default {
     return {
       uploaded: [],
       isLoading: false,
+      photoModal: -1,
     }
   },
   methods: {
@@ -96,6 +140,9 @@ export default {
       updatedValue.splice(index, 1)
       this.$emit('input', updatedValue)
     },
+    closeModal () {
+      this.photoModal = -1
+    },
   },
 }
 </script>
@@ -119,5 +166,12 @@ export default {
       max-height: 100%;
     }
   }
+}
+.image-card:hover {
+  cursor: move;
+  background: $light;
+}
+.click:hover {
+  cursor: pointer;
 }
 </style>
