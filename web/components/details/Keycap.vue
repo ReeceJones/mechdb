@@ -107,7 +107,7 @@
               </td>
             </tr>
 
-            <tr v-if="item.stemType || item.material || item.printMethod || item.sidePrint || item.backlighting">
+            <tr v-if="item.stemType || item.material || item.printMethod || item.sidePrint || item.backlighting || item.kits.length">
               <th colspan="2">Specs</th>
             </tr>
             <tr v-if="item.stemType">
@@ -138,6 +138,17 @@
               <td>Backlighting:</td>
               <td>
                 {{ item.backlighting }}
+              </td>
+            </tr>
+            <tr v-if="item.kits.length">
+              <td>Available Kits:</td>
+              <td>
+                <span
+                  v-for="(kit, i) in item.kits"
+                  :key="'kit' + i"
+                >
+                  {{ kit }}<template v-if="i < item.kits.length -1">, </template>
+                </span>
               </td>
             </tr>
 

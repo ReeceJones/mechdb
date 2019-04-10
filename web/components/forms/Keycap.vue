@@ -128,9 +128,11 @@
       allow-other
     />
 
-    <b-field label="Available Kits">
-      <b-message type="is-warning">TODO</b-message>
-    </b-field>
+    <OptionsMultiField
+      :options="options.keycapKits"
+      v-model="data.kits"
+      label="Available Kits"
+    />
 
     <h2 class="bit">Design</h2>
 
@@ -189,6 +191,7 @@ import mixin from './_mixin'
 import AutocompleteField from '@/components/formFields/Autocomplete'
 import AutocompleteMultiField from '@/components/formFields/AutocompleteMulti'
 import OptionsField from '@/components/formFields/Options'
+import OptionsMultiField from '@/components/formFields/OptionsMulti'
 import PhotosField from '@/components/formFields/Photos'
 
 export default {
@@ -196,6 +199,7 @@ export default {
     AutocompleteField,
     AutocompleteMultiField,
     OptionsField,
+    OptionsMultiField,
     PhotosField,
   },
   mixins: [mixin],
