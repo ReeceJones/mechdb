@@ -23,7 +23,7 @@
           :key="i"
           class="column is-one-fifth"
         >
-          <div class="card">
+          <div class="card image-card">
             <header class="card-header">
               <p class="card-header-title">
                 ({{ i }}) {{ url }}
@@ -168,5 +168,9 @@ export default {
       max-height: 100%;
     }
   }
+}
+.image-card:hover {
+  cursor: move;
+  background: $light;
 }
 </style>
