@@ -5,16 +5,47 @@
       v-if="value.length > 0"
       class="photos"
     >
-      <div
+      <!-- <div
         v-for="(url, i) in value"
         :key="i"
         class="item"
         @click="removeItem(i)"
       >
         <img :src="uploadUrl + url">
+      </div> -->
+      <div class="columns is-multiline">
+        <div
+          v-for="(url, i) in value"
+          :key="i"
+          class="column is-one-fifth"
+        >
+          <div class="card">
+            <header class="card-header">
+              <p class="card-header-title">
+                {{ url }}
+              </p>
+              <div 
+                class="card-header-icon"
+                @click="removeItem(i)"
+              >
+                <b-icon 
+                  type="is-danger"
+                  size="is-small"
+                  icon="delete"
+                />
+              </div>
+            </header>
+            <div class="card-content">
+              <img :src="uploadUrl + url">
+            </div>
+          </div>
+        </div>
+        <div style="clear: left"/>
       </div>
-      <div style="clear: left"/>
     </div>
+
+    <br>
+
 
     <b-field class="file">
 
