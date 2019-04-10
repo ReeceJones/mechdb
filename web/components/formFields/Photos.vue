@@ -5,7 +5,7 @@
       v-if="value.length > 0"
       class="photos"
     >
-      <draggable 
+      <draggable
         :list="value"
         class="columns is-multiline"
       >
@@ -15,27 +15,22 @@
           class="column is-one-fifth"
         >
           <div class="card image-card">
-            <header class="card-header">
-              <p class="card-header-title">
-                Image {{ i + 1 }}
-              </p>
-              <div 
-                class="card-header-icon"
-                @click="removeItem(i)"
-              >
-                <b-icon 
-                  type="is-danger"
-                  size="is-small"
-                  icon="delete"
-                />
-              </div>
-            </header>
             <div class="card-content">
-              <img 
+              <img
                 :src="uploadUrl + url"
                 class="click"
                 @click="photoModal = i"
               >
+              <button
+                class="button"
+                @click.prevent="removeItem(i)"
+              >
+                <b-icon
+                  type="is-danger"
+                  size="is-small"
+                  icon="delete"
+                />
+              </button>
             </div>
           </div>
         </div>
@@ -167,9 +162,29 @@ export default {
     }
   }
 }
-.image-card:hover {
-  cursor: move;
-  background: $light;
+.image-card {
+  &:hover {
+    .button {
+      display: inline-block;
+    }
+  }
+  .button {
+    display: none;
+    position: absolute;
+    top: .75em;
+    right: .75em;
+    padding: 0 0.2em 0 0.7em;
+    span {
+      margin: 0;
+    }
+  }
+  &:hover {
+    cursor: move;
+    background: $light;
+  }
+}
+.card-content {
+  padding: 1em;
 }
 .click:hover {
   cursor: pointer;
