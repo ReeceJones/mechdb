@@ -13,7 +13,11 @@
       >
         <img :src="uploadUrl + url">
       </div> -->
-      <div class="columns is-multiline">
+
+      <draggable 
+        v-model="value"
+        class="columns is-multiline"
+      >
         <div
           v-for="(url, i) in value"
           :key="i"
@@ -22,7 +26,7 @@
           <div class="card">
             <header class="card-header">
               <p class="card-header-title">
-                {{ url }}
+                ({{ i }}) {{ url }}
               </p>
               <div 
                 class="card-header-icon"
@@ -41,7 +45,17 @@
           </div>
         </div>
         <div style="clear: left"/>
-      </div>
+      </draggable>
+      <!-- <draggable
+        v-model="value"
+      >
+        <div
+          v-for="(url,i) in value"
+          :key="i"
+        >
+          {{ url }} {{ i }}
+        </div>
+      </draggable> -->
     </div>
 
     <br>
@@ -73,8 +87,12 @@
 
 <script>
 import async from 'async'
+import draggable from 'vuedraggable'
 
 export default {
+  components: {
+    draggable,
+  },
   props: {
     value: {
       type: Array,
