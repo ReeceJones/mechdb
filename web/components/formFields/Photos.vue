@@ -5,17 +5,8 @@
       v-if="value.length > 0"
       class="photos"
     >
-      <!-- <div
-        v-for="(url, i) in value"
-        :key="i"
-        class="item"
-        @click="removeItem(i)"
-      >
-        <img :src="uploadUrl + url">
-      </div> -->
-
       <draggable 
-        v-model="value"
+        :list="value"
         class="columns is-multiline"
       >
         <div
@@ -46,16 +37,6 @@
         </div>
         <div style="clear: left"/>
       </draggable>
-      <!-- <draggable
-        v-model="value"
-      >
-        <div
-          v-for="(url,i) in value"
-          :key="i"
-        >
-          {{ url }} {{ i }}
-        </div>
-      </draggable> -->
     </div>
 
     <br>
