@@ -117,7 +117,7 @@ router.post('/signout', (req, res, next) => {
 
 router.get('/:username', async (req, res, next) => {
   try {
-    const doc = await User.findOne({ username: req.params.username }, 'username isAdmin isVerified')
+    const doc = await User.findOne({ username: req.params.username }, 'username isAdmin isVerified reputation')
     if (!doc) {
       next('404 User does not exist.')
     }

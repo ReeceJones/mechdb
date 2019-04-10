@@ -70,6 +70,16 @@
       >
         VERIFIED USER
       </span>
+      <div 
+        class="tags has-addons"
+        style="display: inline-flex">
+        <span class="tag is-primary">
+          REPUTATION
+        </span>
+        <span class="tag is-light">
+          <strong> {{ user.reputation }} </strong>
+        </span>
+      </div>
     </h1>
 
     <template v-if="canSeeHistory">

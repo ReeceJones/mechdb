@@ -22,6 +22,7 @@ const schema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  reputation: Number
 }, {
   timestamps: true,
 })
