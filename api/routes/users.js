@@ -24,6 +24,7 @@ router.post('/', async (req, res, next) => {
   const doc = new User({
     email: req.body.email,
     username: req.body.username,
+    reputation: 0,
   })
   await doc.setPassword(req.body.password)
   try {
