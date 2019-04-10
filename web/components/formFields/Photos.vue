@@ -17,7 +17,7 @@
           <div class="card image-card">
             <header class="card-header">
               <p class="card-header-title">
-                ({{ i }}) {{ url }}
+                Image {{ i + 1 }}
               </p>
               <div 
                 class="card-header-icon"
@@ -31,13 +31,26 @@
               </div>
             </header>
             <div class="card-content">
-              <img :src="uploadUrl + url">
+              <img 
+                :src="uploadUrl + url"
+                class="click"
+                @click="photoModal = i"
+              >
             </div>
           </div>
         </div>
         <div style="clear: left"/>
       </draggable>
     </div>
+
+    <b-modal
+      :active="photoModal >= 0"
+      @close="closeModal"
+    >
+      <p class="image">
+        <img :src="uploadUrl + value[photoModal]">
+      </p>
+    </b-modal>
 
     <br>
 
@@ -84,6 +97,7 @@ export default {
     return {
       uploaded: [],
       isLoading: false,
+      photoModal: -1,
     }
   },
   methods: {
@@ -126,6 +140,9 @@ export default {
       updatedValue.splice(index, 1)
       this.$emit('input', updatedValue)
     },
+    closeModal () {
+      this.photoModal = -1
+    },
   },
 }
 </script>
@@ -153,5 +170,8 @@ export default {
 .image-card:hover {
   cursor: move;
   background: $light;
+}
+.click:hover {
+  cursor: pointer;
 }
 </style>
