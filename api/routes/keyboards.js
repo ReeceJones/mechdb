@@ -7,8 +7,9 @@ const Keyboard = require('../models/Keyboard')
 
 router.get('/', async (req, res, done) => {
   const findOptions = getSearchFilters(req.query, ['size', 'price', 'availability', 'interface', 'keysLayout', 'layout', 'keycaps', 'firmware', 'bluetooth', 'hotswappable', 'backlighting'])
+  const queryOptions = { sort: { createdAt: -1 } }
   try {
-    const data = await Keyboard.find(findOptions, '_id name slug size price photos').populate('manufacturer')
+    const data = await Keyboard.find(findOptions, '_id name slug size price photos', queryOptions).populate('manufacturer')
     res.json(data)
   } catch (e) {
     done(e)

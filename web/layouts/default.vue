@@ -10,7 +10,7 @@
           to="/"
           class="navbar-item"
         >
-          MechDB.net
+          MechDB
         </nuxt-link>
 
         <a
