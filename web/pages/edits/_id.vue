@@ -118,7 +118,6 @@
 
 <script>
 import _ from 'lodash'
-import { mapGetters } from 'vuex'
 
 import edits from '@/assets/configuration/edits'
 

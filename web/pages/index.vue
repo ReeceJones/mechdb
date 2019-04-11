@@ -108,7 +108,7 @@ export default {
       switches: [],
     }
   },
-   async created () {
+  async created () {
     try {
       const { data } = await this.$api.get('/home')
       this.keyboards = data.keyboards

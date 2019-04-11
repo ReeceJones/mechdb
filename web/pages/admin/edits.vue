@@ -85,7 +85,6 @@
 
 <script>
 import _ from 'lodash'
-import { mapGetters } from 'vuex'
 
 import SearchEdit from '@/components/search/Edit'
 
