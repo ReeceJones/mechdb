@@ -18,7 +18,10 @@
           <em><nuxt-link to="/register">Sign up</nuxt-link> to contribute or <a href="#">join our Discord server</a>.</em>
         </p>
       </div>
-      <div class="column">
+      <div 
+        v-if="!this.$store.getters['user/isLoggedIn']"
+        class="column"
+      >
         <div class="card">
           <div class="card-content list-block">
             <HomeSignup/>
@@ -105,7 +108,7 @@ export default {
       switches: [],
     }
   },
-  async created () {
+   async created () {
     try {
       const { data } = await this.$api.get('/home')
       this.keyboards = data.keyboards
