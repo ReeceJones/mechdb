@@ -19,11 +19,13 @@
         </p>
       </div>
       <div class="column">
-        <div class="card">
-          <div class="card-content list-block">
-            <HomeSignup/>
+        <template v-if="isNotLoggedIn">
+          <div class="card">
+            <div class="card-content list-block">
+              <HomeSignup/>
+            </div>
           </div>
-        </div>
+        </template>
       </div>
     </div>
 
@@ -103,6 +105,11 @@ export default {
       keyboards: [],
       keycaps: [],
       switches: [],
+    }
+  },
+  computed: {
+    isNotLoggedIn () {
+      return !this.$store.getters['user/isLoggedIn']
     }
   },
   async created () {
