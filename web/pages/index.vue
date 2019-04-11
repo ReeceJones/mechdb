@@ -18,15 +18,9 @@
           <em><nuxt-link to="/register">Sign up</nuxt-link> to contribute or <a href="#">join our Discord server</a>.</em>
         </p>
       </div>
-      <div 
-        v-if="!this.$store.getters['user/isLoggedIn']"
-        class="column"
-      >
-        <div class="card">
-          <div class="card-content list-block">
-            <HomeSignup/>
-          </div>
-        </div>
+      <div class="column">
+        <HomeProfile v-if="$store.getters['user/isLoggedIn']"/>
+        <HomeSignup v-else/>
       </div>
     </div>
 
@@ -93,11 +87,13 @@
 
 <script>
 import HomeContributors from '@/components/home/Contributors.vue'
+import HomeProfile from '@/components/home/Profile.vue'
 import HomeSignup from '@/components/home/Signup.vue'
 
 export default {
   components: {
     HomeContributors,
+    HomeProfile,
     HomeSignup,
   },
   data () {

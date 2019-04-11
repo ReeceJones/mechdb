@@ -15,6 +15,7 @@ router.get('/', auth.isLoggedIn, (req, res) => res.json({
   username: req.user.username,
   isAdmin: req.user.isAdmin,
   isVerified: req.user.isVerified,
+  reputation: req.user.reputation,
 }))
 
 router.post('/', async (req, res, next) => {

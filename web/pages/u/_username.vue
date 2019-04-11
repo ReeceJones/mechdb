@@ -70,14 +70,12 @@
       >
         VERIFIED USER
       </span>
-      <div 
-        class="tags has-addons"
-        style="display: inline-flex">
-        <span class="tag is-primary">
-          REPUTATION
-        </span>
+      <div class="tags has-addons reputation">
         <span class="tag is-light">
-          <strong> {{ user.reputation }} </strong>
+          REP
+        </span>
+        <span class="tag is-warning">
+          <strong>{{ user.reputation }}</strong>
         </span>
       </div>
     </h1>
@@ -157,5 +155,8 @@ span.tag {
   position: relative;
   top: -.4em;
   font-size: .4em;
+}
+.reputation {
+  display: inline-flex;
 }
 </style>
