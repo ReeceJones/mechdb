@@ -1,5 +1,8 @@
 <template>
-  <div v-if="item">
+  <div 
+    v-if="item"
+    class="container"
+  >
 
     <div
       v-if="$store.getters['user/isLoggedIn']"
