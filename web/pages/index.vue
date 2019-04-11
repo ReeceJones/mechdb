@@ -18,14 +18,15 @@
           <em><nuxt-link to="/register">Sign up</nuxt-link> to contribute or <a href="#">join our Discord server</a>.</em>
         </p>
       </div>
-      <div class="column">
-        <template v-if="isNotLoggedIn">
-          <div class="card">
-            <div class="card-content list-block">
-              <HomeSignup/>
-            </div>
+      <div 
+        v-if="!this.$store.getters['user/isLoggedIn']"
+        class="column"
+      >
+        <div class="card">
+          <div class="card-content list-block">
+            <HomeSignup/>
           </div>
-        </template>
+        </div>
       </div>
     </div>
 
@@ -107,12 +108,7 @@ export default {
       switches: [],
     }
   },
-  computed: {
-    isNotLoggedIn () {
-      return !this.$store.getters['user/isLoggedIn']
-    }
-  },
-  async created () {
+   async created () {
     try {
       const { data } = await this.$api.get('/home')
       this.keyboards = data.keyboards
