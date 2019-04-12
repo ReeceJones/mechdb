@@ -5,7 +5,7 @@
 
     <h2 class="title-labels">
       <b-taglist
-        v-if="item.availability !== null"
+        v-if="item.price || item.availability !== null"
         attached
       >
         <b-tag
