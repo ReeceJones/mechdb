@@ -5,7 +5,7 @@
       <div class="column is-two-thirds about">
         <h2 class="is-size-6 bit">Hello World!</h2>
         <p>
-          <strong>MechDB</strong> is a centralized, community driven and moderated database of all mechanical keyboard related information.
+          <strong>MechDB</strong> is a community-driven database of all mechanical keyboard related information.
           <br>
           <nuxt-link
             to="/about"
@@ -14,8 +14,31 @@
             LEARN MORE
           </nuxt-link>
         </p>
-        <p>
-          <em><nuxt-link to="/register">Sign up</nuxt-link> to contribute or <a href="#">join our Discord server</a>.</em>
+        <p v-if="$store.getters['user/isLoggedIn']">
+          <em>
+            <a
+              href="https://discord.gg/sc2bWsQ"
+              target="_blank"
+            >
+              Join our Discord server
+            </a>
+            to chat with us!
+          </em>
+        </p>
+        <p v-else>
+          <em>
+            <nuxt-link to="/register">
+              Sign up
+            </nuxt-link>
+            to contribute or
+            <a
+              href="https://discord.gg/sc2bWsQ"
+              target="_blank"
+            >
+              join our Discord server
+            </a>
+            .
+          </em>
         </p>
       </div>
       <div class="column">
@@ -28,15 +51,9 @@
       <span class="menu-title">
         BROWSE:
       </span>
-      <nuxt-link to="/keyboards">
-        KEYBOARDS
-      </nuxt-link>
-      <nuxt-link to="/keycaps">
-        KEYCAPS
-      </nuxt-link>
-      <nuxt-link to="/switches">
-        SWITCHES
-      </nuxt-link>
+      <nuxt-link to="/keyboards">KEYBOARDS</nuxt-link>
+      <nuxt-link to="/keycaps">KEYCAPS</nuxt-link>
+      <nuxt-link to="/switches">SWITCHES</nuxt-link>
     </div>
 
     <!-- 2ND ROW -->
@@ -187,6 +204,17 @@ h2.is-size-5 {
     border-bottom: none;
     .menu-title, a {
       margin: 0 .5em;
+    }
+  }
+
+  @media only screen and (max-width: 468px) {
+    font-size: .85em;
+    .menu-title {
+      display: block;
+      padding-bottom: .6em;
+    }
+    a {
+      margin: 0 1em;
     }
   }
 }

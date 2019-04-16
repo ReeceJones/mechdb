@@ -3,7 +3,7 @@
     <div class="header">HIGH SCORES</div>
     <div
       v-for="(item, i) in items"
-      :key="item"
+      :key="item.username"
       :class="{ 'ranking-first': i === 0 }"
       class="ranking"
     >
