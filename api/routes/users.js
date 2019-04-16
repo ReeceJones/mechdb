@@ -37,6 +37,7 @@ router.post('/', async (req, res, next) => {
   const doc = new User({
     email: req.body.email,
     username: req.body.username,
+    isVerified: true, // TEMPORARY: for 2/3 weeks after soft launch
   })
   await doc.setPassword(req.body.password)
   try {
