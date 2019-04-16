@@ -63,7 +63,7 @@ export const actions = {
 
   async getUser({ commit, dispatch }) {
     try {
-      const { data } = await Vue.api.get('users')
+      const { data } = await Vue.api.get('users/me')
       commit('AUTH_USER', data)
       if (data.isAdmin) {
         await dispatch('getEditsPending')

@@ -37,7 +37,7 @@ h1.bit, h2.bit, h3.bit {
   }
 }
 .tag {
-  .icon {
+  .icon:not(:last-child) {
     margin-right: .2em !important;
   }
 }

@@ -65,6 +65,12 @@
               >
                 Edits
               </nuxt-link>
+              <nuxt-link
+                to="/admin/users"
+                class="navbar-item bit"
+              >
+                Users
+              </nuxt-link>
             </div>
           </div>
         </div>

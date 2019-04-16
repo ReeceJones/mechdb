@@ -22,10 +22,10 @@ const schema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  reputation:{
+  reputation: {
     type: Number,
     default: 0,
-  }
+  },
 }, {
   timestamps: true,
 })

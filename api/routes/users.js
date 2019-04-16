@@ -1,4 +1,3 @@
-const _ = require('lodash')
 const express = require('express')
 const router = express.Router()
 
@@ -7,10 +6,23 @@ const randomstring = require('randomstring')
 
 const config = require('../config')
 const email = require('../lib/email')
+const { getSearchFilters } = require('../lib/params')
 const auth = require('../middlewares/auth')
 const User = require('../models/User')
 
-router.get('/', auth.isLoggedIn, (req, res) => res.json({
+router.get('/', auth.isLoggedIn, auth.isAdmin, async (req, res, done) => {
+  try {
+    const params = getSearchFilters(req.query, ['isVerified', 'isAdmin'])
+    const data = await User.find({
+      ...params,
+    }).sort({ createdAt: -1 })
+    res.json(data)
+  } catch (e) {
+    done(e)
+  }
+})
+
+router.get('/me', auth.isLoggedIn, (req, res) => res.json({
   email: req.user.email,
   username: req.user.username,
   isAdmin: req.user.isAdmin,
